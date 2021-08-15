@@ -1,8 +1,8 @@
 # MC855 2021s2 Project
 
-Adivair Santana Ramos - 193325
-Fabio Stori - 196631
-Felipe Duarte Domingues - 171036
+Adivair Santana Ramos - 193325\
+Fabio Stori - 196631\
+Felipe Duarte Domingues - 171036\
 
 ## Available Scripts
 
