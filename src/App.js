@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          is diva trans??
+          Testing Github Actions
         </a>
       </header>
     </div>
