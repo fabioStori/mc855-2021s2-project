@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          is diva trans??
+          is diva trans?
         </a>
       </header>
     </div>
