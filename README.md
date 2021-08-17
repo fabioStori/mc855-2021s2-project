@@ -2,7 +2,8 @@
 
 Adivair Santana Ramos - 193325\
 Fabio Stori - 196631\
-Felipe Duarte Domingues - 171036
+Felipe Duarte Domingues - 171036\
+Gabriel Francioli Alves - 172111
 
 ## Available Scripts
 
