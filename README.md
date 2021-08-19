@@ -21,6 +21,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+### `yarn prettier`
+
+Runs prettier, applying code patterns in .js and .css in all the files under the src folder.
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
@@ -38,7 +42,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `yarn fakeci`
 
-Runs the tests and, if all the tests succed, tries to build the project.\
+Runs the prettier script, the tests and, if all the tests succeed, tries to build the project.\
 Useful to run before pushing to the master branch to see if everything is ok.
 
 ### `yarn eject`
