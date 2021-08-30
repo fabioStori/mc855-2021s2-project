@@ -1,24 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import LandingPage from 'pages/Landing';
+import FirebaseAuth from 'poc-firebase-auth/pages/FirebaseAuth/FirebaseAuth';
+import { Route, Switch } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://i.pinimg.com/originals/35/bd/04/35bd048609c4f7bde1b804177af7ce26.jpg"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Testing Github Actionss
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route path="/" exact={true} component={LandingPage} />
+      <Route path="/poc" component={FirebaseAuth} />
+    </Switch>
   );
 }
 
