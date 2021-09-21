@@ -1,7 +1,7 @@
+import PrivateRoute from 'components/private-route/PrivateRoute';
 import Dashboard from 'poc-firebase-auth/components/dashboard/Dashboard';
 import ForgotPassword from 'poc-firebase-auth/components/forgot-password/ForgotPassword';
 import Login from 'poc-firebase-auth/components/login/Login';
-import PrivateRoute from 'poc-firebase-auth/components/private-route/PrivateRoute';
 import Signup from 'poc-firebase-auth/components/signup/Signup';
 import UpdateProfile from 'poc-firebase-auth/components/update-profile/UpdateProfile';
 import { AuthProvider } from 'poc-firebase-auth/contexts/AuthContext';

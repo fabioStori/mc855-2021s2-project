@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
 import googleGLogo from '../../../assets/svg/google-g-logo.svg';
+import { useUser } from '../../../contexts/UserProvider';
 import styles from './GoogleLoginButton.module.css';
 
 const clientId =
@@ -10,9 +11,13 @@ const clientId =
 function GoogleLoginButton() {
   const [showloginButton, setShowloginButton] = useState(true);
   const history = useHistory();
+  const { isUserLoggedIn, currentUser, setIsUserLoggedIn, setCurrentUser } =
+    useUser();
 
   const onLoginSuccess = (res) => {
-    console.log('Sucesso no login:', res.profileObj);
+    console.log('Sucesso no login:', res);
+    setCurrentUser(res.profileObj);
+    setIsUserLoggedIn(true);
     setShowloginButton(false);
     history.push('/sistema');
   };
@@ -24,12 +29,16 @@ function GoogleLoginButton() {
 
   const onSignOutSuccess = () => {
     alert('Você foi deslogado com sucesso');
-    history.push('/login');
+    console.log('Você foi deslogado com sucesso');
+    setCurrentUser({ noUser: true });
+    setIsUserLoggedIn(false);
     setShowloginButton(true);
+    history.push('/login');
   };
 
   const onSignOutFailure = () => {
     alert('Você não foi deslogado com sucesso');
+    console.log('Você não foi deslogado com sucesso');
     setShowloginButton(false);
   };
 
@@ -37,12 +46,14 @@ function GoogleLoginButton() {
     onSuccess: onLoginSuccess,
     onFailure: onLoginFailure,
     clientId,
+    cookiePolicy: 'none',
     isSignedIn: true,
     accessType: 'offline',
   });
 
   const { signOut } = useGoogleLogout({
     clientId,
+    cookiePolicy: 'none',
     onLogoutSuccess: onSignOutSuccess,
     onFailure: onSignOutFailure,
   });
