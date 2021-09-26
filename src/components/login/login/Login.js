@@ -1,6 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
-import LoginArt from 'components/login/login-art/LoginArt';
-import LoginForm from 'components/login/login-form/LoginForm';
+import { LoginArt, LoginForm } from '..';
 import styles from './Login.module.css';
 
 function Login(props) {

@@ -1,7 +1,7 @@
-import Login from 'components/login/login/Login';
+import { Login } from 'components/login';
 import styles from './LoginPage.module.css';
 
-function LoginPage(props) {
+function LoginPage() {
   return (
     <div className={styles.background}>
       <Login />

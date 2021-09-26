@@ -21,12 +21,13 @@
   font-size: 32px;
 }
 
-.description, .message {
+.description,
+.message {
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 14px;
 }
 
 .space {
-  flex-grow: 1;   
+  flex-grow: 1;
 }

@@ -17,10 +17,10 @@ code {
 }
 
 :root {
-  --white: #FFFFFF;
-  --lighter-gray:#f3f3f3;
-  --light-gray:#E1E1E1;
-  --dark-gray:#707070;
-  --main-blue: #1B498E;
+  --white: #ffffff;
+  --lighter-gray: #f3f3f3;
+  --light-gray: #e1e1e1;
+  --dark-gray: #707070;
+  --main-blue: #1b498e;
   --black: #000000;
 }
