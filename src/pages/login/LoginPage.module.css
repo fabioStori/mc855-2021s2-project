@@ -1,0 +1,6 @@
+.background {
+  background-color: var(--lighter-gray);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}

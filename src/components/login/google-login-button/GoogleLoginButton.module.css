@@ -1,0 +1,25 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  width: 100%;
+  color: var(--main-blue);
+  border: unset;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px var(--light-gray);
+  padding: 10px;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+  box-shadow: 0px 2px 4px var(--dark-gray);
+}
+
+.svg {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  margin-right: 20px;
+}

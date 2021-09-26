@@ -1,0 +1,33 @@
+.background {
+  background-color: var(--white);
+  height: 100%;
+}
+
+.wrapper {
+  height: 100%;
+  padding: 40px 0;
+}
+
+.gridWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 20px;
+}
+
+.title {
+  color: var(--main-blue);
+  font-weight: 500;
+  font-size: 32px;
+}
+
+.description,
+.message {
+  color: var(--dark-gray);
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.space {
+  flex-grow: 1;
+}
