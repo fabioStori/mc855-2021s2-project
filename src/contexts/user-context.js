@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
 
 const UserContext = createContext({
   user: null,
@@ -9,7 +10,11 @@ const UserContext = createContext({
   onLoginFailure: () => {},
   onSignOutSuccess: () => {},
   onSignOutFailure: () => {},
+  signIn: () => {},
+  signOut: () => {},
 });
+
+const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
@@ -39,6 +44,22 @@ export const UserContextProvider = (props) => {
     setShowLoginButton(false);
   };
 
+  const { signIn } = useGoogleLogin({
+    onSuccess: onLoginSuccess,
+    onFailure: onLoginFailure,
+    clientId,
+    cookiePolicy: 'single_host_origin',
+    isSignedIn: true,
+    accessType: 'offline',
+  });
+
+  const { signOut } = useGoogleLogout({
+    clientId,
+    cookiePolicy: 'single_host_origin',
+    onLogoutSuccess: onSignOutSuccess,
+    onFailure: onSignOutFailure,
+  });
+
   const context = {
     user,
     setUser,
@@ -48,6 +69,8 @@ export const UserContextProvider = (props) => {
     onLoginFailure,
     onSignOutSuccess,
     onSignOutFailure,
+    signIn,
+    signOut,
   };
 
   return (

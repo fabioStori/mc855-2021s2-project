@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserContextProvider } from 'contexts/user-context';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
