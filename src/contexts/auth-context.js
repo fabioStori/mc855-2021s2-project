@@ -1,9 +1,14 @@
-import { createContext, useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
+import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
+import classes from './auth-context.module.css';
+import { useStyles } from './auth-context.styles';
 
-const UserContext = createContext({
+const AuthContext = createContext({
   user: null,
+  route: null,
   setUser: (user) => null,
+  setRoute: (route) => null,
   isUserLoggedIn: false,
   showloginButton: true,
   onLoginSuccess: () => {},
@@ -16,19 +21,21 @@ const UserContext = createContext({
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
-export const UserContextProvider = (props) => {
+export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const [showloginButton, setShowLoginButton] = useState(true);
-  const isUserLoggedIn = !!user;
+  const styles = useStyles();
+  const [isLoading, setIsLoading] = useState(true);
+  const [route, setRoute] = useState(null);
 
   const onLoginSuccess = (res) => {
-    console.log('Sucesso no login');
+    console.log('Sucesso no login', res);
     setUser(res.profileObj);
     setShowLoginButton(false);
   };
 
-  const onLoginFailure = () => {
-    console.log('Falha no login');
+  const onLoginFailure = (res) => {
+    console.log('Falha no login', res);
     setShowLoginButton(true);
   };
 
@@ -44,7 +51,7 @@ export const UserContextProvider = (props) => {
     setShowLoginButton(false);
   };
 
-  const { signIn } = useGoogleLogin({
+  const { signIn, loaded: loginLoaded } = useGoogleLogin({
     onSuccess: onLoginSuccess,
     onFailure: onLoginFailure,
     clientId,
@@ -53,16 +60,26 @@ export const UserContextProvider = (props) => {
     accessType: 'offline',
   });
 
-  const { signOut } = useGoogleLogout({
+  const { signOut, loaded: logoutLoaded } = useGoogleLogout({
     clientId,
     cookiePolicy: 'single_host_origin',
     onLogoutSuccess: onSignOutSuccess,
     onFailure: onSignOutFailure,
   });
 
+  let isUserLoggedIn = !!user;
+  useEffect(() => {
+    console.log('loginLoaded', loginLoaded);
+    if (loginLoaded) {
+      setIsLoading(false);
+    }
+  }, [loginLoaded]);
+
   const context = {
     user,
     setUser,
+    route,
+    setRoute,
     isUserLoggedIn,
     showloginButton,
     onLoginSuccess,
@@ -74,10 +91,16 @@ export const UserContextProvider = (props) => {
   };
 
   return (
-    <UserContext.Provider value={context}>
-      {props.children}
-    </UserContext.Provider>
+    <AuthContext.Provider value={context}>
+      {isLoading ? (
+        <div className={classes.container}>
+          <CircularProgress size={75} className={styles.circularProgress} />
+        </div>
+      ) : (
+        props.children
+      )}
+    </AuthContext.Provider>
   );
 };
 
-export default UserContext;
+export default AuthContext;

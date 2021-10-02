@@ -1,9 +1,12 @@
 import { Login } from 'components/login';
-import styles from './LoginPage.module.css';
+import AuthContext from 'contexts/auth-context';
+import { useContext } from 'react';
+import classes from './LoginPage.module.css';
 
 function LoginPage() {
+  const { isUserLoggedIn } = useContext(AuthContext);
   return (
-    <div className={styles.background}>
+    <div className={classes.background}>
       <Login />
     </div>
   );

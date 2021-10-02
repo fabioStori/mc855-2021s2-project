@@ -1,20 +1,20 @@
 import { useContext } from 'react';
 import googleGLogo from '../../../assets/svg/google-g-logo.svg';
-import UserContext from '../../../contexts/user-context';
+import AuthContext from '../../../contexts/auth-context';
 import styles from './GoogleLoginButton.module.css';
 
 function GoogleLoginButton() {
-  const userContext = useContext(UserContext);
+  const authContext = useContext(AuthContext);
 
   return (
     <div>
-      {userContext.showloginButton ? (
-        <button onClick={userContext.signIn} className={styles.button}>
+      {authContext.showloginButton ? (
+        <button onClick={authContext.signIn} className={styles.button}>
           <img src={googleGLogo} className={styles.svg} />
           <span>Entre com o Google</span>
         </button>
       ) : (
-        <button onClick={userContext.signOut} className={styles.button}>
+        <button onClick={authContext.signOut} className={styles.button}>
           <img src={googleGLogo} className={styles.svg} />
           <span>Sair da conta</span>
         </button>

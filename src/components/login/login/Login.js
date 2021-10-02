@@ -1,4 +1,5 @@
-import { Container, Grid } from '@material-ui/core';
+import { Container } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { LoginArt, LoginForm } from '..';
 import styles from './Login.module.css';
 
@@ -9,6 +10,7 @@ function Login(props) {
         <Grid item xs={12} md={6}>
           <LoginForm />
         </Grid>
+        {/* <Grid item xs={'auto'} md={6}> */}
         <Grid item sx={{ display: { xs: 'none', md: 'block' } }} md={6}>
           <LoginArt />
         </Grid>
