@@ -22,11 +22,12 @@ const AuthContext = createContext({
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 export const AuthContextProvider = (props) => {
-  const [user, setUser] = useState(null);
   const [showloginButton, setShowLoginButton] = useState(true);
-  const styles = useStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [route, setRoute] = useState(null);
+  const [user, setUser] = useState(null);
+  const isUserLoggedIn = !!user;
+  const styles = useStyles();
 
   const onLoginSuccess = (res) => {
     console.log('Sucesso no login', res);
@@ -60,16 +61,14 @@ export const AuthContextProvider = (props) => {
     accessType: 'offline',
   });
 
-  const { signOut, loaded: logoutLoaded } = useGoogleLogout({
+  const { signOut } = useGoogleLogout({
     clientId,
     cookiePolicy: 'single_host_origin',
     onLogoutSuccess: onSignOutSuccess,
     onFailure: onSignOutFailure,
   });
 
-  let isUserLoggedIn = !!user;
   useEffect(() => {
-    console.log('loginLoaded', loginLoaded);
     if (loginLoaded) {
       setIsLoading(false);
     }
