@@ -13,13 +13,13 @@ function App() {
       <Navbar />
       <Switch>
         <PrivateRoute path="/" exact={true} component={Sistema} />
-        <PrivateRoute path="/sensores" exact={true} component={Sensores} />
-        <PrivateRoute path="/itens" exact={true} component={Itens} />
+        <PrivateRoute path="/sensores" component={Sensores} />
+        <PrivateRoute path="/itens" component={Itens} />
 
         <Route path="/login">
           {isUserLoggedIn ? <Redirect to="/" /> : <Login />}
         </Route>
-        <Route path="/termos-de-uso" exact={true} component={TermosDeUso} />
+        <Route path="/termos-de-uso" component={TermosDeUso} />
 
         <Route path="*">
           {/* Should redirect to 'page not found' route */}
