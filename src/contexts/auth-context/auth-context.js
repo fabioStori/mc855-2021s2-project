@@ -1,7 +1,6 @@
 import { CircularProgress } from '@material-ui/core';
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
-import classes from './auth-context.module.css';
 import { useStyles } from './auth-context.styles';
 
 const AuthContext = createContext({
@@ -92,7 +91,7 @@ export const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider value={context}>
       {isLoading ? (
-        <div className={classes.container}>
+        <div className={styles.container}>
           <CircularProgress size={75} className={styles.circularProgress} />
         </div>
       ) : (
