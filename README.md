@@ -9,7 +9,7 @@ Gabriel Francioli Alves - 172111
 
 In the project directory, you can run:
 
-### `yarn install`
+### `yarn`
 
 Install all the dependencies needed to run the project.\
 
