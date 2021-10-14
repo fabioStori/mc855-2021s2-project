@@ -3,3 +3,11 @@
   display: flex;
   align-items: center;
 }
+
+.container {
+  height: 640px;
+}
+
+.gridContainer {
+  height: 100%;
+}

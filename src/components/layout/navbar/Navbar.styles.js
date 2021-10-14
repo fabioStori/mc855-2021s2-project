@@ -16,4 +16,7 @@ export const useStyles = makeStyles((theme) => ({
   accountCircle: {
     color: 'var(--main-blue)',
   },
+  space: {
+    flexGrow: 1,
+  },
 }));

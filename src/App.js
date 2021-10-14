@@ -1,7 +1,6 @@
-import { Navbar } from 'components/layout';
-import PrivateRoute from 'components/private-route/PrivateRoute';
-import AuthContext from 'contexts/auth-context';
-import { LoginPage, Sensores, Sistema, TermosDeUso } from 'pages';
+import { Navbar, PrivateRoute } from 'components';
+import { AuthContext } from 'contexts';
+import { Itens, Login, Sensores, Sistema, TermosDeUso } from 'pages';
 import { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import classes from './App.module.css';
@@ -11,15 +10,16 @@ function App() {
 
   return (
     <div className={classes.appBackground}>
-      <Navbar></Navbar>
+      <Navbar />
       <Switch>
         <PrivateRoute path="/" exact={true} component={Sistema} />
-        <PrivateRoute path="/sensores" exact={true} component={Sensores} />
+        <PrivateRoute path="/sensores" component={Sensores} />
+        <PrivateRoute path="/itens" component={Itens} />
 
         <Route path="/login">
-          {isUserLoggedIn ? <Redirect to="/" /> : <LoginPage />}
+          {isUserLoggedIn ? <Redirect to="/" /> : <Login />}
         </Route>
-        <Route path="/termos-de-uso" exact={true} component={TermosDeUso} />
+        <Route path="/termos-de-uso" component={TermosDeUso} />
 
         <Route path="*">
           {/* Should redirect to 'page not found' route */}
