@@ -4,7 +4,6 @@ import {
   Devices,
   Sensors,
   History,
-  LocalHospital,
 } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';

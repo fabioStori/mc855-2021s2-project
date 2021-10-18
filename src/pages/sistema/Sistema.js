@@ -23,8 +23,7 @@ function Sistema() {
             <PrivateRoute path={`${url}/historico`} component={Historico} />    
           </Switch>
         </Grid>
-      </Grid>      
-    </>
+      </Grid> 
   );
 }
 
