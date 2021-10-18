@@ -13,7 +13,8 @@ function Sensores() {
          title="Sensores"
          buttonLabel="Cadastrar novo"
          searchLabel="Pesquisar por sensor"
-         searchPlaceholder="Nome, Localização ou Patrimônio"                
+         searchPlaceholder="Nome, Localização ou Patrimônio"              
+         onButtonClick={onCadastrarNovoClick}           
       />
     </div>
   );
