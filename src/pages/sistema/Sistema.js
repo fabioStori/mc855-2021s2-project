@@ -11,7 +11,6 @@ function Sistema() {
   let { url } = useRouteMatch();
 
   return (
-    <>
       <Grid container spacing={0} className={styles.pageContainer} wrap="nowrap">
         <Grid item xs={2} minWidth="170px">
           <SideMenu />
