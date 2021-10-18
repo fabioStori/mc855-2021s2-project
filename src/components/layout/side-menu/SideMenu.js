@@ -24,7 +24,9 @@ export default function SideMenu() {
     setSelected(newSelected);    
     history.push(`/sistema${newSelected}`);    
   };
-  
+  useEffect(() => {
+    setSelected(location.pathname.replace('/sistema', ''));
+  }, [location.pathname]);
   return (
     <AppBar position="static" className={styles.background}>
       <StyledToggleButtonGroup
