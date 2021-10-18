@@ -10,24 +10,6 @@ function SimpleHeader(props) {
 
   const [value, setValue] = useState([]);
 
-  const handleKeyDown = (event) => {
-    switch (event.key) {
-      case ',':
-      case ' ': {
-        event.preventDefault();
-        event.stopPropagation();
-        if (event.target.value.length > 0) {
-          setValue([...value, event.target.value]);
-        }
-        break;
-      }
-      default:
-    }
-  };
-
-  useEffect(() => {
-    console.log('value', value);
-  }, [value]);
 
   return (
     <div className={styles.wrapper}>
