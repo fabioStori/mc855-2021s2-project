@@ -27,7 +27,4 @@ export const useStyles = makeStyles((theme) => ({
       width: '40%',
     },
   },
-  icon: {
-    color: 'gray',
-  },
 }));
