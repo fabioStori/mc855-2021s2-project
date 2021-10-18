@@ -23,9 +23,8 @@ export const useStyles = makeStyles((theme) => ({
     margin: '0',
     textAlign: 'center',
     [theme.breakpoints.up('sm')]: {
-      margin: '0 auto 0 0',
       textAlign: 'left',
-      width: 'fit-content',
+      width: '40%',
     },
   },
   icon: {
@@ -33,18 +32,10 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: 'var(--primary-blue)',
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    width: 'fit-content',
-  },
-}));
-
 export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    width: 'fit-content',
+    width: '40%',
   },
   '& .MuiFormControl-root': {
     margin: 0,

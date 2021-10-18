@@ -1,77 +1,53 @@
-import { Search } from '@mui/icons-material';
-import { InputAdornment } from '@mui/material';
 import { useEffect, useState } from 'react';
-import {
-  StyledAutoComplete,
-  StyledButton,
-  StyledTextField,
-  useStyles,
-} from './ContentHeader.styles';
+import { useForm } from 'react-hook-form';
+import MultipleTextInputs from '../multiple-text-inputs/MultipleTextInputs';
+import { StyledButton, useStyles } from './ContentHeader.styles';
 
-function ContentHeader(props) {
+function ContentHeader({
+  title,
+  onButtonClick,
+  buttonLabel,
+  searchLabel,
+  searchPlaceholder,
+}) {
+  const methods = useForm({ defaultValues: [] });
   const styles = useStyles();
+  const { control } = methods;
 
-  const [value, setValue] = useState([]);
-
-  const handleKeyDown = (event) => {
-    switch (event.key) {
-      case ',':
-      case ' ': {
-        event.preventDefault();
-        event.stopPropagation();
-        if (event.target.value.length > 0) {
-          setValue([...value, event.target.value]);
-        }
-        break;
-      }
-      default:
-    }
-  };
+  const [fieldValue, setFieldValue] = useState([]);
 
   useEffect(() => {
-    console.log('value', value);
-  }, [value]);
+    if (fieldValue.length > 0) {
+      fetch('https://httpstat.us/200', {
+        method: 'GET',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
+      })
+        .then((response) => {
+          console.log('search values', fieldValue);
+          console.log('response', response);
+        })
+        .catch(() => {
+          console.log('ERROR ON FORM SUBMISSION');
+          return false;
+        });
+    }
+  }, [fieldValue]);
 
   return (
     <div className={styles.wrapper}>
-      <p className={styles.title}>{props.title}</p>
-      <StyledButton variant="contained" onClick={props.onButtonClick}>
-        {props.buttonLabel}
+      <p className={styles.title}>{title}</p>
+      <StyledButton variant="contained" onClick={onButtonClick}>
+        {buttonLabel}
       </StyledButton>
-      <StyledAutoComplete
-        multiple
-        freeSolo
-        options={[]}
-        value={value}
-        limitTags={2}
-        id="search-input"
-        filterSelectedOptions
-        getOptionLabel={(option) => option}
-        onChange={(event, newValue) => setValue(newValue)}
-        renderInput={(params) => {
-          params.inputProps.onKeyDown = handleKeyDown;
-          return (
-            <StyledTextField
-              {...params}
-              size="small"
-              variant="outlined"
-              label={props.searchLabel}
-              placeholder={props.searchPlaceholder}
-              fullWidth
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <>
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                    {params.InputProps.startAdornment}
-                  </>
-                ),
-              }}
-            />
-          );
-        }}
+      <MultipleTextInputs
+        name="search"
+        control={control}
+        hasSearchIcon={true}
+        setFieldValue={setFieldValue}
+        label={searchLabel}
+        placeholder={searchPlaceholder}
       />
     </div>
   );

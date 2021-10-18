@@ -8,6 +8,6 @@ export const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
   },
   circularProgress: {
-    color: 'var(--main-blue)',
+    color: 'var(--primary-blue)',
   },
 }));
