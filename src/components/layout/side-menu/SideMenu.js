@@ -12,7 +12,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { StyledToggleButtonGroup, useStyles } from './SideMenu.styles';
 
 export default function SideMenu() {
-  const [selected, setSelected] = useState('/home');
+  const [selected, setSelected] = useState('/');
   const styles = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -24,15 +24,7 @@ export default function SideMenu() {
     setSelected(newSelected);    
     history.push(`/sistema${newSelected}`);    
   };
-
-  useEffect(() => {
-    if (location.pathname === '/') {
-      setSelected('/home');
-    } else {
-      setSelected(location.pathname.replace('/sistema', ''));
-    }
-  }, [location.pathname]);
-
+  
   return (
     <AppBar position="static" className={styles.background}>
       <StyledToggleButtonGroup
