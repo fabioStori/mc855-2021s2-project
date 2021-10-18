@@ -7,7 +7,7 @@ function Itens() {
   };
 
   return (
-    <div className={classes.pageContainer}>
+    <div className={classes.pageContainer}>      
       {/* The code below is just for testing the ContentHeaderComponent */}
       <ContentHeader
         title="Itens"

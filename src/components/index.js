@@ -5,13 +5,17 @@ import LoginArt from './login/login-art/LoginArt';
 import LoginForm from './login/login-form/LoginForm';
 import PrivateRoute from './private-route/PrivateRoute';
 import ContentHeader from './shared/content-header/ContentHeader';
+import SimpleHeader from './shared/simple-header/SimpleHeader';
+import SideMenu from './layout/side-menu/SideMenu';
 
 export {
   GoogleLoginButton,
   LoginArt,
   LoginForm,
   ContentHeader,
+  SimpleHeader,
   PrivateRoute,
   Navbar,
   Footer,
+  SideMenu,  
 };
