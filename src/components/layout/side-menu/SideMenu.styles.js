@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme) => ({
 
 export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(
   ({ theme }) => ({
-    '& .MuiToggleButtonGroup-grouped': {
+    '& .MuiToggleButtonGroup-grouped': {      
       color: 'var(--main-blue)',
       border: 0,
       borderRadius: 0,
@@ -27,15 +27,16 @@ export const StyledToggleButtonGroup = styled(ToggleButtonGroup)(
       margin: '15px',
       justifyContent: 'flex-start',
       '&:hover': {
-        backgroundColor: 'var(--light-gray)',
+        boxShadow: '3px 4px 4px -1px rgb(0 0 0 / 20%)',        
         borderRadius: 10,
       },
-      '&.Mui-selected': {
-        color: 'var(--white)',
+      '&.Mui-selected': {        
+        color: 'var(--white)',        
         backgroundColor: 'var(--main-blue)',
         borderRadius: 10,
+        boxShadow: '3px 4px 4px -1px rgb(0 0 0 / 20%)',
       },
-      '&.Mui-selected:hover': {
+      '&.Mui-selected:hover': {        
         backgroundColor: 'var(--secondary-blue)',
         borderRadius: 10,
       },
