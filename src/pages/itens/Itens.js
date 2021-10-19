@@ -1,14 +1,24 @@
-import { ContentHeader } from 'components';
-import classes from './Itens.module.css';
+import { ContentHeader, ItensForm, SidePage } from 'components';
+import { useState } from 'react';
+import { useStyles } from './Itens.styles';
 
-function Itens() {
+export default function Itens() {
+  const styles = useStyles();
+
+  const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+
   const onCadastrarNovoClick = () => {
     console.log('onCadastrarNovoClick');
+    setIsSidePageOpen(!isSidePageOpen);
+  };
+
+  const onClose = () => {
+    console.log('onClose');
+    setIsSidePageOpen(false);
   };
 
   return (
-    <div className={classes.pageContainer}>      
-      {/* The code below is just for testing the ContentHeaderComponent */}
+    <div className={styles.pageContainer}>
       <ContentHeader
         title="Itens"
         buttonLabel="Cadastrar novo item"
@@ -16,8 +26,11 @@ function Itens() {
         searchPlaceholder="Nome ou Patrimônio"
         onButtonClick={onCadastrarNovoClick}
       />
+      {isSidePageOpen ? (
+        <SidePage onClose={onClose}>
+          <ItensForm closeSidePage={onClose} />
+        </SidePage>
+      ) : null}
     </div>
   );
 }
-
-export default Itens;

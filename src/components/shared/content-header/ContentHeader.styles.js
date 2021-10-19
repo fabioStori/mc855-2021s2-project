@@ -23,8 +23,9 @@ export const useStyles = makeStyles((theme) => ({
     margin: '0',
     textAlign: 'center',
     [theme.breakpoints.up('sm')]: {
+      margin: '0 auto 0 0',
       textAlign: 'left',
-      width: '40%',
+      width: 'fit-content',
     },
   },
   icon: {
@@ -33,17 +34,17 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: 'var(--main-blue)',
+  backgroundColor: 'var(--primary-blue)',
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    width: '20%',
+    width: 'fit-content',
   },
 }));
 
 export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    width: '40%',
+    width: 'fit-content',
   },
   '& .MuiFormControl-root': {
     margin: 0,
@@ -51,8 +52,10 @@ export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
 }));
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
-  '& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
-    {
-      borderColor: 'var(--main-blue)',
-    },
+  '& .MuiInputLabel-root.Mui-focused ': {
+    color: 'var(--primary-blue) !important',
+  },
+  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--primary-blue) !important',
+  },
 }));

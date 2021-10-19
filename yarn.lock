@@ -9567,6 +9567,11 @@ react-google-login@^5.2.2:
     "@types/react" "*"
     prop-types "^15.6.0"
 
+react-hook-form@^7.17.4:
+  version "7.17.4"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.17.4.tgz#232b6aaccddb91eb4a228ac20b154abd90866fdb"
+  integrity sha512-7XhbCr7d9fDC1TgcK/BUbt7D3q0VJMu7jPErfsa0JrxVjv/nni41xWdJcy0Zb7R+Np8OsCkQ2lMyloAtE3DLiQ==
+
 react-inlinesvg@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-2.3.0.tgz#62283c0ce7e9d11d8190ec3e89589102288830fd"

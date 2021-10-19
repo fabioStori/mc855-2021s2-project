@@ -27,4 +27,26 @@ export const useStyles = makeStyles((theme) => ({
       width: '40%',
     },
   },
+  icon: {
+    color: 'gray',
+  },
+}));
+
+export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    width: '40%',
+  },
+  '& .MuiFormControl-root': {
+    margin: 0,
+  },
+}));
+
+export const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiInputLabel-root.Mui-focused ': {
+    color: 'var(--primary-blue) !important',
+  },
+  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--primary-blue) !important',
+  },
 }));

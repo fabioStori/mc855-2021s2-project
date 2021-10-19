@@ -21,9 +21,16 @@ export default function Navbar() {
     authContext.signIn();
   };
 
-  const signOutHandle = () => {
-    authContext.signOut();
-  };
+  async function signOutHandle() {
+    try {
+      if (window.confirm('Você tem certeza que deseja sair da sua conta?')) {
+        await authContext.signOut();
+        history.push('/login');
+      }
+    } catch {
+      alert('Erro ao sair da conta');
+    }
+  }
 
   return (
     <AppBar position="relative" className={styles.background}>

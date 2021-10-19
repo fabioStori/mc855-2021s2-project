@@ -1,10 +1,5 @@
 import { AppBar } from '@material-ui/core';
-import {  
-  Home,  
-  Devices,
-  Sensors,
-  History,
-} from '@mui/icons-material';
+import { Devices, History, Home, Sensors } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -16,16 +11,16 @@ export default function SideMenu() {
   const history = useHistory();
   const location = useLocation();
 
-  const handleSelected = (event, newSelected) => {    
+  const handleSelected = (event, newSelected) => {
     if (newSelected === null) {
       return;
     }
-    setSelected(newSelected);    
-    history.push(`/sistema${newSelected}`);    
+    setSelected(newSelected);
+    history.push(`${newSelected}`);
   };
   useEffect(() => {
-    setSelected(location.pathname.replace('/sistema', ''));
-  }, [location.pathname]);
+    setSelected(location.pathname);
+  }, []);
   return (
     <AppBar position="static" className={styles.background}>
       <StyledToggleButtonGroup
@@ -47,11 +42,11 @@ export default function SideMenu() {
         <ToggleButton value="/sensores" aria-label="sensores">
           <Sensors className={styles.icon} />
           Sensores
-        </ToggleButton>      
+        </ToggleButton>
         <ToggleButton value="/historico" aria-label="historico">
           <History className={styles.icon} />
           Histórico
-        </ToggleButton>    
+        </ToggleButton>
       </StyledToggleButtonGroup>
     </AppBar>
   );

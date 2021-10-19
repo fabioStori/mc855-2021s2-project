@@ -3,11 +3,9 @@ import styles from './Inicio.module.css';
 
 function Inicio(props) {
   return (
-      <div className={styles.pageContainer}>
-        <SimpleHeader
-          title="Página Inicial"                    
-        />
-      </div>
+    <div className={styles.pageContainer}>
+      <SimpleHeader title="Página Inicial" />
+    </div>
   );
 }
 

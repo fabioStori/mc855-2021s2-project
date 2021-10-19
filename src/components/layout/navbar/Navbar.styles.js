@@ -5,16 +5,16 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: 'var(--white)',
   },
   button: {
-    color: 'var(--main-blue)',
+    color: 'var(--primary-blue)',
     padding: '20px',
   },
   logo: {
-    color: 'var(--main-blue)',
+    color: 'var(--primary-blue)',
     padding: '10px',
     textTransform: 'unset',
   },
   accountCircle: {
-    color: 'var(--main-blue)',
+    color: 'var(--primary-blue)',
   },
   space: {
     flexGrow: 1,
