@@ -2,7 +2,6 @@ import { ContentHeader } from 'components';
 import classes from './Sensores.module.css';
 
 function Sensores() {
-
   const onCadastrarNovoClick = () => {
     console.log('onCadastrarNovoSensorClick');
   };
@@ -10,11 +9,11 @@ function Sensores() {
   return (
     <div className={classes.pageContainer}>
       <ContentHeader
-         title="Sensores"
-         buttonLabel="Cadastrar novo"
-         searchLabel="Pesquisar por sensor"
-         searchPlaceholder="Nome, Localização ou Patrimônio"              
-         onButtonClick={onCadastrarNovoClick}           
+        title="Sensores"
+        buttonLabel="Cadastrar novo"
+        searchLabel="Pesquisar por sensor"
+        searchPlaceholder="Nome, Localização ou Patrimônio"
+        onButtonClick={onCadastrarNovoClick}
       />
     </div>
   );

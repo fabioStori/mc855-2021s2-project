@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import {  
-  useStyles,
-} from './SimpleHeader.styles';
+import { useStyles } from './SimpleHeader.styles';
 
 function SimpleHeader(props) {
   const styles = useStyles();
 
   const [value, setValue] = useState([]);
-
 
   return (
     <div className={styles.wrapper}>

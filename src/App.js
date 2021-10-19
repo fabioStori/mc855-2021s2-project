@@ -12,19 +12,19 @@ function App() {
   return (
     <div className={styles.appBackground}>
       <Navbar />
-        <Switch>
-          <Route path="/login">
-            {isUserLoggedIn ? <Redirect to="/sistema" /> : <Login />}
-          </Route>
-          <Route path="/" exact={true}>
-            {isUserLoggedIn ? <Redirect to="/sistema/" /> : <Login />}
-          </Route>
-          <Route path="/termos-de-uso" component={TermosDeUso} />
-          <PrivateRoute path="/sistema/" component={Sistema} />
-          <Route path="*">
-            {/* Should redirect to 'page not found' route */}          
-          </Route>
-        </Switch>           
+      <Switch>
+        <Route path="/login">
+          {isUserLoggedIn ? <Redirect to="/sistema" /> : <Login />}
+        </Route>
+        <Route path="/" exact={true}>
+          {isUserLoggedIn ? <Redirect to="/sistema/" /> : <Login />}
+        </Route>
+        <Route path="/termos-de-uso" component={TermosDeUso} />
+        <PrivateRoute path="/sistema/" component={Sistema} />
+        <Route path="*">
+          {/* Should redirect to 'page not found' route */}
+        </Route>
+      </Switch>
     </div>
   );
 }
