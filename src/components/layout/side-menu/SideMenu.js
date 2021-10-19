@@ -1,5 +1,5 @@
 import { AppBar } from '@material-ui/core';
-import { Home, Devices, Sensors, History } from '@mui/icons-material';
+import { Devices, History, Home, Sensors } from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -16,11 +16,11 @@ export default function SideMenu() {
       return;
     }
     setSelected(newSelected);
-    history.push(`/sistema${newSelected}`);
+    history.push(`${newSelected}`);
   };
   useEffect(() => {
-    setSelected(location.pathname.replace('/sistema', ''));
-  }, [location.pathname]);
+    setSelected(location.pathname);
+  }, []);
   return (
     <AppBar position="static" className={styles.background}>
       <StyledToggleButtonGroup

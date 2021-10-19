@@ -1,8 +1,7 @@
 import { Grid } from '@mui/material';
 import { PrivateRoute, SideMenu } from 'components';
+import { Historico, Inicio, Itens, Sensores } from 'pages';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import { Inicio, Itens, Sensores, Historico } from 'pages';
-
 import styles from './Sistema.module.css';
 
 function Sistema() {
@@ -15,10 +14,10 @@ function Sistema() {
       </Grid>
       <Grid item xs={10}>
         <Switch>
-          <PrivateRoute path={`${url}/`} exact={true} component={Inicio} />
-          <PrivateRoute path={`${url}/itens`} component={Itens} />
-          <PrivateRoute path={`${url}/sensores`} component={Sensores} />
-          <PrivateRoute path={`${url}/historico`} component={Historico} />
+          <PrivateRoute path={`/`} exact={true} component={Inicio} />
+          <PrivateRoute path={`/itens`} component={Itens} />
+          <PrivateRoute path={`/sensores`} component={Sensores} />
+          <PrivateRoute path={`/historico`} component={Historico} />
         </Switch>
       </Grid>
     </Grid>
