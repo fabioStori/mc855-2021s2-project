@@ -1,19 +1,12 @@
 import { makeStyles } from '@material-ui/core';
-import { Autocomplete, Button, styled, TextField } from '@mui/material';
 
 export const useStyles = makeStyles((theme) => ({
   wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    height: 'fit-content',
     width: '100%',
-    gap: '20px',
-    backgroundColor: 'var(--white)',
+    height: 'fit-content',
+    minHeight: '40px',
     padding: '18px',
-    flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-    },
+    backgroundColor: 'var(--white)',
   },
   title: {
     width: '100%',
@@ -21,10 +14,6 @@ export const useStyles = makeStyles((theme) => ({
     textTransform: 'uppercase',
     fontWeight: 500,
     margin: '0',
-    textAlign: 'center',
-    [theme.breakpoints.up('sm')]: {
-      textAlign: 'left',
-      width: '40%',
-    },
+    textAlign: 'left',
   },
 }));

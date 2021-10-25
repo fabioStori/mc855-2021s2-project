@@ -1,7 +1,7 @@
 import { ContentHeader } from 'components';
 import classes from './Sensores.module.css';
 
-function Sensores() {
+export default function Sensores() {
   const onCadastrarNovoClick = () => {
     console.log('onCadastrarNovoSensorClick');
   };
@@ -18,5 +18,3 @@ function Sensores() {
     </div>
   );
 }
-
-export default Sensores;

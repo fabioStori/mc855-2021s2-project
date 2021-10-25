@@ -4,7 +4,7 @@ import { Historico, Inicio, Itens, Sensores } from 'pages';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import styles from './Sistema.module.css';
 
-function Sistema() {
+export default function Sistema() {
   let { url } = useRouteMatch();
 
   return (
@@ -23,5 +23,3 @@ function Sistema() {
     </Grid>
   );
 }
-
-export default Sistema;

@@ -1,7 +1,5 @@
 import classes from './TermosDeUso.module.css';
 
-function TermosDeUso() {
+export default function TermosDeUso() {
   return <div className={classes.pageContainer}>Termos de uso</div>;
 }
-
-export default TermosDeUso;

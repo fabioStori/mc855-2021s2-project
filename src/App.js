@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styles from './App.module.css';
 
-function App() {
+export default function App() {
   const { isUserLoggedIn } = useContext(AuthContext);
 
   return (
@@ -24,5 +24,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

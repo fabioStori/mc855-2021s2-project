@@ -1,7 +1,5 @@
-import { Close } from '@mui/icons-material';
-import { Alert, Button, IconButton, Snackbar } from '@mui/material';
-import { MultipleTextInputs, SnackbarAction, TextInput } from 'components';
-import { submissionRequest } from 'helpers/request';
+import { Alert, Snackbar } from '@mui/material';
+import { MultipleTextInputs, TextInput } from 'components';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -21,6 +19,22 @@ const emptyValues = {
   local: '',
   blacklist: [],
   whitelist: [],
+};
+
+const postRequest = (url, data) => {
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    // headers: {
+    //   'Content-Type': 'application/json'
+    // }
+  })
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 };
 
 export default function ItensForm({ closeSidePage }) {
@@ -45,7 +59,7 @@ export default function ItensForm({ closeSidePage }) {
   async function onSubmitAndClose(data) {
     console.log('onSubmitAndClose formData', data);
 
-    if (await submissionRequest(requestUrl, data)) {
+    if (await postRequest(requestUrl, data)) {
       console.log('HANDLE SUCCESS ON SUBMISSION');
       setOpenSuccessSnackbar(true);
       closeSidePage();
@@ -58,7 +72,7 @@ export default function ItensForm({ closeSidePage }) {
   async function onSubmitAndReset(data) {
     console.log('onSubmitAndReset formData', data);
 
-    if (await submissionRequest(requestUrl, data)) {
+    if (await postRequest(requestUrl, data)) {
       console.log('HANDLE SUCCESS ON SUBMISSION');
       setOpenSuccessSnackbar(true);
       reset();

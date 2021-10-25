@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from 'contexts';
 import styles from './GoogleLoginButton.module.css';
 
-function GoogleLoginButton() {
+export default function GoogleLoginButton() {
   const authContext = useContext(AuthContext);
 
   return (
@@ -22,4 +22,3 @@ function GoogleLoginButton() {
     </div>
   );
 }
-export default GoogleLoginButton;
