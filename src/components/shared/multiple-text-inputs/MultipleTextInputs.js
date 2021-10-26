@@ -48,7 +48,11 @@ export default function MultipleTextInputs({
                 label={label}
                 placeholder={placeholder}
                 error={!!error}
-                helperText={error ? 'Campo obrigatório' : helperText}
+                helperText={
+                  error
+                    ? 'Campo obrigatório. Pressione ENTER para salvar um valor.'
+                    : helperText
+                }
                 fullWidth
                 InputProps={{
                   ...params.InputProps,

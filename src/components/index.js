@@ -5,6 +5,7 @@ import SideMenu from './layout/side-menu/SideMenu';
 import GoogleLoginButton from './login/google-login-button/GoogleLoginButton';
 import LoginArt from './login/login-art/LoginArt';
 import LoginForm from './login/login-form/LoginForm';
+import SensoresForm from './sensores/SensoresForm';
 import { PrimaryButton, SecondaryButton } from './shared/buttons/Buttons';
 import ContentHeader from './shared/content-header/ContentHeader';
 import MultipleTextInputs from './shared/multiple-text-inputs/MultipleTextInputs';
@@ -16,6 +17,7 @@ import SnackbarAction from './shared/utils/snackbar-action/SnackbarAction';
 
 export {
   ItensForm,
+  SensoresForm,
   Footer,
   Navbar,
   GoogleLoginButton,

@@ -1,21 +1,31 @@
+export const itensEmptyValues = {
+  name: '',
+  item_id: '',
+  description: '',
+  tags: '',
+  default_storage_location: '',
+  location_blacklist: [],
+  location_whitelist: [],
+};
+
 export const TextInputsFields = [
   {
-    name: 'nome',
+    name: 'name',
     label: 'Nome',
     placeholder: 'Nome',
   },
   {
-    name: 'patrimonio',
+    name: 'item_id',
     label: 'Número de Patrimônio',
     placeholder: 'Número de Patrimônio',
   },
   {
-    name: 'descricao',
+    name: 'description',
     label: 'Descrição',
     placeholder: 'Descrição',
   },
   {
-    name: 'local',
+    name: 'default_storage_location',
     label: 'Local correto de armazenamento',
     placeholder: 'Local correto de armazenamento',
   },
@@ -23,19 +33,19 @@ export const TextInputsFields = [
 
 export const MultipleTextInputsFields = [
   {
-    name: 'itemId',
+    name: 'tags',
     label: 'ID do dispositivo RFID',
     placeholder: 'IDs dos dispositivos RFID do item',
     helperText: 'Pressione enter para salvar um valor',
   },
   {
-    name: 'blacklist',
+    name: 'location_blacklist',
     label: 'Alertar ao sair da sala:',
     placeholder: 'Nome da sala',
     helperText: 'Pressione enter para salvar um valor',
   },
   {
-    name: 'whitelist',
+    name: 'location_whitelist',
     label: 'Não alertar ao sair da sala:',
     placeholder: 'Nome da sala',
     helperText: 'Pressione enter para salvar um valor',
