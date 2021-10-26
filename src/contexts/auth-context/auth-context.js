@@ -23,8 +23,14 @@ const AuthContext = createContext({
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 // TODO: Remove next line during the task MC855-78
-// const allowedUsers = ['fabstx@gmail.com', 'f196631@dac.unicamp.br'];
-const allowedUsers = ['fabstx@gmail.com'];
+const allowedUsers = [
+  'f196631@dac.unicamp.br',
+  'f171036@dac.unicamp.br',
+  'g172111@dac.unicamp.br',
+  'a193325@dac.unicamp.br',
+  'jufborin@unicamp.br',
+  'soraia@ic.unicamp.br',
+];
 
 export const AuthContextProvider = (props) => {
   const [showloginButton, setShowLoginButton] = useState(true);
