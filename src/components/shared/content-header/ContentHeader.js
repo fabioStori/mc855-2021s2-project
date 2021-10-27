@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import MultipleTextInputs from '../multiple-text-inputs/MultipleTextInputs';
 import { StyledButton, useStyles } from './ContentHeader.styles';
 
-function ContentHeader({
+export default function ContentHeader({
   title,
   onButtonClick,
   buttonLabel,
@@ -25,8 +25,7 @@ function ContentHeader({
         // },
       })
         .then((response) => {
-          console.log('search values', fieldValue);
-          console.log('response', response);
+          console.log('Searched Values', fieldValue);
         })
         .catch(() => {
           console.log('ERROR ON FORM SUBMISSION');
@@ -52,5 +51,3 @@ function ContentHeader({
     </div>
   );
 }
-
-export default ContentHeader;

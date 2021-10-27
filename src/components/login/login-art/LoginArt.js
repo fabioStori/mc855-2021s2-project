@@ -1,7 +1,7 @@
 import { LoginWhiteDots } from 'assets';
 import styles from './LoginArt.module.css';
 
-function LoginArt() {
+export default function LoginArt() {
   return (
     <div className={styles.wrapper}>
       <img src={LoginWhiteDots} className={styles.svg} />
@@ -9,5 +9,3 @@ function LoginArt() {
     </div>
   );
 }
-
-export default LoginArt;

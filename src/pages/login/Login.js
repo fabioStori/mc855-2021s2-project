@@ -2,7 +2,7 @@ import { Container, Grid } from '@mui/material';
 import { LoginArt, LoginForm } from 'components';
 import classes from './Login.module.css';
 
-function Login() {
+export default function Login() {
   return (
     <div className={classes.pageContainer}>
       <Container maxWidth="lg" className={classes.container}>
@@ -18,5 +18,3 @@ function Login() {
     </div>
   );
 }
-
-export default Login;

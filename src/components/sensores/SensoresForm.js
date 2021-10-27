@@ -1,6 +1,4 @@
-import { Alert, Snackbar } from '@mui/material';
 import { MultipleTextInputs, TextInput } from 'components';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   StyledClearAllButton,
@@ -8,12 +6,12 @@ import {
   StyledPrimaryButton,
   StyledSecondaryButton,
   useStyles,
-} from './ItensForm.styles';
+} from './SensoresForm.styles';
 import {
-  itensEmptyValues,
   MultipleTextInputsFields,
+  sensoresEmptyValues,
   TextInputsFields,
-} from './ItensFormFields';
+} from './SensoresFormFields';
 
 const postRequest = (url, data) => {
   return fetch(url, {
@@ -31,35 +29,21 @@ const postRequest = (url, data) => {
     });
 };
 
-export default function ItensForm({ closeSidePage }) {
-  const methods = useForm({ defaultValues: itensEmptyValues });
+export default function SensoresForm({ closeSidePage }) {
+  const methods = useForm({ defaultValues: sensoresEmptyValues });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
 
-  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
-  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
-
   const requestUrl = 'https://httpstat.us/200';
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSuccessSnackbar(false);
-    setOpenErrorSnackbar(false);
-  };
 
   async function onSubmitAndClose(data) {
     console.log('onSubmitAndClose formData', data);
 
     if (await postRequest(requestUrl, data)) {
       console.log('HANDLE SUCCESS ON SUBMISSION');
-      setOpenSuccessSnackbar(true);
       closeSidePage();
     } else {
       console.log('HANDLE ERROR ON SUBMISSION');
-      setOpenErrorSnackbar(true);
     }
   }
 
@@ -68,11 +52,9 @@ export default function ItensForm({ closeSidePage }) {
 
     if (await postRequest(requestUrl, data)) {
       console.log('HANDLE SUCCESS ON SUBMISSION');
-      setOpenSuccessSnackbar(true);
       reset();
     } else {
       console.log('HANDLE ERROR ON SUBMISSION');
-      setOpenErrorSnackbar(true);
     }
   }
 
@@ -84,7 +66,7 @@ export default function ItensForm({ closeSidePage }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.headWrapper}>
-        <p className={styles.title}>Cadastrar Novo Item</p>
+        <p className={styles.title}>Cadastrar Novo Sensor</p>
 
         <StyledClearAllButton
           onClick={onClearAll}
@@ -129,33 +111,6 @@ export default function ItensForm({ closeSidePage }) {
       >
         Cadastrar e limpar
       </StyledSecondaryButton>
-
-      <Snackbar
-        open={openSuccessSnackbar}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Item cadastrado com sucesso
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openErrorSnackbar}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          Erro ao cadastrar o item
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

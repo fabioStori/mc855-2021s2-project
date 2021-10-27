@@ -9,7 +9,9 @@ const AuthContext = createContext({
   setUser: (user) => null,
   setRoute: (route) => null,
   isUserLoggedIn: false,
+  hasPermissionError: false,
   showloginButton: true,
+  userEmail: '',
   onLoginSuccess: () => {},
   onLoginFailure: () => {},
   onSignOutSuccess: () => {},
@@ -20,19 +22,56 @@ const AuthContext = createContext({
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
+// TODO: Remove next line during the task MC855-78
+const allowedUsers = [
+  'f196631@dac.unicamp.br',
+  'f171036@dac.unicamp.br',
+  'g172111@dac.unicamp.br',
+  'a193325@dac.unicamp.br',
+  'jufborin@unicamp.br',
+  'soraia@ic.unicamp.br',
+];
+
 export const AuthContextProvider = (props) => {
   const [showloginButton, setShowLoginButton] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [route, setRoute] = useState(null);
   const [user, setUser] = useState(null);
-  const isUserLoggedIn = !!user;
+  const [userEmail, setUserEmail] = useState(null);
+  const [hasPermissionError, setHasPermissionError] = useState(false);
   const styles = useStyles();
+  let isUserLoggedIn = !!user;
 
-  const onLoginSuccess = (res) => {
-    console.log('Sucesso no login', res);
-    setUser(res.profileObj);
-    setShowLoginButton(false);
+  const checkUserHasPermission = (profileObj) => {
+    return fetch(`'https://httpstat.us/200'`, {
+      method: 'GET',
+    })
+      .then((response) => {
+        // TODO: Adjust this part during the task MC855-78
+        setUserEmail(profileObj.email);
+        return allowedUsers.includes(profileObj.email);
+      })
+      .catch(() => {
+        console.log('ERROR CHECKING USER PERMISSION');
+        return false;
+      });
   };
+
+  async function onLoginSuccess(res) {
+    console.log('profileObj', res);
+    if (await checkUserHasPermission(res.profileObj)) {
+      console.log('Usuário tem permissão para acessar a aplicação');
+      setUser(res.profileObj);
+      setShowLoginButton(false);
+      setHasPermissionError(false);
+    } else {
+      alert('Usuário não tem permissão para acessar a aplicação');
+      if (isUserLoggedIn) {
+        signOut();
+      }
+      setHasPermissionError(true);
+    }
+  }
 
   const onLoginFailure = (res) => {
     console.log('Falha no login', res);
@@ -43,6 +82,7 @@ export const AuthContextProvider = (props) => {
     alert('Você foi deslogado com sucesso');
     setUser(null);
     setShowLoginButton(true);
+    setHasPermissionError(false);
   };
 
   const onSignOutFailure = () => {
@@ -51,7 +91,7 @@ export const AuthContextProvider = (props) => {
     setShowLoginButton(false);
   };
 
-  const { signIn, loaded: loginLoaded } = useGoogleLogin({
+  const { signIn, loaded: loaded } = useGoogleLogin({
     onSuccess: onLoginSuccess,
     onFailure: onLoginFailure,
     clientId,
@@ -68,10 +108,11 @@ export const AuthContextProvider = (props) => {
   });
 
   useEffect(() => {
-    if (loginLoaded) {
+    isUserLoggedIn = !!user;
+    if (loaded) {
       setIsLoading(false);
     }
-  }, [loginLoaded]);
+  }, [loaded, user]);
 
   const context = {
     user,
@@ -79,7 +120,9 @@ export const AuthContextProvider = (props) => {
     route,
     setRoute,
     isUserLoggedIn,
+    hasPermissionError,
     showloginButton,
+    userEmail,
     onLoginSuccess,
     onLoginFailure,
     onSignOutSuccess,

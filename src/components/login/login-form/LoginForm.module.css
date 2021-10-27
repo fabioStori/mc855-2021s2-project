@@ -22,10 +22,15 @@
 }
 
 .description,
-.message {
+.message,
+.error {
   color: var(--dark-gray);
   font-weight: 400;
   font-size: 14px;
+}
+
+.error {
+  color: var(--red);
 }
 
 .space {

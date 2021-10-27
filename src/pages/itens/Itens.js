@@ -9,7 +9,7 @@ export default function Itens() {
 
   const onCadastrarNovoClick = () => {
     console.log('onCadastrarNovoClick');
-    setIsSidePageOpen(!isSidePageOpen);
+    setIsSidePageOpen(true);
   };
 
   const onClose = () => {

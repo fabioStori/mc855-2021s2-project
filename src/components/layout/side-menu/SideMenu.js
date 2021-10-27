@@ -12,15 +12,13 @@ export default function SideMenu() {
   const location = useLocation();
 
   const handleSelected = (event, newSelected) => {
-    if (newSelected === null) {
-      return;
-    }
-    setSelected(newSelected);
     history.push(`${newSelected}`);
   };
+
   useEffect(() => {
     setSelected(location.pathname);
-  }, []);
+  }, [location.pathname]);
+
   return (
     <AppBar position="static" className={styles.background}>
       <StyledToggleButtonGroup
