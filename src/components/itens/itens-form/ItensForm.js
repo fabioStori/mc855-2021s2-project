@@ -1,7 +1,7 @@
-import { Alert, Snackbar } from '@mui/material';
 import { MultipleTextInputs, TextInput } from 'components';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from 'redux/snackbar';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -15,51 +15,47 @@ import {
   TextInputsFields,
 } from './ItensFormFields';
 
-const postRequest = (url, data) => {
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    // headers: {
-    //   'Content-Type': 'application/json'
-    // }
-  })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
-};
-
 export default function ItensForm({ closeSidePage }) {
   const methods = useForm({ defaultValues: itensEmptyValues });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
-
-  const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
-  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+  const dispatch = useDispatch();
 
   const requestUrl = 'https://httpstat.us/200';
+  let responseCode;
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSuccessSnackbar(false);
-    setOpenErrorSnackbar(false);
+  const postRequest = (url, data) => {
+    return fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // }
+    })
+      .then((response) => {
+        responseCode = response.status;
+        return response.ok;
+      })
+      .catch((response) => {
+        responseCode = response;
+        return false;
+      });
   };
 
   async function onSubmitAndClose(data) {
     console.log('onSubmitAndClose formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      console.log('HANDLE SUCCESS ON SUBMISSION');
-      setOpenSuccessSnackbar(true);
+      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
       closeSidePage();
     } else {
-      console.log('HANDLE ERROR ON SUBMISSION');
-      setOpenErrorSnackbar(true);
+      dispatch(
+        setSnackbar(
+          true,
+          'error',
+          `Erro ao cadastrar o item. Erro: ${responseCode}`
+        )
+      );
     }
   }
 
@@ -67,12 +63,16 @@ export default function ItensForm({ closeSidePage }) {
     console.log('onSubmitAndReset formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      console.log('HANDLE SUCCESS ON SUBMISSION');
-      setOpenSuccessSnackbar(true);
+      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
       reset();
     } else {
-      console.log('HANDLE ERROR ON SUBMISSION');
-      setOpenErrorSnackbar(true);
+      dispatch(
+        setSnackbar(
+          true,
+          'error',
+          `Erro ao cadastrar o item. Erro: ${responseCode}`
+        )
+      );
     }
   }
 
@@ -129,33 +129,6 @@ export default function ItensForm({ closeSidePage }) {
       >
         Cadastrar e limpar
       </StyledSecondaryButton>
-
-      <Snackbar
-        open={openSuccessSnackbar}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Item cadastrado com sucesso
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openErrorSnackbar}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          Erro ao cadastrar o item
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default function Itens() {
     <div className={styles.pageContainer}>
       <ContentHeader
         title="Itens"
-        buttonLabel="Cadastrar novo item"
+        buttonLabel="Cadastrar novo"
         searchLabel="Pesquisar por item"
         searchPlaceholder="Nome ou Patrimônio"
         onButtonClick={onCadastrarNovoClick}

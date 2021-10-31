@@ -1,4 +1,5 @@
-import { Navbar, PrivateRoute } from 'components';
+import { Footer, Navbar, PrivateRoute } from 'components';
+import Snackbar from 'components/shared/snackbar/Snackbar';
 import { AuthContext } from 'contexts';
 import { Login, Sistema, TermosDeUso } from 'pages';
 import { useContext } from 'react';
@@ -11,16 +12,19 @@ export default function App() {
   return (
     <div className={styles.appBackground}>
       <Navbar />
+      <Snackbar />
       <Switch>
         <Route path="/login">
           {isUserLoggedIn ? <Redirect to="/" /> : <Login />}
         </Route>
-        <PrivateRoute path="/" component={Sistema} />
         <Route path="/termos-de-uso" component={TermosDeUso} />
+        <PrivateRoute path="/" component={Sistema} />
         <Route path="*">
+          <Redirect to="/not-found" />
           {/* Should redirect to 'page not found' route */}
         </Route>
       </Switch>
+      <Footer />
     </div>
   );
 }

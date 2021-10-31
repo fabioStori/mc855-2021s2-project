@@ -1,5 +1,7 @@
 import { MultipleTextInputs, TextInput } from 'components';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from 'redux/snackbar';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -13,37 +15,47 @@ import {
   TextInputsFields,
 } from './SensoresFormFields';
 
-const postRequest = (url, data) => {
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    // headers: {
-    //   'Content-Type': 'application/json'
-    // }
-  })
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
-};
-
 export default function SensoresForm({ closeSidePage }) {
   const methods = useForm({ defaultValues: sensoresEmptyValues });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
+  const dispatch = useDispatch();
 
-  const requestUrl = 'https://httpstat.us/200';
+  const requestUrl = 'https://httpstat.us/401';
+  let responseCode;
+
+  const postRequest = (url, data) => {
+    return fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // }
+    })
+      .then((response) => {
+        responseCode = response.status;
+        return response.ok;
+      })
+      .catch((response) => {
+        responseCode = response;
+        return false;
+      });
+  };
 
   async function onSubmitAndClose(data) {
     console.log('onSubmitAndClose formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      console.log('HANDLE SUCCESS ON SUBMISSION');
+      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
       closeSidePage();
     } else {
-      console.log('HANDLE ERROR ON SUBMISSION');
+      dispatch(
+        setSnackbar(
+          true,
+          'error',
+          `Erro ao cadastrar o item. Erro: ${responseCode}`
+        )
+      );
     }
   }
 
@@ -51,10 +63,16 @@ export default function SensoresForm({ closeSidePage }) {
     console.log('onSubmitAndReset formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      console.log('HANDLE SUCCESS ON SUBMISSION');
+      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
       reset();
     } else {
-      console.log('HANDLE ERROR ON SUBMISSION');
+      dispatch(
+        setSnackbar(
+          true,
+          'error',
+          `Erro ao cadastrar o item. Erro: ${responseCode}`
+        )
+      );
     }
   }
 

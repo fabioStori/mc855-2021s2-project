@@ -6,12 +6,12 @@ import GoogleLoginButton from './login/google-login-button/GoogleLoginButton';
 import LoginArt from './login/login-art/LoginArt';
 import LoginForm from './login/login-form/LoginForm';
 import SensoresForm from './sensores/SensoresForm';
-import { PrimaryButton, SecondaryButton } from './shared/buttons/Buttons';
 import ContentHeader from './shared/content-header/ContentHeader';
 import MultipleTextInputs from './shared/multiple-text-inputs/MultipleTextInputs';
 import PrivateRoute from './shared/private-route/PrivateRoute';
 import SidePage from './shared/side-page/SidePage';
 import SimpleHeader from './shared/simple-header/SimpleHeader';
+import CustomizedSnackbar from './shared/snackbar/Snackbar';
 import TextInput from './shared/text-input/TextInput';
 import SnackbarAction from './shared/utils/snackbar-action/SnackbarAction';
 
@@ -31,6 +31,5 @@ export {
   SidePage,
   TextInput,
   SnackbarAction,
-  PrimaryButton,
-  SecondaryButton,
+  CustomizedSnackbar,
 };

@@ -12,11 +12,18 @@ export default function SideMenu() {
   const location = useLocation();
 
   const handleSelected = (event, newSelected) => {
-    history.push(`${newSelected}`);
+    if (newSelected === null) {
+      return;
+    }
+    history.push(newSelected);
   };
 
   useEffect(() => {
-    setSelected(location.pathname);
+    if (location.pathname === '') {
+      setSelected('/');
+    } else {
+      setSelected(location.pathname);
+    }
   }, [location.pathname]);
 
   return (

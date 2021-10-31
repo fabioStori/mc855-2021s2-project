@@ -1,11 +1,18 @@
-import { Grid } from '@material-ui/core';
+import { Checkbox, Grid } from '@mui/material';
 import { AuthContext } from 'contexts';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import GoogleLoginButton from '../google-login-button/GoogleLoginButton';
-import styles from './LoginForm.module.css';
+import { StyledFormControlLabel, useStyles } from './LoginForm.styles';
 
 export default function LoginForm() {
   const { hasPermissionError, userEmail } = useContext(AuthContext);
+  const [checked, setChecked] = useState(false);
+  const styles = useStyles();
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
   return (
     <div className={styles.background}>
@@ -14,7 +21,23 @@ export default function LoginForm() {
         <Grid item xs={8} className={styles.wrapper}>
           <div className={styles.gridWrapper}>
             <p className={styles.title}>Entre na sua conta</p>
-            <GoogleLoginButton />
+            <GoogleLoginButton disabled={!checked} />
+            <div className={styles.checkboxWrapper}>
+              <Checkbox
+                size="small"
+                checked={checked}
+                onChange={handleChange}
+              />
+              <p className={styles.description}>
+                Eu li e aceito os <Link to="/termos-de-uso">termos de uso</Link>{' '}
+                termos de uso (obrigatório)
+              </p>
+            </div>
+            {/* <StyledFormControlLabel
+              control={
+              }
+              label="Eu li e aceito os termos de uso (obrigatório)"
+            /> */}
             {hasPermissionError ? (
               <p className={styles.error}>
                 O email {userEmail} não tem permissão para acessar o sistema.
@@ -27,11 +50,6 @@ export default function LoginForm() {
                 será redirecionado para a página inicial do sistema.
               </p>
             )}
-            <span className={styles.space}></span>
-            <p className={styles.message}>
-              Ainda não tem uma conta? Entre em contato com nosso suporte:
-              advear.ramos@gmail.com
-            </p>
           </div>
         </Grid>
       </Grid>

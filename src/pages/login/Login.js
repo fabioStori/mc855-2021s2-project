@@ -1,12 +1,14 @@
 import { Container, Grid } from '@mui/material';
 import { LoginArt, LoginForm } from 'components';
-import classes from './Login.module.css';
+import { useStyles } from './Login.styles';
 
 export default function Login() {
+  const styles = useStyles();
+
   return (
-    <div className={classes.pageContainer}>
-      <Container maxWidth="lg" className={classes.container}>
-        <Grid container spacing={0} className={classes.gridContainer}>
+    <div className={styles.pageContainer}>
+      <Container maxWidth="lg" className={styles.container}>
+        <Grid container spacing={0} className={styles.gridContainer}>
           <Grid item xs={12} md={6}>
             <LoginForm />
           </Grid>
