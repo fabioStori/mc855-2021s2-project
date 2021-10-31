@@ -33,11 +33,6 @@ export default function LoginForm() {
                 termos de uso (obrigatório)
               </p>
             </div>
-            {/* <StyledFormControlLabel
-              control={
-              }
-              label="Eu li e aceito os termos de uso (obrigatório)"
-            /> */}
             {hasPermissionError ? (
               <p className={styles.error}>
                 O email {userEmail} não tem permissão para acessar o sistema.
