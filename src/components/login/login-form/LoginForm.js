@@ -3,7 +3,7 @@ import { AuthContext } from 'contexts';
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import GoogleLoginButton from '../google-login-button/GoogleLoginButton';
-import { StyledFormControlLabel, useStyles } from './LoginForm.styles';
+import { useStyles } from './LoginForm.styles';
 
 export default function LoginForm() {
   const { hasPermissionError, userEmail } = useContext(AuthContext);
