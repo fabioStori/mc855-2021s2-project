@@ -7,13 +7,13 @@ import LoginArt from './login/login-art/LoginArt';
 import LoginForm from './login/login-form/LoginForm';
 import SensoresForm from './sensores/SensoresForm';
 import ContentHeader from './shared/content-header/ContentHeader';
+import CustomDatePicker from './shared/custom-date-picker.js/CustomDatePicker';
 import MultipleTextInputs from './shared/multiple-text-inputs/MultipleTextInputs';
 import PrivateRoute from './shared/private-route/PrivateRoute';
 import SidePage from './shared/side-page/SidePage';
 import SimpleHeader from './shared/simple-header/SimpleHeader';
 import CustomizedSnackbar from './shared/snackbar/Snackbar';
 import TextInput from './shared/text-input/TextInput';
-import SnackbarAction from './shared/utils/snackbar-action/SnackbarAction';
 
 export {
   ItensForm,
@@ -30,6 +30,6 @@ export {
   MultipleTextInputs,
   SidePage,
   TextInput,
-  SnackbarAction,
   CustomizedSnackbar,
+  CustomDatePicker,
 };

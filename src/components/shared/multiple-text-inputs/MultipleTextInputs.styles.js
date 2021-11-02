@@ -33,16 +33,16 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    width: '40%',
-  },
+  width: 'auto',
   '& .MuiFormControl-root': {
     margin: 0,
   },
 }));
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiAutocomplete-tag': {
+    height: '22px',
+  },
   '& .MuiInputLabel-root.Mui-focused ': {
     color: 'var(--primary-blue) !important',
   },

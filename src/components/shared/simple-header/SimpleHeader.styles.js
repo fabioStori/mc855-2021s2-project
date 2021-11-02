@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: 'fit-content',
     minHeight: '40px',
-    padding: '18px',
+    padding: '18px 18px 0 18px',
     backgroundColor: 'var(--white)',
   },
   title: {

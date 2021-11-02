@@ -1,6 +1,5 @@
-import { AppBar } from '@material-ui/core';
 import { Devices, History, Home, Sensors } from '@mui/icons-material';
-import { ToggleButton } from '@mui/material';
+import { AppBar, ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { StyledToggleButtonGroup, useStyles } from './SideMenu.styles';

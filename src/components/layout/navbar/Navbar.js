@@ -1,6 +1,5 @@
-import { AppBar, Button, Toolbar } from '@material-ui/core';
 import { AccountCircle } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
 import { Logo } from 'assets';
 import { AuthContext } from 'contexts';
 import { useContext } from 'react';
