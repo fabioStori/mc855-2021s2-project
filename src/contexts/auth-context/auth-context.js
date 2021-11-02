@@ -52,7 +52,7 @@ export const AuthContextProvider = (props) => {
         return allowedUsers.includes(profileObj.email);
       })
       .catch(() => {
-        console.log('ERROR CHECKING USER PERMISSION');
+        console.error('ERROR CHECKING USER PERMISSION');
         return false;
       });
   };
@@ -65,7 +65,9 @@ export const AuthContextProvider = (props) => {
       setShowLoginButton(false);
       setHasPermissionError(false);
     } else {
-      alert('Usuário não tem permissão para acessar a aplicação');
+      console.error(
+        `Usuário ${res.profileObj.email} não tem permissão para acessar a aplicação`
+      );
       if (isUserLoggedIn) {
         signOut();
       }
