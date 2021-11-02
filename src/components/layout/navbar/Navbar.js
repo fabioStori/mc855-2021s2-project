@@ -1,5 +1,6 @@
+import { AppBar, Button, Toolbar } from '@material-ui/core';
 import { AccountCircle } from '@mui/icons-material';
-import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { Logo } from 'assets';
 import { AuthContext } from 'contexts';
 import { useContext } from 'react';
@@ -47,11 +48,7 @@ export default function Navbar() {
               <AccountCircle className={styles.accountCircle} />
             </IconButton>
           </>
-        ) : (
-          <Button className={styles.button} onClick={signInHandle}>
-            Login
-          </Button>
-        )}
+        ) : null}
       </Toolbar>
     </AppBar>
   );
