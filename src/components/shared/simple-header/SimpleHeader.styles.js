@@ -1,8 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    border: '1px solid red',
+  wrapper: {    
     width: 'auto',
     height: 'fit-content',
     minHeight: '40px',
