@@ -4,6 +4,9 @@ import { useStyles } from './Itens.styles';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { useDispatch } from 'react-redux';
+
+import { setSnackbar } from 'redux/snackbar';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -11,6 +14,7 @@ import withReactContent from 'sweetalert2-react-content';
 export default function Itens() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
+  const dispatch = useDispatch();
 
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
 
@@ -37,13 +41,8 @@ export default function Itens() {
     }).then((result) => {      
       if (result.isConfirmed) {
         //TODO: ajax request to delete
-        MySwal.fire({
-          title: `Sucesso!`,
-          html: `O item <strong>${item.name}</strong> foi excluído com sucesso.`,
-          icon: 'success',
-          confirmButtonColor: 'var(--primary-blue)',
-        })
-      } else if (result.isDenied) {
+        dispatch(setSnackbar(true, 'success', 'Item excluído com sucesso'));
+      } else if (result.isDenied) {        
         MySwal.close();
       }
     });  
@@ -68,6 +67,7 @@ export default function Itens() {
     },
     {
       field: 'actions',
+      headerName: 'Opções',
       type: 'actions',
       getActions: (params) => [
         <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={() => deleteItem(params.row)}/>,
@@ -110,6 +110,7 @@ export default function Itens() {
       name: 'Tocador de Fita Cassete',
       lastMov: new Date(1979, 0, 1, 0, 5),
     },
+    
   ];
 
   return (
