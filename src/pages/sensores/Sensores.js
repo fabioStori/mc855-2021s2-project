@@ -1,16 +1,19 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
 import { useState } from 'react';
-import { useStyles } from './Sensores.styles';
-import { GridActionsCellItem } from '@mui/x-data-grid';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from 'redux/snackbar';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useStyles } from './Sensores.styles';
+
 
 export default function Sensores() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
+  const dispatch = useDispatch();
 
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
 
@@ -37,12 +40,7 @@ export default function Sensores() {
     }).then((result) => {      
       if (result.isConfirmed) {
         //TODO: ajax request to delete
-        MySwal.fire({
-          title: `Sucesso!`,
-          html: `O sensor <strong>${sensor.name}</strong> foi excluído com sucesso.`,
-          icon: 'success',
-          confirmButtonColor: 'var(--primary-blue)',
-        })
+        dispatch(setSnackbar(true, 'success', 'Sensor excluído com sucesso'));
       } else if (result.isDenied) {
         MySwal.close();
       }
