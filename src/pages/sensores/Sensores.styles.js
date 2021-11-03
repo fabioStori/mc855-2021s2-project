@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
-  pageContainer: {
-    height: 'calc(100vh - 64.5px)',
+  pageContainer: {    
+    height: '100%',
     display: 'flex',
   },
 
-  pageWrapper: {
+  pageWrapper: {    
     height: '100%',
     width: '100%',
   },

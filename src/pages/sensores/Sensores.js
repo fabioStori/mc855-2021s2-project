@@ -5,8 +5,12 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 export default function Sensores() {
   const styles = useStyles();
+  const MySwal = withReactContent(Swal);
 
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
 
@@ -19,6 +23,36 @@ export default function Sensores() {
     console.log('onClose');
     setIsSidePageOpen(false);
   };
+
+  const deleteSensor = (sensor) => {
+    MySwal.fire({
+      title: `Confirma exclusão?`,
+      html: `Deseja realmente excluir o sensor: <strong>${sensor.name}</strong>?`,
+      showDenyButton: true,
+      confirmButtonText: 'Exluir',      
+      confirmButtonColor: '#dc3545',
+      denyButtonText: `Não Excluir`,
+      denyButtonColor: '#6c757d',
+      icon: 'question',
+    }).then((result) => {      
+      if (result.isConfirmed) {
+        //TODO: ajax request to delete
+        MySwal.fire({
+          title: `Sucesso!`,
+          html: `O sensor <strong>${sensor.name}</strong> foi excluído com sucesso.`,
+          icon: 'success',
+          confirmButtonColor: 'var(--primary-blue)',
+        })
+      } else if (result.isDenied) {
+        MySwal.close();
+      }
+    });  
+  }
+
+  const duplicateSensor = (item) => {
+    setIsSidePageOpen(true);
+    console.log(item);
+  }
 
   const columns = [
     {
@@ -46,8 +80,8 @@ export default function Sensores() {
       field: 'actions',
       type: 'actions',
       getActions: (params) => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
-        <GridActionsCellItem icon={<ContentCopyIcon />} label="Clone" />,
+        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={() => deleteSensor(params.row)}/>,
+        <GridActionsCellItem icon={<ContentCopyIcon />} label="Clone" onClick={() => duplicateSensor(params.row)}/>,
       ],
     },
   ];
@@ -130,7 +164,7 @@ export default function Sensores() {
       <div className={styles.pageWrapper}>
         <ContentHeader
           title="Sensores"
-          buttonLabel="Cadastrar novo"
+          buttonLabel="Cadastrar Novo"
           searchLabel="Pesquisar por sensor"
           searchPlaceholder="Nome, Localização ou Patrimônio"
           onButtonClick={onCadastrarNovoClick}
