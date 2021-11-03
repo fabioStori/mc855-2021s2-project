@@ -1786,6 +1786,16 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
+"@mui/x-data-grid@^5.0.0-beta.6":
+  version "5.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@mui/x-data-grid/-/x-data-grid-5.0.0-beta.6.tgz#26e0352e6e7ac7b8a1a506766af78eeeffc348a3"
+  integrity sha512-yLINcynxi/qRmES1xLVbUy+799cWs/GOa0HZRQFNbyPGfP/ReUg+Rlr69ggIxOJeD7kcqB8w3GhCYWi+l4klDA==
+  dependencies:
+    "@mui/utils" "^5.0.1"
+    clsx "^1.1.1"
+    prop-types "^15.7.2"
+    reselect "^4.0.0"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1992,6 +2002,11 @@
     "@svgr/plugin-jsx" "^5.5.0"
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
+
+"@sweetalert2/themes@^5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/themes/-/themes-5.0.7.tgz#ebfa80cb25197e8eb1066c9478f6b2abb6af772d"
+  integrity sha512-PGfW6t/rFjFhMMyPuA6OduODDd9PV4hGMcdBQ4+5VUYr45gSvDIIlpJpX/cZ9KkQdpiqrLV/39wcDP74hBt/zw==
 
 "@testing-library/dom@^7.28.1":
   version "7.31.2"
@@ -10015,6 +10030,11 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
+reselect@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.1.tgz#7e2c110efbf3d70df3482604bcf2bc0ab571346a"
+  integrity sha512-Jjt8Us6hAWJpjucyladHvUGR+q1mHHgWtGDXlhvvKyNyIeQ3bjuWLDX0bsTLhbm/gd4iXEACBlODUHBlLWiNnA==
+
 resolve-cwd@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-2.0.0.tgz#00a9f7387556e27038eae232caa372a6a59b665a"
@@ -11008,6 +11028,16 @@ svgo@^1.0.0, svgo@^1.2.2:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+sweetalert2-react-content@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2-react-content/-/sweetalert2-react-content-4.2.0.tgz#ab4a6e02e37150dd0ea34d00179ec76952e3f442"
+  integrity sha512-eB324swnq10UJH8nAH2S6GHuAKDgH6GpGU8vI+ulYdmlPzpb0T5QPc7O4RFNRx28GzVZUnfvtpxZbKtZ5/KOnQ==
+
+sweetalert2@^11.1.9:
+  version "11.1.9"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.1.9.tgz#f3948198119fab2de7014ccd7840cc4a6d671185"
+  integrity sha512-ox+BjtAbO8mJrbQH9TsNwMwLeTfV+ve33CVz/kKn5D/DhRiSqnw2rWL4HuBlh9Z4yqYlTD5viR5Z2K5D3avM7Q==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

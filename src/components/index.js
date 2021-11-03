@@ -14,6 +14,7 @@ import SidePage from './shared/side-page/SidePage';
 import SimpleHeader from './shared/simple-header/SimpleHeader';
 import CustomizedSnackbar from './shared/snackbar/Snackbar';
 import TextInput from './shared/text-input/TextInput';
+import Tabela from './tabela/Tabela';
 
 export {
   ItensForm,
@@ -32,4 +33,5 @@ export {
   TextInput,
   CustomizedSnackbar,
   CustomDatePicker,
+  Tabela,
 };

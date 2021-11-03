@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     height: 'fit-content',
-    width: '100%',
+    width: 'auto',
     gap: '20px',
     backgroundColor: 'var(--white)',
     padding: '18px',
