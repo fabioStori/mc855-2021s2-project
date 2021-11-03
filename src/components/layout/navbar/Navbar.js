@@ -48,11 +48,7 @@ export default function Navbar() {
               <AccountCircle className={styles.accountCircle} />
             </IconButton>
           </>
-        ) : (
-          <Button className={styles.button} onClick={signInHandle}>
-            Login
-          </Button>
-        )}
+        ) : null}
       </Toolbar>
     </AppBar>
   );

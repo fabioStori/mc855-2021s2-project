@@ -1,11 +1,11 @@
 import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    width: '100%',
+  wrapper: {    
+    width: 'auto',
     height: 'fit-content',
     minHeight: '40px',
-    padding: '18px',
+    padding: '18px 18px 0 18px',
     backgroundColor: 'var(--white)',
   },
   title: {

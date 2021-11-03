@@ -1,4 +1,4 @@
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
 import { useStyles } from './auth-context.styles';

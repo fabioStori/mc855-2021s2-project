@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MultipleTextInputs from '../multiple-text-inputs/MultipleTextInputs';
@@ -40,14 +41,16 @@ export default function ContentHeader({
       <StyledButton variant="contained" onClick={onButtonClick}>
         {buttonLabel}
       </StyledButton>
-      <MultipleTextInputs
-        name="search"
-        control={control}
-        hasSearchIcon={true}
-        setFieldValue={setFieldValue}
-        label={searchLabel}
-        placeholder={searchPlaceholder}
-      />
+      <Box width={{ xs: '100%', md: '40%' }}>
+        <MultipleTextInputs
+          name="search"
+          control={control}
+          hasSearchIcon={true}
+          setFieldValue={setFieldValue}
+          label={searchLabel}
+          placeholder={searchPlaceholder}
+        />
+      </Box>
     </div>
   );
 }
