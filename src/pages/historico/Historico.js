@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { CustomDatePicker, MultipleTextInputs, SimpleHeader } from 'components';
+import { CustomDatePicker, MultipleTextInputs, SimpleHeader, Tabela } from 'components';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './Historico.styles';
@@ -41,9 +41,86 @@ export default function Historico(props) {
     invalidDate,
   ]);
 
+  const columns = [
+    {
+      field: 'itemName',
+      headerName: 'Nome do item',
+      flex: 0.4,
+    },
+    {
+      field: 'sensorName',
+      headerName: 'Nome do sensor',
+      flex: 0.4,
+    },
+    {
+      field: 'time',
+      headerName: 'Data/Hora',
+      flex: 0.3,
+      type: 'dateTime',
+    },
+  ];
+
+  const rows = [
+    {
+      id: 1,
+      itemName: 'Analisador de Redes Vetorial',
+      sensorName: 'Sensor 10',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 2,
+      itemName: 'Ultramicrótomo Ultracut UCT',
+      sensorName: 'Sensor 8',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 3,
+      itemName: 'Implantador de Íons',
+      sensorName: 'Sensor 7',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 4,
+      itemName: 'Network Analyzer',
+      sensorName: 'Sensor 6',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 5,
+      itemName: 'Analisador de espectro óptico',
+      sensorName: 'Sensor 5',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 6,
+      itemName: 'Bioanalyzer',
+      sensorName: 'Sensor 4',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 7,
+      itemName: 'Sequenciador DNA SANGER',
+      sensorName: 'Sensor 3',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 8,
+      itemName: 'Canhão para biobalística',
+      sensorName: 'Sensor 2',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 9,
+      itemName: 'Tocador de Fita Cassete',
+      sensorName: 'Sensor 1',
+      time: new Date(1979, 0, 1, 0, 5),
+    },
+  ];
+
   return (
     <div className={styles.pageContainer}>
       <SimpleHeader title="Histórico de movimentações" />
+
       <Box
         className={styles.wrapper}
         display={'flex'}
@@ -96,6 +173,7 @@ export default function Historico(props) {
           />
         </Box>
       </Box>
+      <Tabela columns={columns} rows={rows} />
     </div>
   );
 }
