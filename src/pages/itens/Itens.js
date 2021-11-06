@@ -3,8 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, ItensForm, SidePage, Tabela } from 'components';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSnackbar } from 'redux/snackbar';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from './Itens.styles';
@@ -12,7 +11,6 @@ import { useStyles } from './Itens.styles';
 export default function Itens() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
-  const dispatch = useDispatch();
 
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
 
@@ -39,7 +37,10 @@ export default function Itens() {
     }).then((result) => {
       if (result.isConfirmed) {
         //TODO: ajax request to delete
-        dispatch(setSnackbar(true, 'success', 'Item excluído com sucesso'));
+        toast.success(`Item ${item.name} excluído com sucesso`, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 50000,
+        });
       } else if (result.isDenied) {
         MySwal.close();
       }

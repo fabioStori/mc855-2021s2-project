@@ -1,9 +1,10 @@
 import { Footer, Navbar, PrivateRoute } from 'components';
-import Snackbar from 'components/shared/snackbar/Snackbar';
 import { AuthContext } from 'contexts';
 import { Login, Sistema } from 'pages';
 import { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
 
 export default function App() {
@@ -12,7 +13,7 @@ export default function App() {
   return (
     <div className={styles.appBackground}>
       <Navbar />
-      <Snackbar />
+      <ToastContainer />
       <Switch>
         <Route path="/login">
           {isUserLoggedIn ? <Redirect to="/" /> : <Login />}

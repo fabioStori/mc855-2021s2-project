@@ -13,7 +13,6 @@ import MultipleTextInputs from './shared/multiple-text-inputs/MultipleTextInputs
 import PrivateRoute from './shared/private-route/PrivateRoute';
 import SidePage from './shared/side-page/SidePage';
 import SimpleHeader from './shared/simple-header/SimpleHeader';
-import CustomizedSnackbar from './shared/snackbar/Snackbar';
 import TextInput from './shared/text-input/TextInput';
 import Tabela from './tabela/Tabela';
 import TermosDeUso from './termos-de-uso/TermosDeUso';
@@ -33,7 +32,6 @@ export {
   MultipleTextInputs,
   SidePage,
   TextInput,
-  CustomizedSnackbar,
   CustomDatePicker,
   Tabela,
   StyledModal,

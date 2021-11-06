@@ -1,7 +1,7 @@
 import { MultipleTextInputs, TextInput } from 'components';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { setSnackbar } from 'redux/snackbar';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -19,7 +19,6 @@ export default function SensoresForm({ closeSidePage }) {
   const methods = useForm({ defaultValues: sensoresEmptyValues });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
-  const dispatch = useDispatch();
 
   const requestUrl = 'https://httpstat.us/401';
   let responseCode;
@@ -46,16 +45,16 @@ export default function SensoresForm({ closeSidePage }) {
     console.log('onSubmitAndClose formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
+      toast.success('Sensor cadastrado com sucesso', {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 4000,
+      });
       closeSidePage();
     } else {
-      dispatch(
-        setSnackbar(
-          true,
-          'error',
-          `Erro ao cadastrar o item. Erro: ${responseCode}`
-        )
-      );
+      toast.error(`Erro ao cadastrar o sensor. Erro: ${responseCode}`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 4000,
+      });
     }
   }
 
@@ -63,16 +62,16 @@ export default function SensoresForm({ closeSidePage }) {
     console.log('onSubmitAndReset formData', data);
 
     if (await postRequest(requestUrl, data)) {
-      dispatch(setSnackbar(true, 'success', 'Item cadastrado com sucesso'));
+      toast.success('Sensor cadastrado com sucesso', {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 4000,
+      });
       reset();
     } else {
-      dispatch(
-        setSnackbar(
-          true,
-          'error',
-          `Erro ao cadastrar o item. Erro: ${responseCode}`
-        )
-      );
+      toast.error(`Erro ao cadastrar o sensor. Erro: ${responseCode}`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 4000,
+      });
     }
   }
 

@@ -3,8 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSnackbar } from 'redux/snackbar';
+import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from './Sensores.styles';
@@ -12,7 +11,6 @@ import { useStyles } from './Sensores.styles';
 export default function Sensores() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
-  const dispatch = useDispatch();
 
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
 
@@ -39,7 +37,10 @@ export default function Sensores() {
     }).then((result) => {
       if (result.isConfirmed) {
         //TODO: ajax request to delete
-        dispatch(setSnackbar(true, 'success', 'Sensor excluído com sucesso'));
+        toast.success(`Sensor ${sensor.name} excluído com sucesso`, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
       } else if (result.isDenied) {
         MySwal.close();
       }
