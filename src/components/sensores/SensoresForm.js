@@ -1,7 +1,6 @@
 import { MultipleTextInputs, TextInput } from 'components';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
