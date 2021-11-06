@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from './Itens.styles';
 
-
 export default function Itens() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
@@ -29,28 +28,28 @@ export default function Itens() {
 
   const deleteItem = (item) => {
     MySwal.fire({
-      title: `Confirma exclusão?`,
+      title: `Confirmar exclusão?`,
       html: `Deseja realmente excluir o item: <strong>${item.name}</strong>?`,
       showDenyButton: true,
-      confirmButtonText: 'Exluir',
+      confirmButtonText: 'Excluir',
       confirmButtonColor: '#dc3545',
       denyButtonText: `Não Excluir`,
       denyButtonColor: '#6c757d',
       icon: 'question',
-    }).then((result) => {      
+    }).then((result) => {
       if (result.isConfirmed) {
         //TODO: ajax request to delete
         dispatch(setSnackbar(true, 'success', 'Item excluído com sucesso'));
-      } else if (result.isDenied) {        
+      } else if (result.isDenied) {
         MySwal.close();
       }
-    });  
-  }
+    });
+  };
 
   const duplicateItem = (item) => {
     setIsSidePageOpen(true);
     console.log(item);
-  }
+  };
 
   const columns = [
     {
@@ -69,8 +68,16 @@ export default function Itens() {
       headerName: 'Opções',
       type: 'actions',
       getActions: (params) => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={() => deleteItem(params.row)}/>,
-        <GridActionsCellItem icon={<ContentCopyIcon />} label="Clone" onClick={() => duplicateItem(params.row)}/>,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => deleteItem(params.row)}
+        />,
+        <GridActionsCellItem
+          icon={<ContentCopyIcon />}
+          label="Clone"
+          onClick={() => duplicateItem(params.row)}
+        />,
       ],
     },
   ];
@@ -109,7 +116,6 @@ export default function Itens() {
       name: 'Tocador de Fita Cassete',
       lastMov: new Date(1979, 0, 1, 0, 5),
     },
-    
   ];
 
   return (

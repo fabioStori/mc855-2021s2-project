@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useStyles } from './Sensores.styles';
 
-
 export default function Sensores() {
   const styles = useStyles();
   const MySwal = withReactContent(Swal);
@@ -29,28 +28,28 @@ export default function Sensores() {
 
   const deleteSensor = (sensor) => {
     MySwal.fire({
-      title: `Confirma exclusão?`,
+      title: `Confirmar exclusão?`,
       html: `Deseja realmente excluir o sensor: <strong>${sensor.name}</strong>?`,
       showDenyButton: true,
-      confirmButtonText: 'Exluir',      
+      confirmButtonText: 'Excluir',
       confirmButtonColor: '#dc3545',
       denyButtonText: `Não Excluir`,
       denyButtonColor: '#6c757d',
       icon: 'question',
-    }).then((result) => {      
+    }).then((result) => {
       if (result.isConfirmed) {
         //TODO: ajax request to delete
         dispatch(setSnackbar(true, 'success', 'Sensor excluído com sucesso'));
       } else if (result.isDenied) {
         MySwal.close();
       }
-    });  
-  }
+    });
+  };
 
   const duplicateSensor = (item) => {
     setIsSidePageOpen(true);
     console.log(item);
-  }
+  };
 
   const columns = [
     {
@@ -78,8 +77,16 @@ export default function Sensores() {
       field: 'actions',
       type: 'actions',
       getActions: (params) => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={() => deleteSensor(params.row)}/>,
-        <GridActionsCellItem icon={<ContentCopyIcon />} label="Clone" onClick={() => duplicateSensor(params.row)}/>,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => deleteSensor(params.row)}
+        />,
+        <GridActionsCellItem
+          icon={<ContentCopyIcon />}
+          label="Clone"
+          onClick={() => duplicateSensor(params.row)}
+        />,
       ],
     },
   ];

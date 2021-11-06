@@ -1,5 +1,10 @@
 import { Box } from '@mui/material';
-import { CustomDatePicker, MultipleTextInputs, SimpleHeader, Tabela } from 'components';
+import {
+  CustomDatePicker,
+  MultipleTextInputs,
+  SimpleHeader,
+  Tabela,
+} from 'components';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './Historico.styles';

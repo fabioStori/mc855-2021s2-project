@@ -23,6 +23,15 @@ export const useStyles = makeStyles((theme) => ({
     color: 'var(--white)',
     fontSize: '.8rem',
   },
+  termosDeUso: {
+    textAlign: 'center',
+    color: 'var(--white)',
+    fontSize: '.8rem',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   logo: {
     '& path': {
       fill: 'var(--white)',

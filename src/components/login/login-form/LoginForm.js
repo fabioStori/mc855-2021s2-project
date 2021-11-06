@@ -1,13 +1,14 @@
 import { Checkbox, Grid } from '@mui/material';
+import { StyledModal, TermosDeUso } from 'components';
 import { AuthContext } from 'contexts';
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
 import GoogleLoginButton from '../google-login-button/GoogleLoginButton';
 import { useStyles } from './LoginForm.styles';
 
 export default function LoginForm() {
   const { hasPermissionError, userEmail } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const styles = useStyles();
 
   const handleChange = (event) => {
@@ -29,8 +30,14 @@ export default function LoginForm() {
                 onChange={handleChange}
               />
               <p className={styles.description}>
-                Eu li e aceito os <Link to="/termos-de-uso">termos de uso</Link>{' '}
-                termos de uso (obrigatório)
+                Eu li e aceito os{' '}
+                <b
+                  className={styles.termosDeUso}
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  termos de uso
+                </b>{' '}
+                (obrigatório)
               </p>
             </div>
             {hasPermissionError ? (
@@ -48,6 +55,12 @@ export default function LoginForm() {
           </div>
         </Grid>
       </Grid>
+      <StyledModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={() => setIsModalOpen(false)}
+      >
+        <TermosDeUso />
+      </StyledModal>
     </div>
   );
 }

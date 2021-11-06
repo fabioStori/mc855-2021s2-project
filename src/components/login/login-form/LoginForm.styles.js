@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core';
-import { FormControlLabel, styled, ToggleButtonGroup } from '@mui/material';
 
 export const useStyles = makeStyles((theme) => ({
   background: {
@@ -21,6 +20,12 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: '32px',
   },
+  termosDeUso: {
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   description: {
     color: 'var(--dark-gray)',
     fontWeight: 400,
@@ -35,10 +40,4 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-}));
-
-export const StyledFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
-  color: 'var(--dark-gray)',
-  fontSize: '14px',
-  fontFamily: 'Poppins',
 }));

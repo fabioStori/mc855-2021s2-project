@@ -1,7 +1,6 @@
-import { CircularProgress } from '@mui/material';
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
-import { useStyles } from './auth-context.styles';
+import { StyledCircularProgress, useStyles } from './auth-context.styles';
 
 const AuthContext = createContext({
   user: null,
@@ -98,8 +97,9 @@ export const AuthContextProvider = (props) => {
     onFailure: onLoginFailure,
     clientId,
     cookiePolicy: 'single_host_origin',
-    isSignedIn: true,
+    prompt: 'select_account',
     accessType: 'offline',
+    isSignedIn: true,
   });
 
   const { signOut } = useGoogleLogout({
@@ -137,7 +137,10 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider value={context}>
       {isLoading ? (
         <div className={styles.container}>
-          <CircularProgress size={75} className={styles.circularProgress} />
+          <StyledCircularProgress
+            size={75}
+            className={styles.circularProgress}
+          />
         </div>
       ) : (
         props.children
