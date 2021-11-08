@@ -21,4 +21,9 @@ code {
   --secondary-blue: #0075b4;
   --black: #000000;
   --red: #e60000;
+  --toastify-font-family: Poppins;
+}
+
+.Toastify__toast {
+  font-size: 14px !important;
 }

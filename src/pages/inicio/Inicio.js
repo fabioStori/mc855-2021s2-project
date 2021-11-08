@@ -1,7 +1,9 @@
 import { SimpleHeader } from 'components';
-import styles from './Inicio.module.css';
+import { useStyles } from './Inicio.styles';
 
 export default function Inicio(props) {
+  const styles = useStyles();
+
   return (
     <div className={styles.pageContainer}>
       <SimpleHeader title="Página Inicial" />

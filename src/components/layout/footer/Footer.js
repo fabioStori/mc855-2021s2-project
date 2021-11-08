@@ -1,15 +1,23 @@
-import { Link } from 'react-router-dom';
+import { StyledModal, TermosDeUso } from 'components';
+import { useState } from 'react';
 import { useStyles } from './Footer.styles';
 
 export default function Footer() {
   const styles = useStyles();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={styles.container}>
       <p className={styles.text}>Inventio - 2021</p>
-      <Link to="/termos-de-uso" className={styles.text}>
+      <p className={styles.termosDeUso} onClick={() => setIsModalOpen(true)}>
         Termos de Uso
-      </Link>
+      </p>
+      <StyledModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={() => setIsModalOpen(false)}
+      >
+        <TermosDeUso />
+      </StyledModal>
     </div>
   );
 }

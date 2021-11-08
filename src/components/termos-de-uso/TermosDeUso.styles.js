@@ -1,12 +1,6 @@
 import { makeStyles } from '@material-ui/core';
-import { Container, styled } from '@mui/material';
 
 export const useStyles = makeStyles((theme) => ({
-  pageContainer: {
-    height: 'calc(100vh - 64.5px)',
-    display: 'flex',
-    alignItems: 'center',
-  },
   content: {
     overflowY: 'auto',
     padding: '0 10px 0 0',
@@ -24,15 +18,10 @@ export const useStyles = makeStyles((theme) => ({
   text: {
     margin: '0',
   },
-}));
-
-export const StyledContainer = styled(Container)(({ theme }) => ({
-  height: 'fit-content',
-  maxHeight: '70vh',
-  backgroundColor: 'var(--white)',
-  borderRadius: '16px',
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'column',
-  padding: '48px',
+  title: {
+    color: 'var(--primary-blue)',
+    fontWeight: 500,
+    fontSize: '24px',
+    marginTop: '0',
+  },
 }));
