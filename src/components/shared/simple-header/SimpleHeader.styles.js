@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   wrapper: {
-    width: 'auto',
+    width: '100%',
     height: 'fit-content',
     minHeight: '40px',
     padding: '18px 18px 0 18px',

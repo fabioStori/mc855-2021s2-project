@@ -5,7 +5,6 @@ export const useStyles = makeStyles((theme) => ({
     height: '100%',
     display: 'flex',
   },
-
   pageWrapper: {
     height: '100%',
     width: '100%',

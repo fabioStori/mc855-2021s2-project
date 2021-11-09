@@ -1,5 +1,4 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { ContentCopy, Delete } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
 import { useState } from 'react';
@@ -77,14 +76,15 @@ export default function Sensores() {
     {
       field: 'actions',
       type: 'actions',
+      headerName: 'Opções',
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Delete />}
           label="Delete"
           onClick={() => deleteSensor(params.row)}
         />,
         <GridActionsCellItem
-          icon={<ContentCopyIcon />}
+          icon={<ContentCopy />}
           label="Clone"
           onClick={() => duplicateSensor(params.row)}
         />,

@@ -8,6 +8,7 @@ export default function TextInput({
   placeholder,
   isRequired = true,
   helperText = '',
+  style = {},
 }) {
   const styles = useStyles();
 
@@ -24,6 +25,7 @@ export default function TextInput({
             fullWidth
             label={label}
             value={value}
+            style={style}
             onChange={onChange}
             placeholder={placeholder}
             error={!!error}
@@ -32,7 +34,6 @@ export default function TextInput({
               shrink: true,
             }}
           />
-          {/* <pre>{JSON.stringify(error)}</pre> */}
         </div>
       )}
     />

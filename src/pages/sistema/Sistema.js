@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { PrivateRoute, SideMenu } from 'components';
-import { Historico, Inicio, Itens, Sensores } from 'pages';
+import { Historico, Inicio, Itens, Sensores, Usuarios } from 'pages';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styles from './Sistema.module.css';
 
@@ -20,6 +20,7 @@ export default function Sistema() {
             exact={true}
             component={Historico}
           />
+          <PrivateRoute path={`/usuarios`} exact={true} component={Usuarios} />
           <Route path={`*`}>
             <Redirect to="/" />
           </Route>
