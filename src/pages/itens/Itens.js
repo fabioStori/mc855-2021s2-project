@@ -94,14 +94,26 @@ export default function Itens() {
       name: 'Ultramicrótomo Ultracut UCT',
       lastMov: new Date(1979, 0, 1, 0, 5),
     },
-    { id: 3, name: 'Implantador de Íons', lastMov: new Date(1979, 0, 1, 0, 5) },
-    { id: 4, name: 'Network Analyzer', lastMov: new Date(1979, 0, 1, 0, 5) },
+    {
+      id: 3,
+      name: 'Implantador de Íons',
+      lastMov: new Date(1979, 0, 1, 0, 5),
+    },
+    {
+      id: 4,
+      name: 'Network Analyzer',
+      lastMov: new Date(1979, 0, 1, 0, 5),
+    },
     {
       id: 5,
       name: 'Analisador de espectro óptico',
       lastMov: new Date(1979, 0, 1, 0, 5),
     },
-    { id: 6, name: 'Bioanalyzer', lastMov: new Date(1979, 0, 1, 0, 5) },
+    {
+      id: 6,
+      name: 'Bioanalyzer',
+      lastMov: new Date(1979, 0, 1, 0, 5),
+    },
     {
       id: 7,
       name: 'Sequenciador DNA SANGER',

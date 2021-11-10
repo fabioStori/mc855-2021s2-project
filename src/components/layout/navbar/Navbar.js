@@ -17,8 +17,8 @@ export default function Navbar() {
     history.push('/');
   };
 
-  const signInHandle = () => {
-    authContext.signIn();
+  const goToUsuarios = () => {
+    history.push('/usuarios');
   };
 
   async function signOutHandle() {
@@ -44,7 +44,7 @@ export default function Navbar() {
             <Button className={styles.button} onClick={signOutHandle}>
               Logout
             </Button>
-            <IconButton size="large" color="inherit">
+            <IconButton size="large" color="inherit" onClick={goToUsuarios}>
               <AccountCircle className={styles.accountCircle} />
             </IconButton>
           </>
