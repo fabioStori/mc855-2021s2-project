@@ -10,6 +10,7 @@ import { useStyles } from './Itens.styles';
 
 export default function Itens() {
   const styles = useStyles();
+  const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -59,32 +60,6 @@ export default function Itens() {
     setIsSidePageOpen(false);
   };
 
-  const deleteItemRequest = (item) => {
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item.item_id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          toast.success(`Item ${item.name} excluído com sucesso`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          getRowsRequest(contentHeaderFieldValue);
-        } else {
-          throw new Error(`Erro ao excluir o item ${item.name}`);
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: toast.POSITION.BOTTOM_LEFT,
-          autoClose: 4000,
-        });
-      });
-  };
-
   const getRowsRequest = (query) => {
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
       method: 'POST',
@@ -94,6 +69,7 @@ export default function Itens() {
       body: JSON.stringify({
         query: query.length ? query.join('|') : '.*',
       }),
+      signal: abortController.signal,
     })
       .then((response) => {
         if (response.ok) {
@@ -112,6 +88,34 @@ export default function Itens() {
           };
         });
         setRows(rows);
+      })
+      .catch((error) => {
+        if (error.message !== 'The user aborted a request.') {
+          toast.error(error.message, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+        }
+      });
+  };
+
+  const deleteItemRequest = (item) => {
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item.item_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          toast.success(`Item ${item.name} excluído com sucesso`, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+          getRowsRequest(contentHeaderFieldValue);
+        } else {
+          throw new Error(`Erro ao excluir o item ${item.name}`);
+        }
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -172,6 +176,9 @@ export default function Itens() {
 
   useEffect(() => {
     getRowsRequest(contentHeaderFieldValue);
+    return () => {
+      abortController.abort();
+    };
   }, [contentHeaderFieldValue]);
 
   return (

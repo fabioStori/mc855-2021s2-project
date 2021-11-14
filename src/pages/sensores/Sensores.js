@@ -9,6 +9,7 @@ import { useStyles } from './Sensores.styles';
 
 export default function Sensores() {
   const styles = useStyles();
+  const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -62,6 +63,46 @@ export default function Sensores() {
     setIsSidePageOpen(false);
   };
 
+  const getRowsRequest = (query) => {
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/sensor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: query.length ? query.join('|') : '.*',
+      }),
+      signal: abortController.signal,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Erro ao carregar os sensores.');
+        }
+      })
+      .then((data) => {
+        const rows = data.map((row) => {
+          return {
+            id: row.sensor_id,
+            name: row.name,
+            local: row.local,
+            sensor_id: row.sensor_id,
+            last_activ: new Date(1979, 0, 1, 0, 5),
+          };
+        });
+        setRows(rows);
+      })
+      .catch((error) => {
+        if (error.message !== 'The user aborted a request.') {
+          toast.error(error.message, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+        }
+      });
+  };
+
   const deleteSensorRequest = (sensor) => {
     fetch(
       `https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor.sensor_id}`,
@@ -82,43 +123,6 @@ export default function Sensores() {
         } else {
           throw new Error(`Erro ao excluir o sensor ${sensor.name}`);
         }
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: toast.POSITION.BOTTOM_LEFT,
-          autoClose: 4000,
-        });
-      });
-  };
-
-  const getRowsRequest = (query) => {
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/sensor', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: query.length ? query.join('|') : '.*',
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Erro ao carregar os sensores.');
-        }
-      })
-      .then((data) => {
-        const rows = data.map((row) => {
-          return {
-            id: row.sensor_id,
-            name: row.name,
-            local: row.local,
-            sensor_id: row.sensor_id,
-            last_activ: new Date(1979, 0, 1, 0, 5),
-          };
-        });
-        setRows(rows);
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -181,6 +185,9 @@ export default function Sensores() {
 
   useEffect(() => {
     getRowsRequest(contentHeaderFieldValue);
+    return () => {
+      abortController.abort();
+    };
   }, [contentHeaderFieldValue]);
 
   return (
