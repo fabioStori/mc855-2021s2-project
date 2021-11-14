@@ -14,69 +14,58 @@ import {
   TextInputsFields,
 } from './ItensFormFields';
 
-export default function ItensForm({ closeSidePage }) {
-  const methods = useForm({ defaultValues: itensEmptyValues });
+export default function ItensForm({
+  closeSidePage,
+  updateRows = (query) => {},
+  preSelectedFields = {},
+}) {
+  const methods = useForm({
+    defaultValues: preSelectedFields ? preSelectedFields : itensEmptyValues,
+  });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
 
-  const requestUrl = 'https://httpstat.us/200';
   let responseCode;
+  let shouldCloseAfterSubmit = true;
 
-  const postRequest = (url, data) => {
-    return fetch(url, {
+  async function onSubmit(data) {
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
       method: 'POST',
       body: JSON.stringify(data),
-      // headers: {
-      //   'Content-Type': 'application/json'
-      // }
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
-        responseCode = response.status;
-        return response.ok;
+        // TODO: Use response to populate rows
+        if (response.ok) {
+          responseCode = response.status;
+          toast.success('Item cadastrado com sucesso', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+          if (shouldCloseAfterSubmit) {
+            closeSidePage();
+          } else {
+            reset(itensEmptyValues);
+          }
+          updateRows(['.*']);
+        } else {
+          responseCode = response.status;
+          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+        }
       })
-      .catch((response) => {
-        responseCode = response;
-        return false;
+      .catch((error) => {
+        responseCode = error;
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
       });
-  };
-
-  async function onSubmitAndClose(data) {
-    console.log('onSubmitAndClose formData', data);
-
-    if (await postRequest(requestUrl, data)) {
-      toast.success('Item cadastrado com sucesso', {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-      closeSidePage();
-    } else {
-      toast.error(`Erro ao cadastrar o item. Erro: ${responseCode}`, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-    }
-  }
-
-  async function onSubmitAndReset(data) {
-    console.log('onSubmitAndReset formData', data);
-
-    if (await postRequest(requestUrl, data)) {
-      toast.success('Item cadastrado com sucesso', {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-      reset();
-    } else {
-      toast.error(`Erro ao cadastrar o item. Erro: ${responseCode}`, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-    }
   }
 
   const onClearAll = () => {
-    console.log('onClearAll');
-    reset();
+    reset(itensEmptyValues);
   };
 
   return (
@@ -104,6 +93,10 @@ export default function ItensForm({ closeSidePage }) {
       {MultipleTextInputsFields.map((field) => (
         <MultipleTextInputs
           key={field.name}
+          isRequired={
+            field.name !== 'location_blacklist' &&
+            field.name !== 'location_whitelist'
+          }
           name={field.name}
           control={control}
           isForm={true}
@@ -114,15 +107,12 @@ export default function ItensForm({ closeSidePage }) {
         />
       ))}
 
-      <StyledPrimaryButton
-        onClick={handleSubmit(onSubmitAndClose)}
-        variant="contained"
-      >
+      <StyledPrimaryButton onClick={handleSubmit(onSubmit)} variant="contained">
         Cadastrar e fechar
       </StyledPrimaryButton>
 
       <StyledSecondaryButton
-        onClick={handleSubmit(onSubmitAndReset)}
+        onClick={handleSubmit(onSubmit)}
         variant="contained"
       >
         Cadastrar e limpar

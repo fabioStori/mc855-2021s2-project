@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
+import { toast } from 'react-toastify';
 import { StyledCircularProgress, useStyles } from './auth-context.styles';
 
 const AuthContext = createContext({
@@ -46,26 +47,36 @@ export const AuthContextProvider = (props) => {
       method: 'GET',
     })
       .then((response) => {
-        // TODO: Adjust this part during the task MC855-78
-        setUserEmail(profileObj.email);
-        return allowedUsers.includes(profileObj.email);
+        if (response.ok) {
+          // TODO: Adjust this part during the task MC855-78
+          setUserEmail(profileObj.email);
+          return allowedUsers.includes(profileObj.email);
+        } else {
+          throw new Error('Erro ao checar permissão do usuário');
+        }
       })
-      .catch(() => {
-        console.error('ERROR CHECKING USER PERMISSION');
+      .catch((error) => {
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
         return false;
       });
   };
 
-  async function onLoginSuccess(res) {
-    console.log('profileObj', res);
-    if (await checkUserHasPermission(res.profileObj)) {
-      console.log('Usuário tem permissão para acessar a aplicação');
-      setUser(res.profileObj);
+  async function onLoginSuccess(response) {
+    console.log('profileObj', response);
+    if (await checkUserHasPermission(response.profileObj)) {
+      setUser(response.profileObj);
       setShowLoginButton(false);
       setHasPermissionError(false);
     } else {
-      console.error(
-        `Usuário ${res.profileObj.email} não tem permissão para acessar a aplicação`
+      toast.error(
+        `Usuário ${response.profileObj.email} não tem permissão para acessar a aplicação. Por favor, utilize outra conta ou entre em contato com um administrador do sistema.`,
+        {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        }
       );
       if (isUserLoggedIn) {
         signOut();
@@ -74,8 +85,12 @@ export const AuthContextProvider = (props) => {
     }
   }
 
-  const onLoginFailure = (res) => {
-    console.log('Falha no login', res);
+  const onLoginFailure = (response) => {
+    toast.error('Falha no login. ' + response.details, {
+      position: toast.POSITION.BOTTOM_LEFT,
+      autoClose: 4000,
+    });
+    console.error('Falha no Login', response);
     setShowLoginButton(true);
   };
 
@@ -86,9 +101,8 @@ export const AuthContextProvider = (props) => {
     setHasPermissionError(false);
   };
 
-  const onSignOutFailure = () => {
-    alert('Você não foi deslogado com sucesso');
-
+  const onSignOutFailure = (response) => {
+    alert('Você não foi deslogado com sucesso. ' + response.details);
     setShowLoginButton(false);
   };
 
