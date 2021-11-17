@@ -2,15 +2,16 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, ItensForm, SidePage, Tabela } from 'components';
-import { useEffect, useState } from 'react';
+import { AuthContext } from 'contexts';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import { getItemMock } from './itens-mocks';
 import { useStyles } from './Itens.styles';
 
 export default function Itens() {
   const styles = useStyles();
   const abortController = new AbortController();
+  const { accessToken } = useContext(AuthContext);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -25,13 +26,17 @@ export default function Itens() {
       field: 'item_id',
       headerName: 'Número de Patrimônio',
       flex: 0.25,
-      type: 'dateTime',
     },
     {
       field: 'last_mov',
       headerName: 'Última movimentação',
       flex: 0.3,
       type: 'dateTime',
+    },
+    {
+      field: '_id',
+      headerName: 'Database ID',
+      hide: true,
     },
     {
       field: 'actions',
@@ -57,14 +62,31 @@ export default function Itens() {
   };
 
   const onClose = () => {
+    setPreSelectedFields([]);
     setIsSidePageOpen(false);
   };
 
+  const prepareData = (data) => {
+    delete data._id;
+    data.item_id = null;
+    data._id = null;
+    data.tags = null;
+    data.location_blacklist = data.location_blacklist
+      ? data.location_blacklist
+      : [];
+    data.location_whitelist = data.location_whitelist
+      ? data.location_whitelist
+      : [];
+    return data;
+  };
+
   const getRowsRequest = (query) => {
+    console.log('accessToken', accessToken);
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
       body: JSON.stringify({
         query: query.length ? query.join('|') : '.*',
@@ -82,6 +104,7 @@ export default function Itens() {
         const rows = data.map((row) => {
           return {
             id: row.item_id,
+            _id: row._id,
             item_id: row.item_id,
             name: row.name,
             last_mov: new Date(1979, 0, 1, 0, 5),
@@ -100,10 +123,12 @@ export default function Itens() {
   };
 
   const deleteItemRequest = (item) => {
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item.item_id}`, {
+    console.log('item', item);
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {
@@ -145,10 +170,11 @@ export default function Itens() {
   };
 
   const duplicateItem = (item) => {
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item.item_id}`, {
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {
@@ -159,10 +185,8 @@ export default function Itens() {
         }
       })
       .then((data) => {
-        // TODO: Replace with data after get request starts working
-        delete getItemMock.item_id;
-        delete getItemMock.tags;
-        setPreSelectedFields(getItemMock);
+        const preparedData = prepareData(data);
+        setPreSelectedFields(preparedData);
         setIsSidePageOpen(true);
       })
       .catch((error) => {

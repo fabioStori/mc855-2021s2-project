@@ -1,4 +1,6 @@
 import { MultipleTextInputs, TextInput } from 'components';
+import { AuthContext } from 'contexts';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -24,6 +26,7 @@ export default function SensoresForm({
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
+  const { accessToken } = useContext(AuthContext);
 
   let responseCode;
 
@@ -33,6 +36,7 @@ export default function SensoresForm({
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {
@@ -64,6 +68,7 @@ export default function SensoresForm({
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {

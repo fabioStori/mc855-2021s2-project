@@ -1,7 +1,8 @@
 import { Delete } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Tabela, TextInput } from 'components';
-import { useState } from 'react';
+import { AuthContext } from 'contexts';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -12,6 +13,7 @@ export default function Usuarios(props) {
   const methods = useForm({ defaultValues: { user: '' } });
   const { handleSubmit, reset, control } = methods;
   const [isLoading, setIsLoading] = useState(false);
+  const { accessToken } = useContext(AuthContext);
 
   async function onSubmit(data) {
     setIsLoading(true);
@@ -20,6 +22,7 @@ export default function Usuarios(props) {
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {

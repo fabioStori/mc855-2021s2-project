@@ -1,4 +1,6 @@
 import { MultipleTextInputs, TextInput } from 'components';
+import { AuthContext } from 'contexts';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -24,31 +26,61 @@ export default function ItensForm({
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
+  const { accessToken } = useContext(AuthContext);
 
   let responseCode;
-  let shouldCloseAfterSubmit = true;
 
-  async function onSubmit(data) {
+  async function onSubmitAndClose(data) {
+    console.log('data', data);
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
     })
       .then((response) => {
-        // TODO: Use response to populate rows
         if (response.ok) {
           responseCode = response.status;
           toast.success('Item cadastrado com sucesso', {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 4000,
           });
-          if (shouldCloseAfterSubmit) {
-            closeSidePage();
-          } else {
-            reset(itensEmptyValues);
-          }
+          closeSidePage();
+          updateRows(['.*']);
+        } else {
+          responseCode = response.status;
+          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+        }
+      })
+      .catch((error) => {
+        responseCode = error;
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+      });
+  }
+
+  async function onSubmitAndReset(data) {
+    console.log('data', data);
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          responseCode = response.status;
+          toast.success('Item cadastrado com sucesso', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+          reset(itensEmptyValues);
           updateRows(['.*']);
         } else {
           responseCode = response.status;
@@ -88,6 +120,7 @@ export default function ItensForm({
           control={control}
           label={field.label}
           placeholder={field.placeholder}
+          helperText={field.helperText}
         />
       ))}
       {MultipleTextInputsFields.map((field) => (
@@ -107,12 +140,15 @@ export default function ItensForm({
         />
       ))}
 
-      <StyledPrimaryButton onClick={handleSubmit(onSubmit)} variant="contained">
+      <StyledPrimaryButton
+        onClick={handleSubmit(onSubmitAndClose)}
+        variant="contained"
+      >
         Cadastrar e fechar
       </StyledPrimaryButton>
 
       <StyledSecondaryButton
-        onClick={handleSubmit(onSubmit)}
+        onClick={handleSubmit(onSubmitAndReset)}
         variant="contained"
       >
         Cadastrar e limpar

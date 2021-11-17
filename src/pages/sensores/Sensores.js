@@ -1,7 +1,8 @@
 import { ContentCopy, Delete } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
-import { useEffect, useState } from 'react';
+import { AuthContext } from 'contexts';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { getSensorMock } from './sensores-mock';
@@ -10,6 +11,7 @@ import { useStyles } from './Sensores.styles';
 export default function Sensores() {
   const styles = useStyles();
   const abortController = new AbortController();
+  const { accessToken } = useContext(AuthContext);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -37,6 +39,11 @@ export default function Sensores() {
       type: 'dateTime',
     },
     {
+      field: '_id',
+      headerName: 'Database ID',
+      hide: true,
+    },
+    {
       field: 'actions',
       type: 'actions',
       headerName: 'Opções',
@@ -60,6 +67,7 @@ export default function Sensores() {
   };
 
   const onClose = () => {
+    setPreSelectedFields([]);
     setIsSidePageOpen(false);
   };
 
@@ -68,6 +76,7 @@ export default function Sensores() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
       },
       body: JSON.stringify({
         query: query.length ? query.join('|') : '.*',
@@ -85,6 +94,7 @@ export default function Sensores() {
         const rows = data.map((row) => {
           return {
             id: row.sensor_id,
+            _id: row._id,
             name: row.name,
             local: row.local,
             sensor_id: row.sensor_id,
@@ -104,15 +114,13 @@ export default function Sensores() {
   };
 
   const deleteSensorRequest = (sensor) => {
-    fetch(
-      `https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor.sensor_id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
       .then((response) => {
         if (response.ok) {
           toast.success(`Sensor ${sensor.name} excluído com sucesso`, {
@@ -152,15 +160,13 @@ export default function Sensores() {
   };
 
   const duplicateSensor = (sensor) => {
-    fetch(
-      `https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor.sensor_id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -169,10 +175,10 @@ export default function Sensores() {
         }
       })
       .then((data) => {
-        // TODO: Replace with data after get request starts working
-        getSensorMock.item_id = null;
-        getSensorMock.tags = null;
-        setPreSelectedFields(getSensorMock);
+        delete data._id;
+        data.sensor_id = null;
+        data.tag = null;
+        setPreSelectedFields(data);
         setIsSidePageOpen(true);
       })
       .catch((error) => {
