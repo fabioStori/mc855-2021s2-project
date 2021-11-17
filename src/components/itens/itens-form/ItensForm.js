@@ -1,4 +1,6 @@
 import { MultipleTextInputs, TextInput } from 'components';
+import { AuthContext } from 'contexts';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -14,69 +16,88 @@ import {
   TextInputsFields,
 } from './ItensFormFields';
 
-export default function ItensForm({ closeSidePage }) {
-  const methods = useForm({ defaultValues: itensEmptyValues });
+export default function ItensForm({
+  closeSidePage,
+  updateRows = (query) => {},
+  preSelectedFields = {},
+}) {
+  const methods = useForm({
+    defaultValues: preSelectedFields ? preSelectedFields : itensEmptyValues,
+  });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
+  const { accessToken } = useContext(AuthContext);
 
-  const requestUrl = 'https://httpstat.us/200';
   let responseCode;
 
-  const postRequest = (url, data) => {
-    return fetch(url, {
+  async function onSubmitAndClose(data) {
+    console.log('data', data);
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
       method: 'POST',
       body: JSON.stringify(data),
-      // headers: {
-      //   'Content-Type': 'application/json'
-      // }
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
     })
       .then((response) => {
-        responseCode = response.status;
-        return response.ok;
+        if (response.ok) {
+          responseCode = response.status;
+          toast.success('Item cadastrado com sucesso', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+          closeSidePage();
+          updateRows(['.*']);
+        } else {
+          responseCode = response.status;
+          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+        }
       })
-      .catch((response) => {
-        responseCode = response;
-        return false;
+      .catch((error) => {
+        responseCode = error;
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
       });
-  };
-
-  async function onSubmitAndClose(data) {
-    console.log('onSubmitAndClose formData', data);
-
-    if (await postRequest(requestUrl, data)) {
-      toast.success('Item cadastrado com sucesso', {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-      closeSidePage();
-    } else {
-      toast.error(`Erro ao cadastrar o item. Erro: ${responseCode}`, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-    }
   }
 
   async function onSubmitAndReset(data) {
-    console.log('onSubmitAndReset formData', data);
-
-    if (await postRequest(requestUrl, data)) {
-      toast.success('Item cadastrado com sucesso', {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
+    console.log('data', data);
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          responseCode = response.status;
+          toast.success('Item cadastrado com sucesso', {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+          reset(itensEmptyValues);
+          updateRows(['.*']);
+        } else {
+          responseCode = response.status;
+          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+        }
+      })
+      .catch((error) => {
+        responseCode = error;
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
       });
-      reset();
-    } else {
-      toast.error(`Erro ao cadastrar o item. Erro: ${responseCode}`, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-    }
   }
 
   const onClearAll = () => {
-    console.log('onClearAll');
-    reset();
+    reset(itensEmptyValues);
   };
 
   return (
@@ -99,11 +120,16 @@ export default function ItensForm({ closeSidePage }) {
           control={control}
           label={field.label}
           placeholder={field.placeholder}
+          helperText={field.helperText}
         />
       ))}
       {MultipleTextInputsFields.map((field) => (
         <MultipleTextInputs
           key={field.name}
+          isRequired={
+            field.name !== 'location_blacklist' &&
+            field.name !== 'location_whitelist'
+          }
           name={field.name}
           control={control}
           isForm={true}

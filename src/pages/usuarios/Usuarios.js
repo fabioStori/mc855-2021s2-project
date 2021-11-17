@@ -1,11 +1,11 @@
 import { Delete } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Tabela, TextInput } from 'components';
-import { useState } from 'react';
+import { AuthContext } from 'contexts';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { StyledLoadingButton, useStyles } from './Usuarios.styles';
 
 export default function Usuarios(props) {
@@ -13,53 +13,41 @@ export default function Usuarios(props) {
   const methods = useForm({ defaultValues: { user: '' } });
   const { handleSubmit, reset, control } = methods;
   const [isLoading, setIsLoading] = useState(false);
-  const MySwal = withReactContent(Swal);
-  const requestUrl = 'https://httpstat.us/200';
-  let responseCode;
-
-  const postRequest = (url, data) => {
-    return fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      // headers: {
-      //   'Content-Type': 'application/json'
-      // }
-    })
-      .then((response) => {
-        responseCode = response.status;
-        return response.ok;
-      })
-      .catch((response) => {
-        responseCode = response;
-        return false;
-      });
-  };
+  const { accessToken } = useContext(AuthContext);
 
   async function onSubmit(data) {
-    console.log('onSubmit formData', data);
     setIsLoading(true);
-
-    if (await postRequest(requestUrl, data)) {
-      reset();
-      setIsLoading(false);
-      toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
-        position: toast.POSITION.BOTTOM_LEFT,
-        autoClose: 4000,
-      });
-    } else {
-      setIsLoading(false);
-      toast.error(
-        `Erro ao cadastrar o usuário "${data.user}". Erro: ${responseCode}`,
-        {
+    fetch('https://httpstat.us/200', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          reset();
+          setIsLoading(false);
+          toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+        } else {
+          throw new Error(`Erro ao cadastrar o usuário "${data.user}".`);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
-        }
-      );
-    }
+        });
+      });
   }
 
   const deleteUser = (user) => {
-    MySwal.fire({
+    Swal.fire({
       title: `Confirmar exclusão?`,
       html: `Deseja realmente excluir o usuário: <strong>${user.email}</strong>?`,
       showDenyButton: true,
@@ -76,7 +64,7 @@ export default function Usuarios(props) {
           autoClose: 4000,
         });
       } else if (result.isDenied) {
-        MySwal.close();
+        Swal.close();
       }
     });
   };

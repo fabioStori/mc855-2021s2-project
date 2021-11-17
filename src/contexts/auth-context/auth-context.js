@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
+import { toast } from 'react-toastify';
 import { StyledCircularProgress, useStyles } from './auth-context.styles';
 
 const AuthContext = createContext({
@@ -11,6 +12,7 @@ const AuthContext = createContext({
   hasPermissionError: false,
   showloginButton: true,
   userEmail: '',
+  accessToken: '',
   onLoginSuccess: () => {},
   onLoginFailure: () => {},
   onSignOutSuccess: () => {},
@@ -22,6 +24,9 @@ const AuthContext = createContext({
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
 // TODO: Remove next line during the task MC855-78
+// 401 para usuario fora da lista
+// 403 para usuario que tenta acessar algo que n tem acesso
+// 498 para usuario com token vencido
 const allowedUsers = [
   'f196631@dac.unicamp.br',
   'f171036@dac.unicamp.br',
@@ -37,45 +42,77 @@ export const AuthContextProvider = (props) => {
   const [route, setRoute] = useState(null);
   const [user, setUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
+  const [accessToken, setAccessToken] = useState('');
   const [hasPermissionError, setHasPermissionError] = useState(false);
   const styles = useStyles();
   let isUserLoggedIn = !!user;
 
-  const checkUserHasPermission = (profileObj) => {
-    return fetch(`'https://httpstat.us/200'`, {
-      method: 'GET',
+  async function onLoginSuccess(userData) {
+    console.log('profileObj', userData);
+    fetch('https://api.invent-io.ic.unicamp.br/api/v1/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: userData.profileObj.email,
+        access_token: userData.tokenObj.access_token,
+        id_token: userData.tokenId,
+      }),
     })
       .then((response) => {
-        // TODO: Adjust this part during the task MC855-78
-        setUserEmail(profileObj.email);
-        return allowedUsers.includes(profileObj.email);
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(
+            `Usuário ${userData.profileObj.email} não tem permissão para acessar a aplicação. Por favor, utilize outra conta ou entre em contato com um administrador do sistema.`
+          );
+        }
       })
-      .catch(() => {
-        console.error('ERROR CHECKING USER PERMISSION');
-        return false;
+      .then((data) => {
+        console.log('data', data);
+        setAccessToken(data.access_token);
+        setUserEmail(userData.email);
+        setUser(userData.profileObj);
+        setShowLoginButton(false);
+        setHasPermissionError(false);
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        if (isUserLoggedIn) {
+          signOut();
+        }
+        setHasPermissionError(true);
       });
-  };
 
-  async function onLoginSuccess(res) {
-    console.log('profileObj', res);
-    if (await checkUserHasPermission(res.profileObj)) {
-      console.log('Usuário tem permissão para acessar a aplicação');
-      setUser(res.profileObj);
-      setShowLoginButton(false);
-      setHasPermissionError(false);
-    } else {
-      console.error(
-        `Usuário ${res.profileObj.email} não tem permissão para acessar a aplicação`
-      );
-      if (isUserLoggedIn) {
-        signOut();
-      }
-      setHasPermissionError(true);
-    }
+    // if (await checkUserHasPermission(response.profileObj)) {
+    //   setUser(response.profileObj);
+    //   setShowLoginButton(false);
+    //   setHasPermissionError(false);
+    // } else {
+    //   toast.error(
+    //     `Usuário ${response.profileObj.email} não tem permissão para acessar a aplicação. Por favor, utilize outra conta ou entre em contato com um administrador do sistema.`,
+    //     {
+    //       position: toast.POSITION.BOTTOM_LEFT,
+    //       autoClose: 4000,
+    //     }
+    //   );
+    //   if (isUserLoggedIn) {
+    //     signOut();
+    //   }
+    //   setHasPermissionError(true);
+    // }
   }
 
-  const onLoginFailure = (res) => {
-    console.log('Falha no login', res);
+  const onLoginFailure = (response) => {
+    toast.error('Falha no login. ' + response.details, {
+      position: toast.POSITION.BOTTOM_LEFT,
+      autoClose: 4000,
+    });
+    console.error('Falha no Login', response);
     setShowLoginButton(true);
   };
 
@@ -86,9 +123,8 @@ export const AuthContextProvider = (props) => {
     setHasPermissionError(false);
   };
 
-  const onSignOutFailure = () => {
-    alert('Você não foi deslogado com sucesso');
-
+  const onSignOutFailure = (response) => {
+    alert('Você não foi deslogado com sucesso. ' + response.details);
     setShowLoginButton(false);
   };
 
@@ -125,6 +161,7 @@ export const AuthContextProvider = (props) => {
     hasPermissionError,
     showloginButton,
     userEmail,
+    accessToken,
     onLoginSuccess,
     onLoginFailure,
     onSignOutSuccess,
