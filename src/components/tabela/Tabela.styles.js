@@ -3,9 +3,9 @@ import { styled } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 export const useStyles = makeStyles((theme) => ({
-  pageWrapper: {
+  tableWrapper: {
     alignItems: 'center',
-    height: 'calc(100% - 112px)',
+    height: '100%',
     backgroundColor: 'var(--white)',
     padding: '18px',
   },

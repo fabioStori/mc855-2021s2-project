@@ -1,6 +1,6 @@
-import { MultipleTextInputs, TextInput } from 'components';
+import { TextInput, SelectInput } from 'components';
 import { AuthContext } from 'contexts';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -9,52 +9,51 @@ import {
   StyledPrimaryButton,
   StyledSecondaryButton,
   useStyles,
-} from './ItensForm.styles';
+} from './UsuariosForm.styles';
 import {
-  itensEmptyValues,
-  MultipleTextInputsFields,
+  SelectInputsFields,
+  usuariosEmptyValues,
   TextInputsFields,
-} from './ItensFormFields';
+} from './UsuariosFields';
 
-export default function ItensForm({
-  closeSidePage,
-  updateRows = (query) => {},
-  preSelectedFields = {},
-}) {
+export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
   const methods = useForm({
-    defaultValues: preSelectedFields ? preSelectedFields : itensEmptyValues,
+    defaultValues: usuariosEmptyValues,
   });
-  const { handleSubmit, reset, control } = methods;
+  const { handleSubmit, reset, register, control } = methods;
   const styles = useStyles();
   const { accessToken } = useContext(AuthContext);
-
-  let responseCode;
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmitAndClose(data) {
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
+    data.creation_date = Date.now();
+    setIsLoading(true);
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `bearer ${accessToken}`,
       },
+      body: JSON.stringify(data),
     })
       .then((response) => {
         if (response.ok) {
-          responseCode = response.status;
-          toast.success('Item cadastrado com sucesso', {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          closeSidePage();
-          updateRows(['.*']);
+          return response.json();
         } else {
-          responseCode = response.status;
-          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+          throw new Error(`Erro ao cadastrar o usuário "${data.name}".`);
         }
       })
+      .then((data) => {
+        closeSidePage();
+        setIsLoading(false);
+        toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        updateRows();
+      })
       .catch((error) => {
-        responseCode = error;
+        setIsLoading(false);
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
@@ -63,30 +62,34 @@ export default function ItensForm({
   }
 
   async function onSubmitAndReset(data) {
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
+    data.creation_date = Date.now();
+    setIsLoading(true);
+    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `bearer ${accessToken}`,
       },
+      body: JSON.stringify(data),
     })
       .then((response) => {
         if (response.ok) {
-          responseCode = response.status;
-          toast.success('Item cadastrado com sucesso', {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          reset(itensEmptyValues);
-          updateRows(['.*']);
+          return response.json();
         } else {
-          responseCode = response.status;
-          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
+          throw new Error(`Erro ao cadastrar o usuário "${data.name}".`);
         }
       })
+      .then((data) => {
+        reset(usuariosEmptyValues);
+        setIsLoading(false);
+        toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        updateRows();
+      })
       .catch((error) => {
-        responseCode = error;
+        setIsLoading(false);
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
@@ -95,13 +98,13 @@ export default function ItensForm({
   }
 
   const onClearAll = () => {
-    reset(itensEmptyValues);
+    reset(usuariosEmptyValues);
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.headWrapper}>
-        <p className={styles.title}>Cadastrar Novo Item</p>
+        <p className={styles.title}>Cadastrar Novo Usuário</p>
 
         <StyledClearAllButton
           onClick={onClearAll}
@@ -118,25 +121,30 @@ export default function ItensForm({
           control={control}
           label={field.label}
           placeholder={field.placeholder}
-          helperText={field.helperText}
         />
       ))}
-      {MultipleTextInputsFields.map((field) => (
-        <MultipleTextInputs
+      {SelectInputsFields.map((field) => (
+        <SelectInput
           key={field.name}
-          isRequired={
-            field.name !== 'location_blacklist' &&
-            field.name !== 'location_whitelist'
-          }
           name={field.name}
           control={control}
-          isForm={true}
           label={field.label}
-          placeholder={field.placeholder}
+          values={field.values}
           helperText={field.helperText}
-          style={{ margin: '20px 0', width: '100%' }}
+          defaultValue={field.values[0].value}
         />
       ))}
+      <span className={styles.helper}>
+        <p>Níveis de permissão:</p>
+        <ul>
+          <li>Consulta: Consulta de itens, sensores e histórico.</li>
+          <li>
+            Manutenção: Consulta, cadastro e deleção de itens e sensores.
+            Consulta de histórico.
+          </li>
+          <li>Administração: Acesso à todas as funcionalidades do sistema.</li>
+        </ul>
+      </span>
 
       <StyledPrimaryButton
         onClick={handleSubmit(onSubmitAndClose)}

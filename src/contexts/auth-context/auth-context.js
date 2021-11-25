@@ -27,14 +27,6 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 // 401 para usuario fora da lista
 // 403 para usuario que tenta acessar algo que n tem acesso
 // 498 para usuario com token vencido
-const allowedUsers = [
-  'f196631@dac.unicamp.br',
-  'f171036@dac.unicamp.br',
-  'g172111@dac.unicamp.br',
-  'a193325@dac.unicamp.br',
-  'jufborin@unicamp.br',
-  'soraia@ic.unicamp.br',
-];
 
 export const AuthContextProvider = (props) => {
   const [showloginButton, setShowLoginButton] = useState(true);
@@ -70,7 +62,6 @@ export const AuthContextProvider = (props) => {
         }
       })
       .then((data) => {
-        console.log('data', data);
         setAccessToken(data.access_token);
         setUserEmail(userData.email);
         setUser(userData.profileObj);
@@ -87,24 +78,6 @@ export const AuthContextProvider = (props) => {
         }
         setHasPermissionError(true);
       });
-
-    // if (await checkUserHasPermission(response.profileObj)) {
-    //   setUser(response.profileObj);
-    //   setShowLoginButton(false);
-    //   setHasPermissionError(false);
-    // } else {
-    //   toast.error(
-    //     `Usuário ${response.profileObj.email} não tem permissão para acessar a aplicação. Por favor, utilize outra conta ou entre em contato com um administrador do sistema.`,
-    //     {
-    //       position: toast.POSITION.BOTTOM_LEFT,
-    //       autoClose: 4000,
-    //     }
-    //   );
-    //   if (isUserLoggedIn) {
-    //     signOut();
-    //   }
-    //   setHasPermissionError(true);
-    // }
   }
 
   const onLoginFailure = (response) => {

@@ -11,15 +11,18 @@ import CustomDatePicker from './shared/custom-date-picker.js/CustomDatePicker';
 import StyledModal from './shared/modal/Modal';
 import MultipleTextInputs from './shared/multiple-text-inputs/MultipleTextInputs';
 import PrivateRoute from './shared/private-route/PrivateRoute';
+import SelectInput from './shared/select-input/SelectInput';
 import SidePage from './shared/side-page/SidePage';
 import SimpleHeader from './shared/simple-header/SimpleHeader';
 import TextInput from './shared/text-input/TextInput';
 import Tabela from './tabela/Tabela';
 import TermosDeUso from './termos-de-uso/TermosDeUso';
+import UsuariosForm from './usuarios/UsuariosForm';
 
 export {
   ItensForm,
   SensoresForm,
+  UsuariosForm,
   Footer,
   Navbar,
   GoogleLoginButton,
@@ -32,6 +35,7 @@ export {
   MultipleTextInputs,
   SidePage,
   TextInput,
+  SelectInput,
   CustomDatePicker,
   Tabela,
   StyledModal,

@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
+  textAlign: 'left',
   '& .MuiInputLabel-root.Mui-focused': {
     color: 'var(--primary-blue) !important',
   },

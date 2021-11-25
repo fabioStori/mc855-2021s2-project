@@ -13,8 +13,14 @@ export const useStyles = makeStyles((theme) => ({
     padding: '10px',
     textTransform: 'unset',
   },
-  accountCircle: {
+  icons: {
     color: 'var(--primary-blue)',
+  },
+  text: {
+    color: 'var(--primary-blue)',
+    paddingRight: '8px',
+    fontSize: '0.875rem',
+    textTransform: 'uppercase',
   },
   space: {
     flexGrow: 1,
