@@ -81,7 +81,6 @@ export default function Itens() {
   };
 
   const getRowsRequest = (query) => {
-    console.log('accessToken', accessToken);
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
       method: 'POST',
       headers: {
@@ -123,7 +122,6 @@ export default function Itens() {
   };
 
   const deleteItemRequest = (item) => {
-    console.log('item', item);
     fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`, {
       method: 'DELETE',
       headers: {
@@ -195,7 +193,6 @@ export default function Itens() {
           autoClose: 4000,
         });
       });
-    console.log(item);
   };
 
   useEffect(() => {

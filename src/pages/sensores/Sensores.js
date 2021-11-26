@@ -5,7 +5,6 @@ import { AuthContext } from 'contexts';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import { getSensorMock } from './sensores-mock';
 import { useStyles } from './Sensores.styles';
 
 export default function Sensores() {

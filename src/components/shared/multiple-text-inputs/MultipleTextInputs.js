@@ -49,9 +49,7 @@ export default function MultipleTextInputs({
                 placeholder={placeholder}
                 error={!!error}
                 helperText={
-                  error
-                    ? 'Campo obrigatório. Pressione ENTER para salvar um valor.'
-                    : helperText
+                  error ? 'Campo obrigatório. ' + helperText : helperText
                 }
                 fullWidth
                 InputProps={{

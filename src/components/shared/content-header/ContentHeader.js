@@ -7,9 +7,10 @@ export default function ContentHeader({
   title,
   onButtonClick,
   buttonLabel,
-  searchLabel,
-  searchPlaceholder,
-  setFieldValue,
+  searchLabel = '',
+  searchPlaceholder = '',
+  setFieldValue = null,
+  hasInput = true,
 }) {
   const methods = useForm({ defaultValues: [] });
   const styles = useStyles();
@@ -21,16 +22,18 @@ export default function ContentHeader({
       <StyledButton variant="contained" onClick={onButtonClick}>
         {buttonLabel}
       </StyledButton>
-      <Box width={{ xs: '100%', md: '40%' }}>
-        <MultipleTextInputs
-          name="search"
-          control={control}
-          hasSearchIcon={true}
-          setFieldValue={setFieldValue}
-          label={searchLabel}
-          placeholder={searchPlaceholder}
-        />
-      </Box>
+      {hasInput && (
+        <Box width={{ xs: '100%', md: '40%' }}>
+          <MultipleTextInputs
+            name="search"
+            control={control}
+            hasSearchIcon={true}
+            setFieldValue={setFieldValue}
+            label={searchLabel}
+            placeholder={searchPlaceholder}
+          />
+        </Box>
+      )}
     </div>
   );
 }

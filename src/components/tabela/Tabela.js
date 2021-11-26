@@ -4,7 +4,7 @@ import { StyledDataGrid, useStyles } from './Tabela.styles';
 export default function Tabela(props) {
   const styles = useStyles();
   return (
-    <div className={styles.pageWrapper}>
+    <div className={styles.tableWrapper}>
       <StyledDataGrid
         components={{
           Toolbar: GridToolbar,
