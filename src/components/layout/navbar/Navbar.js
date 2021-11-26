@@ -1,6 +1,5 @@
 import { AppBar, Button, Toolbar } from '@material-ui/core';
-import { AccountCircle, Logout } from '@mui/icons-material';
-import { ButtonBase, IconButton } from '@mui/material';
+import { Logout } from '@mui/icons-material';
 import { Logo } from 'assets';
 import { AuthContext } from 'contexts';
 import { useContext } from 'react';
@@ -40,17 +39,12 @@ export default function Navbar() {
         </Button>
         <div className={styles.space}></div>
         {authContext.isUserLoggedIn ? (
-          <>
-            <Button onClick={goToUsuarios}>
-              <p className={styles.text}>Usuários</p>
-              <AccountCircle className={styles.icons} />
-            </Button>
-            <Button onClick={signOutHandle}>
-              <p className={styles.text}>Sair</p>
-              <Logout className={styles.icons} />
-            </Button>
-          </>
+          <Button onClick={signOutHandle}>
+            <p className={styles.text}>Sair</p>
+            <Logout className={styles.icons} />
+          </Button>
         ) : null}
+        ]
       </Toolbar>
     </AppBar>
   );

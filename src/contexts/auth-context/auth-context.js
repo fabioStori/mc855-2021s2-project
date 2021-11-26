@@ -81,7 +81,8 @@ export const AuthContextProvider = (props) => {
   }
 
   const onLoginFailure = (response) => {
-    toast.error('Falha no login. ' + response.details, {
+    const errorMessage = response.details ? response.details : response.error;
+    toast.error('Falha no login. ' + errorMessage, {
       position: toast.POSITION.BOTTOM_LEFT,
       autoClose: 4000,
     });
