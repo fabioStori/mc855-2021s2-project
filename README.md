@@ -1,62 +1,38 @@
-# MC855 2021s2 Project
+# Universidade Estadual de Campinas
+# Instituto da Computação
 
-Adivair Santana Ramos - 193325\
-Fabio Stori - 196631\
-Felipe Duarte Domingues - 171036\
-Gabriel Francioli Alves - 172111
+## Disciplina: MC855-2s2021
 
-## Available Scripts
+#### Professor e Assistente
 
-In the project directory, you can run:
+| Nome                     | Email                   |
+| ------------------------ | ------------------------|
+| Professora Juliana Borin | jufborin@unicamp.br     |
+| Assistente Paulo Kussler | paulo.kussler@gmail.com |
 
-### `yarn`
 
-Install all the dependencies needed to run the project.\
+#### Equipe
 
-### `yarn start`
+| Nome                         | RA               | Email                  | ID Git                |
+| ---------------------------- | ---------------- | ---------------------- |---------------------- |
+| Adivair Santana Ramos        | 193325           | a193325@dac.unicamp.br | A193325               |
+| Fabio Stori                  | 196631           | f196631@dac.unicamp.br | fabioStori            |
+| Felipe Duarte Domingues      | 171036           | f171036@dac.unicamp.br | exofelipe             |
+| Gabriel Francioli Alves      | 172111           | g172111@dac.unicamp.br | gfrancioli            |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Descrição do projeto:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn prettier`
+#### Prints das telas com descrição das funcionalidades. 
 
-Runs prettier, applying code patterns in .js and .css in all the files under the src folder.
 
-### `yarn test`
+#### Tecnologias, ferramentas, dependências, versões. etc. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+#### Ambientes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Como colocar no ar, como testar, etc
+#### Como acessar, quem pode se cadastrar(regras de acessos), etc.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn fakeci`
-
-Runs the prettier script, the tests and, if all the tests succeed, tries to build the project.\
-Useful to run before pushing to the master branch to see if everything is ok.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Repositório da Professora Juliana no Gitlab do IC ou Zip com o projeto e todos artefatos para futuras evoluções dos projetos por outros alunos das turmas seguintes
