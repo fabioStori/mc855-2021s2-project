@@ -171,7 +171,12 @@ export default function Usuarios(props) {
           onButtonClick={onCadastrarNovoClick}
           hasInput={false}
         />
-        <Tabela columns={columns} rows={rows} />
+        <Tabela 
+          columns={columns} 
+          rows={rows}
+          updateRows={getUsers}
+          loading={isLoading}
+        />
       </div>
       {isSidePageOpen ? (
         <SidePage onClose={onClose}>
