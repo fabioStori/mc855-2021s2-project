@@ -1,5 +1,11 @@
 import { AppBar } from '@material-ui/core';
-import { Devices, History, Home, Sensors } from '@mui/icons-material';
+import {
+  AccountCircle,
+  Devices,
+  History,
+  Home,
+  Sensors,
+} from '@mui/icons-material';
 import { ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -51,6 +57,10 @@ export default function SideMenu() {
         <ToggleButton value="/historico" aria-label="historico">
           <History className={styles.icon} />
           Histórico
+        </ToggleButton>
+        <ToggleButton value="/usuarios" aria-label="usuarios">
+          <AccountCircle className={styles.icon} />
+          Usuários
         </ToggleButton>
       </StyledToggleButtonGroup>
     </AppBar>

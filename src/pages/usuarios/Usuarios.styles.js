@@ -6,14 +6,19 @@ export const useStyles = makeStyles((theme) => ({
   pageContainer: {
     height: '100%',
     display: 'flex',
+  },
+  pageWrapper: {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
     flexDirection: 'column',
   },
   header: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gridTemplateRows: 'auto 1fr auto',
+    gridTemplateRows: 'auto 1fr auto auto',
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 1fr auto',
+      gridTemplateColumns: 'auto 1fr auto auto',
       gridTemplateRows: 'auto',
       justifyItems: 'unset',
       columnGap: '18px',
@@ -31,15 +36,5 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       margin: '20px 0',
     },
-  },
-}));
-
-export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  backgroundColor: 'var(--primary-blue)',
-  width: 'fit-content',
-  margin: '10px 0',
-  height: 'fit-content',
-  [theme.breakpoints.up('md')]: {
-    margin: '20px 0',
   },
 }));

@@ -36,18 +36,18 @@ export const MultipleTextInputsFields = [
     name: 'tags',
     label: 'ID do dispositivo RFID',
     placeholder: 'IDs dos dispositivos RFID do item',
-    helperText: 'Pressione enter para salvar um valor',
+    helperText: 'Pressione ENTER para salvar um valor.',
   },
   {
     name: 'location_blacklist',
     label: 'Alertar ao sair da sala:',
     placeholder: 'Nome da sala',
-    helperText: 'Pressione enter para salvar um valor',
+    helperText: 'Pressione ENTER para salvar um valor.',
   },
   {
     name: 'location_whitelist',
     label: 'Não alertar ao sair da sala:',
     placeholder: 'Nome da sala',
-    helperText: 'Pressione enter para salvar um valor',
+    helperText: 'Pressione ENTER para salvar um valor.',
   },
 ];

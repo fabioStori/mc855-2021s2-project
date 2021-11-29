@@ -223,7 +223,7 @@ export default function Historico(props) {
             setFieldValue={setSearchSensorValue}
             label="Pesquisar por Sensor"
             placeholder="Pesquisar por Sensor"
-            helperText="Pressione enter para salvar um valor"
+            helperText="Pressione ENTER para salvar um valor."
           />
         </Box>
         <Box width={{ xs: '100%', md: '40%' }}>
@@ -234,7 +234,7 @@ export default function Historico(props) {
             setFieldValue={setSearchItemValue}
             label="Pesquisar por Item"
             placeholder="Pesquisar por Item"
-            helperText="Pressione enter para salvar um valor"
+            helperText="Pressione ENTER para salvar um valor."
           />
         </Box>
       </Box>

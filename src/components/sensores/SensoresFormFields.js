@@ -34,6 +34,6 @@ export const MultipleTextInputsFields = [
     name: 'types',
     label: 'Tipo do sensor',
     placeholder: 'Exemplo: "Bluetooth", "RFID", etc',
-    helperText: 'Pressione enter para salvar um valor',
+    helperText: 'Pressione ENTER para salvar um valor.',
   },
 ];

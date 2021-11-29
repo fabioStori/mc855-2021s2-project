@@ -1,14 +1,17 @@
+import { MenuItem } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { StyledTextField, useStyles } from './TextInput.styles';
+import { StyledTextField, useStyles } from './SelectInput.styles';
 
-export default function TextInput({
+export default function SelectInput({
   name,
-  control,
   label,
-  placeholder,
-  isRequired = true,
-  helperText = '',
+  values,
+  control,
+  defaultValue,
   style = {},
+  placeholder = '',
+  helperText = '',
+  isRequired = true,
 }) {
   const styles = useStyles();
 
@@ -23,17 +26,25 @@ export default function TextInput({
             size="small"
             variant="outlined"
             fullWidth
-            label={label}
+            select
             value={value}
+            label={label}
+            defaultValue={defaultValue}
             style={style}
             onChange={onChange}
             placeholder={placeholder}
             error={!!error}
-            helperText={error ? 'Campo obrigatório. ' + helperText : helperText}
+            helperText={error ? 'Campo obrigatório. ' : helperText}
             InputLabelProps={{
               shrink: true,
             }}
-          />
+          >
+            {values.map((field) => (
+              <MenuItem key={field.name} value={field.value}>
+                {field.name}
+              </MenuItem>
+            ))}
+          </StyledTextField>
         </div>
       )}
     />

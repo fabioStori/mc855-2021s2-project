@@ -43,7 +43,7 @@ export default function Tabela(props) {
   }
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={styles.tableWrapper}>
       <StyledDataGrid
         components={{
           Toolbar: CustomToolBar,
