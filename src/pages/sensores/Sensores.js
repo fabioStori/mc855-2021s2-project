@@ -5,7 +5,6 @@ import { AuthContext } from 'contexts';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import { getSensorMock } from './sensores-mock';
 import { useStyles } from './Sensores.styles';
 
 export default function Sensores() {
@@ -13,6 +12,7 @@ export default function Sensores() {
   const abortController = new AbortController();
   const { accessToken } = useContext(AuthContext);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
   const [rows, setRows] = useState([]);
@@ -71,7 +71,16 @@ export default function Sensores() {
     setIsSidePageOpen(false);
   };
 
+  const showDataGridLoading = () => {
+    setIsLoadingData(true);
+  };
+
+  const hideDataGridLoading = () => {
+    setIsLoadingData(false);
+  };
+
   const getRowsRequest = (query) => {
+    showDataGridLoading();
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/sensor', {
       method: 'POST',
       headers: {
@@ -84,6 +93,7 @@ export default function Sensores() {
       signal: abortController.signal,
     })
       .then((response) => {
+        hideDataGridLoading();
         if (response.ok) {
           return response.json();
         } else {
@@ -104,6 +114,7 @@ export default function Sensores() {
         setRows(rows);
       })
       .catch((error) => {
+        hideDataGridLoading();
         if (error.message !== 'The user aborted a request.') {
           toast.error(error.message, {
             position: toast.POSITION.BOTTOM_LEFT,
@@ -160,6 +171,7 @@ export default function Sensores() {
   };
 
   const duplicateSensor = (sensor) => {
+    console.log(accessToken);
     fetch(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`, {
       method: 'GET',
       headers: {
@@ -207,7 +219,12 @@ export default function Sensores() {
           onButtonClick={onCadastrarNovoClick}
           setFieldValue={setContentHeaderFieldValue}
         />
-        <Tabela columns={columns} rows={rows} />
+        <Tabela
+          columns={columns}
+          rows={rows}
+          updateRows={getRowsRequest}
+          loading={isLoadingData}
+        />
       </div>
       {isSidePageOpen ? (
         <SidePage onClose={onClose}>
