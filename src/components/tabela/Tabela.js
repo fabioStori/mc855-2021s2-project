@@ -33,6 +33,7 @@ export default function Tabela(props) {
       <Stack direction="row" spacing={2}>
         <Button
           variant="text"
+          size="small"
           startIcon={<RefreshIcon />}
           onClick={() => updateRows(['.*'])}
         >
