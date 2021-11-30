@@ -13,6 +13,7 @@ export default function Itens() {
   const abortController = new AbortController();
   const { accessToken } = useContext(AuthContext);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
   const [rows, setRows] = useState([]);
@@ -28,7 +29,7 @@ export default function Itens() {
       flex: 0.25,
     },
     {
-      field: 'last_mov',
+      field: 'last_activity',
       headerName: 'Última movimentação',
       flex: 0.3,
       type: 'dateTime',
@@ -66,6 +67,14 @@ export default function Itens() {
     setIsSidePageOpen(false);
   };
 
+  const showDataGridLoading = () => {
+    setIsLoadingData(true);
+  };
+
+  const hideDataGridLoading = () => {
+    setIsLoadingData(false);
+  };
+
   const prepareData = (data) => {
     delete data._id;
     data.item_id = null;
@@ -81,6 +90,8 @@ export default function Itens() {
   };
 
   const getRowsRequest = (query) => {
+    console.log('accessToken', accessToken);
+    showDataGridLoading();
     fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
       method: 'POST',
       headers: {
@@ -93,6 +104,7 @@ export default function Itens() {
       signal: abortController.signal,
     })
       .then((response) => {
+        hideDataGridLoading();
         if (response.ok) {
           return response.json();
         } else {
@@ -106,12 +118,13 @@ export default function Itens() {
             _id: row._id,
             item_id: row.item_id,
             name: row.name,
-            last_mov: new Date(1979, 0, 1, 0, 5),
+            last_activity: row.last_activity ? row.last_activity : '-',
           };
         });
         setRows(rows);
       })
       .catch((error) => {
+        hideDataGridLoading();
         if (error.message !== 'The user aborted a request.') {
           toast.error(error.message, {
             position: toast.POSITION.BOTTOM_LEFT,
@@ -213,7 +226,12 @@ export default function Itens() {
           onButtonClick={onCadastrarNovoClick}
           setFieldValue={setContentHeaderFieldValue}
         />
-        <Tabela columns={columns} rows={rows} />
+        <Tabela
+          columns={columns}
+          rows={rows}
+          updateRows={getRowsRequest}
+          loading={isLoadingData}
+        />
       </div>
       {isSidePageOpen ? (
         <SidePage onClose={onClose}>

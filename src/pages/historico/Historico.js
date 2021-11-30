@@ -3,9 +3,10 @@ import {
   CustomDatePicker,
   MultipleTextInputs,
   SimpleHeader,
-  Tabela,
+  Tabela
 } from 'components';
-import { useEffect, useState } from 'react';
+import { AuthContext } from 'contexts';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStyles } from './Historico.styles';
 
@@ -18,12 +19,15 @@ export default function Historico(props) {
   const methods = useForm({ defaultValues: searchEmptyValues });
   const { control } = methods;
   const styles = useStyles();
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const [afterDateValue, setAfterDateValue] = useState(null);
   const [beforeDateValue, setBeforeDateValue] = useState(null);
   const [invalidDate, setInvalidDate] = useState(null);
   const [searchSensorValue, setSearchSensorValue] = useState(null);
   const [searchItemValue, setSearchItemValue] = useState(null);
   const [showRangeError, setShowRangeError] = useState(null);
+  // const [rows, setRows] = useState([]);
+  const { accessToken } = useContext(AuthContext);
 
   useEffect(() => {
     if (invalidDate === null) {
@@ -122,6 +126,62 @@ export default function Historico(props) {
     },
   ];
 
+  const showDataGridLoading = () => {
+    setIsLoadingData(true);
+  };
+
+  const hideDataGridLoading = () => {
+    setIsLoadingData(false);
+  };
+
+  const getRowsRequest = (query) => {
+    console.log('accessToken', accessToken);
+    showDataGridLoading();
+    fetch('https://httpbin.org/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        query: query.length ? query.join('|') : '.*',
+      }),
+      // signal: abortController.signal,
+    }).then(() => {
+      hideDataGridLoading();
+    });
+    // .then((response) => {
+    //   hideDataGridLoading();
+    //   if (response.ok) {
+    //     return response.json();
+    //   } else {
+    //     throw new Error('Erro ao carregar as movimentações.');
+    //   }
+    // })
+    // .then((data) => {
+    //   console.log('data', data);
+    //   const rows = data.map((row) => {
+    //     return {
+    //       id: row.item_id,
+    //       _id: row._id,
+    //       item_id: row.item_id,
+    //       name: row.name,
+    //       last_activity: row.last_activity ? row.last_activity : '-',
+    //     };
+    //   });
+    //   setRows(rows);
+    // })
+    // .catch((error) => {
+    //   hideDataGridLoading();
+    //   if (error.message !== 'The user aborted a request.') {
+    //     toast.error(error.message, {
+    //       position: toast.POSITION.BOTTOM_LEFT,
+    //       autoClose: 4000,
+    //     });
+    //   }
+    // });
+  };
+
   return (
     <div className={styles.pageContainer}>
       <SimpleHeader title="Histórico de movimentações" />
@@ -178,7 +238,12 @@ export default function Historico(props) {
           />
         </Box>
       </Box>
-      <Tabela columns={columns} rows={rows} />
+      <Tabela
+        columns={columns}
+        rows={rows}
+        updateRows={getRowsRequest}
+        loading={isLoadingData}
+      />
     </div>
   );
 }
