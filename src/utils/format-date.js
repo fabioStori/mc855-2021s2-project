@@ -11,7 +11,7 @@ export const formatDate = (date) => {
     formatNumber(tempDate.getMonth() + 1) +
     '/' +
     tempDate.getFullYear() +
-    ' - ' +
+    ', ' +
     formatNumber(tempDate.getHours()) +
     ':' +
     formatNumber(tempDate.getMinutes());

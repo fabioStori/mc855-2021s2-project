@@ -33,10 +33,7 @@ export default function SidePage(props) {
       PaperProps={{
         style: {
           width: drawerWidth,
-          backgroundColor: isExpanded
-            ? // ? 'var(--lighter-gray)'
-              'var(--white)'
-            : 'var(--primary-blue)',
+          backgroundColor: isExpanded ? 'var(--white)' : 'var(--primary-blue)',
         },
       }}
     >
