@@ -1,13 +1,14 @@
 import { Box } from '@mui/material';
+import axios from 'axios';
 import {
   CustomDatePicker,
   MultipleTextInputs,
   SimpleHeader,
-  Tabela
+  Tabela,
 } from 'components';
-import { AuthContext } from 'contexts';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { useStyles } from './Historico.styles';
 
 const searchEmptyValues = {
@@ -27,28 +28,7 @@ export default function Historico(props) {
   const [searchItemValue, setSearchItemValue] = useState(null);
   const [showRangeError, setShowRangeError] = useState(null);
   // const [rows, setRows] = useState([]);
-  const { accessToken } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (invalidDate === null) {
-      if (
-        afterDateValue &&
-        beforeDateValue &&
-        beforeDateValue <= afterDateValue
-      ) {
-        setShowRangeError(true);
-      } else {
-        // TODO: MAKE REQUEST TO UPDATE TABLE
-        setShowRangeError(false);
-      }
-    }
-  }, [
-    afterDateValue,
-    beforeDateValue,
-    searchSensorValue,
-    searchItemValue,
-    invalidDate,
-  ]);
+  const abortController = new AbortController();
 
   const columns = [
     {
@@ -135,52 +115,61 @@ export default function Historico(props) {
   };
 
   const getRowsRequest = (query) => {
-    console.log('accessToken', accessToken);
     showDataGridLoading();
-    fetch('https://httpbin.org/post', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
+    axios
+      .post('https://httpstat.us/200', {
         query: query.length ? query.join('|') : '.*',
-      }),
-      // signal: abortController.signal,
-    }).then(() => {
-      hideDataGridLoading();
-    });
-    // .then((response) => {
-    //   hideDataGridLoading();
-    //   if (response.ok) {
-    //     return response.json();
-    //   } else {
-    //     throw new Error('Erro ao carregar as movimentações.');
-    //   }
-    // })
-    // .then((data) => {
-    //   console.log('data', data);
-    //   const rows = data.map((row) => {
-    //     return {
-    //       id: row.item_id,
-    //       _id: row._id,
-    //       item_id: row.item_id,
-    //       name: row.name,
-    //       last_activity: row.last_activity ? row.last_activity : '-',
-    //     };
-    //   });
-    //   setRows(rows);
-    // })
-    // .catch((error) => {
-    //   hideDataGridLoading();
-    //   if (error.message !== 'The user aborted a request.') {
-    //     toast.error(error.message, {
-    //       position: toast.POSITION.BOTTOM_LEFT,
-    //       autoClose: 4000,
-    //     });
-    //   }
-    // });
+        signal: abortController.signal,
+      })
+      .then((response) => {
+        hideDataGridLoading();
+        // const rows = response.data.map((row) => {
+        //   return {
+        //     id: row.item_id,
+        //     _id: row._id,
+        //     item_id: row.item_id,
+        //     name: row.name,
+        //     last_activity: row.last_activity
+        //       ? formatDate(row.last_activity)
+        //       : '-',
+        //   };
+        // });
+        // setRows(rows);
+      })
+      .catch((error) => {
+        hideDataGridLoading();
+        if (error.message !== 'The user aborted a request.') {
+          toast.error('Erro ao consultar movimentações. ' + error.message, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            autoClose: 4000,
+          });
+        }
+      });
   };
+
+  useEffect(() => {
+    if (invalidDate === null) {
+      if (
+        afterDateValue &&
+        beforeDateValue &&
+        beforeDateValue <= afterDateValue
+      ) {
+        setShowRangeError(true);
+      } else {
+        // TODO: MAKE REQUEST TO UPDATE TABLE
+        setShowRangeError(false);
+      }
+    }
+    return () => {
+      abortController.abort();
+    };
+  }, [
+    afterDateValue,
+    beforeDateValue,
+    searchSensorValue,
+    searchItemValue,
+    invalidDate,
+  ]);
 
   return (
     <div className={styles.pageContainer}>

@@ -15,6 +15,7 @@ import {
   usuariosEmptyValues,
   TextInputsFields,
 } from './UsuariosFields';
+import axios from 'axios';
 
 export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
   const methods = useForm({
@@ -22,78 +23,51 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
   });
   const { handleSubmit, reset, register, control } = methods;
   const styles = useStyles();
-  const { accessToken } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmitAndClose(data) {
     data.creation_date = Date.now();
     setIsLoading(true);
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error(`Erro ao cadastrar o usuário "${data.name}".`);
-        }
-      })
-      .then((data) => {
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/user', data)
+      .then(() => {
+        updateRows();
         closeSidePage();
-        setIsLoading(false);
         toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
-        updateRows();
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsLoading(false);
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
+        setIsLoading(false);
       });
   }
 
   async function onSubmitAndReset(data) {
     data.creation_date = Date.now();
     setIsLoading(true);
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error(`Erro ao cadastrar o usuário "${data.name}".`);
-        }
-      })
-      .then((data) => {
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/user', data)
+      .then(() => {
+        updateRows();
         reset(usuariosEmptyValues);
-        setIsLoading(false);
         toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
-        updateRows();
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsLoading(false);
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
+        setIsLoading(false);
       });
   }
 

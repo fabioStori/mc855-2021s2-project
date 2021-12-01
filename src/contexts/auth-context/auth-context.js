@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createContext, useEffect, useState } from 'react';
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login';
 import { toast } from 'react-toastify';
@@ -23,11 +24,6 @@ const AuthContext = createContext({
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
-// TODO: Remove next line during the task MC855-78
-// 401 para usuario fora da lista
-// 403 para usuario que tenta acessar algo que n tem acesso
-// 498 para usuario com token vencido
-
 export const AuthContextProvider = (props) => {
   const [showloginButton, setShowLoginButton] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,29 +36,14 @@ export const AuthContextProvider = (props) => {
   let isUserLoggedIn = !!user;
 
   async function onLoginSuccess(userData) {
-    console.log('profileObj', userData);
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/login', {
         email: userData.profileObj.email,
         access_token: userData.tokenObj.access_token,
         id_token: userData.tokenId,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error(
-            `Usuário ${userData.profileObj.email} não tem permissão para acessar a aplicação. Por favor, utilize outra conta ou entre em contato com um administrador do sistema.`
-          );
-        }
       })
-      .then((data) => {
-        setAccessToken(data.access_token);
+      .then((response) => {
+        setAccessToken(response.data.access_token);
         setUserEmail(userData.email);
         setUser(userData.profileObj);
         setShowLoginButton(false);

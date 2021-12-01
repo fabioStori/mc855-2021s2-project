@@ -1,17 +1,18 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { GridActionsCellItem } from '@mui/x-data-grid';
+import axios from 'axios';
 import { ContentHeader, ItensForm, SidePage, Tabela } from 'components';
 import { AuthContext } from 'contexts';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { formatDate } from 'utils/format-date';
 import { useStyles } from './Itens.styles';
 
 export default function Itens() {
   const styles = useStyles();
   const abortController = new AbortController();
-  const { accessToken } = useContext(AuthContext);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
@@ -90,35 +91,23 @@ export default function Itens() {
   };
 
   const getRowsRequest = (query) => {
-    console.log('accessToken', accessToken);
     showDataGridLoading();
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
         query: query.length ? query.join('|') : '.*',
-      }),
-      signal: abortController.signal,
-    })
+        signal: abortController.signal,
+      })
       .then((response) => {
         hideDataGridLoading();
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Erro ao carregar os itens.');
-        }
-      })
-      .then((data) => {
-        const rows = data.map((row) => {
+        const rows = response.data.map((row) => {
           return {
             id: row.item_id,
             _id: row._id,
             item_id: row.item_id,
             name: row.name,
-            last_activity: row.last_activity ? row.last_activity : '-',
+            last_activity: row.last_activity
+              ? formatDate(row.last_activity)
+              : '-',
           };
         });
         setRows(rows);
@@ -126,7 +115,7 @@ export default function Itens() {
       .catch((error) => {
         hideDataGridLoading();
         if (error.message !== 'The user aborted a request.') {
-          toast.error(error.message, {
+          toast.error('Erro ao consultar itens. ' + error.message, {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 4000,
           });
@@ -135,23 +124,14 @@ export default function Itens() {
   };
 
   const deleteItemRequest = (item) => {
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          toast.success(`Item ${item.name} excluído com sucesso`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          getRowsRequest(contentHeaderFieldValue);
-        } else {
-          throw new Error(`Erro ao excluir o item ${item.name}`);
-        }
+    axios
+      .delete(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
+      .then(() => {
+        toast.success(`Item ${item.name} excluído com sucesso`, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        getRowsRequest(contentHeaderFieldValue);
       })
       .catch((error) => {
         toast.error(error.message, {
@@ -181,22 +161,10 @@ export default function Itens() {
   };
 
   const duplicateItem = (item) => {
-    fetch(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
+    axios
+      .get(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Erro ao buscar informações do item selecionado.');
-        }
-      })
-      .then((data) => {
-        const preparedData = prepareData(data);
+        const preparedData = prepareData(response.data);
         setPreSelectedFields(preparedData);
         setIsSidePageOpen(true);
       })

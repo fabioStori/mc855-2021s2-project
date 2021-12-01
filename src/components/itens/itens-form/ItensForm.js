@@ -1,6 +1,5 @@
+import axios from 'axios';
 import { MultipleTextInputs, TextInput } from 'components';
-import { AuthContext } from 'contexts';
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -26,35 +25,19 @@ export default function ItensForm({
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
-  const { accessToken } = useContext(AuthContext);
-
-  let responseCode;
 
   async function onSubmitAndClose(data) {
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          responseCode = response.status;
-          toast.success('Item cadastrado com sucesso', {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          closeSidePage();
-          updateRows(['.*']);
-        } else {
-          responseCode = response.status;
-          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
-        }
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/item', data)
+      .then(() => {
+        toast.success('Item cadastrado com sucesso', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        closeSidePage();
+        updateRows(['.*']);
       })
       .catch((error) => {
-        responseCode = error;
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
@@ -63,30 +46,17 @@ export default function ItensForm({
   }
 
   async function onSubmitAndReset(data) {
-    fetch('https://api.invent-io.ic.unicamp.br/api/v1/item', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          responseCode = response.status;
-          toast.success('Item cadastrado com sucesso', {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
-          });
-          reset(itensEmptyValues);
-          updateRows(['.*']);
-        } else {
-          responseCode = response.status;
-          throw new Error(`Erro ao cadastrar o item. Erro: ${responseCode}`);
-        }
+    axios
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/item', data)
+      .then(() => {
+        toast.success('Item cadastrado com sucesso', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        reset(itensEmptyValues);
+        updateRows(['.*']);
       })
       .catch((error) => {
-        responseCode = error;
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
