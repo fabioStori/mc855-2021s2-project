@@ -32,32 +32,31 @@ Tem como objetivo/responsabilidade lidar com toda as interações entre o sistem
 ### Google Login
  O login foi implementado utilizando a [API de login do Google](https://developers.google.com/identity/sign-in/web/sign-in), porém, somente usuários previamente cadastrados conseguem ter acesso ao sistema.
 
-#Prints das telas
+![image](https://user-images.githubusercontent.com/33457554/144328439-0728ead2-9db0-498a-b77b-a47dcef09e93.png)
 
 ### Cadastro e Gerenciamento de Usuários
 
 Além de cadastrar, é possível definir os níveis de acesso do usuário, os níveis disponíveis são: Consulta, Manutenção e Administração.
 
-#Prints das telas
+![image](https://user-images.githubusercontent.com/33457554/144328544-387abb4d-3a6b-469e-b903-d36078363bd3.png)
 
 ### Cadastro e Gerenciamento de Itens
 
 Gerenciamento dos itens que terão a movimentação monitorada.
 
-#Prints das telas 
+![image](https://user-images.githubusercontent.com/33457554/144328616-abbc8784-7ae3-4ce5-867e-d658d6d06cda.png)
 
 ### Cadastro e Gerenciamento de Sensores
 
 Gerenciamento dos sensores que serão posicionados em locais estratégicos para fazer a leitura das TAGS presentes nos itens.
 
-#Prints das telas
+![image](https://user-images.githubusercontent.com/33457554/144328661-14b58105-3755-41df-a8e5-d0c19df084c3.png)
 
 ### Históricos de Movimentações
 
 Visualização das movimentações dos itens. Contém filtros por intervalo de data, sensores e itens. Também é possível de exportar os dados filtrados como CSV.
 
-#Prints das telas
-
+![image](https://user-images.githubusercontent.com/33457554/144328759-84fa3a0c-b6e8-4daa-84c6-4cce42510654.png)
 
 ## Tecnologias
 
