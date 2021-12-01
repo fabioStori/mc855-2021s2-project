@@ -1,10 +1,8 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { ContentCopy, Delete, Edit } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import { ContentHeader, ItensForm, SidePage, Tabela } from 'components';
-import { AuthContext } from 'contexts';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
@@ -14,6 +12,7 @@ export default function Itens() {
   const styles = useStyles();
   const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [shouldUseEditMode, setShouldUseEditMode] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -44,16 +43,22 @@ export default function Itens() {
       field: 'actions',
       headerName: 'Opções',
       type: 'actions',
+      flex: 0.15,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Delete />}
           label="Delete"
           onClick={() => deleteItem(params.row)}
         />,
         <GridActionsCellItem
-          icon={<ContentCopyIcon />}
+          icon={<ContentCopy />}
           label="Clone"
           onClick={() => duplicateItem(params.row)}
+        />,
+        <GridActionsCellItem
+          icon={<Edit />}
+          label="Edit"
+          onClick={() => editItem(params.row)}
         />,
       ],
     },
@@ -64,6 +69,7 @@ export default function Itens() {
   };
 
   const onClose = () => {
+    setShouldUseEditMode(false);
     setPreSelectedFields([]);
     setIsSidePageOpen(false);
   };
@@ -176,6 +182,23 @@ export default function Itens() {
       });
   };
 
+  const editItem = (item) => {
+    axios
+      .get(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
+      .then((response) => {
+        // const preparedData = prepareData(response.data);
+        setShouldUseEditMode(true);
+        setPreSelectedFields(response.data);
+        setIsSidePageOpen(true);
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+      });
+  };
+
   useEffect(() => {
     getRowsRequest(contentHeaderFieldValue);
     return () => {
@@ -207,6 +230,7 @@ export default function Itens() {
             closeSidePage={onClose}
             updateRows={getRowsRequest}
             preSelectedFields={preSelectedFields}
+            editMode={shouldUseEditMode}
           />
         </SidePage>
       ) : null}

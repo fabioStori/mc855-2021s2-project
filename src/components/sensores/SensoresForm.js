@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { MultipleTextInputs, TextInput } from 'components';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -19,14 +20,17 @@ export default function SensoresForm({
   closeSidePage,
   updateRows = (query) => {},
   preSelectedFields = {},
+  editMode = false,
 }) {
   const methods = useForm({
     defaultValues: preSelectedFields ? preSelectedFields : sensoresEmptyValues,
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmitAndClose(data) {
+    setIsLoading(true);
     axios
       .post('https://api.invent-io.ic.unicamp.br/api/v1/sensor', data)
       .then(() => {
@@ -36,16 +40,19 @@ export default function SensoresForm({
         });
         closeSidePage();
         updateRows(['.*']);
+        setIsLoading(false);
       })
       .catch((error) => {
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
+        setIsLoading(false);
       });
   }
 
   async function onSubmitAndReset(data) {
+    setIsLoading(true);
     axios
       .post('https://api.invent-io.ic.unicamp.br/api/v1/sensor', data)
       .then(() => {
@@ -55,12 +62,41 @@ export default function SensoresForm({
         });
         reset(sensoresEmptyValues);
         updateRows(['.*']);
+        setIsLoading(false);
       })
       .catch((error) => {
         toast.error(error.message, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
+        setIsLoading(false);
+      });
+  }
+
+  async function onSubmitEditAndClose(data) {
+    setIsLoading(true);
+    const sensorId = data._id;
+    delete data._id;
+    axios
+      .put(
+        `https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensorId}`,
+        data
+      )
+      .then(() => {
+        toast.success('Item cadastrado com sucesso', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        closeSidePage();
+        updateRows(['.*']);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+        setIsLoading(false);
       });
   }
 
@@ -71,7 +107,9 @@ export default function SensoresForm({
   return (
     <div className={styles.wrapper}>
       <div className={styles.headWrapper}>
-        <p className={styles.title}>Cadastrar Novo Sensor</p>
+        <p className={styles.title}>
+          {editMode ? 'Editar Cadastro do Sensor' : 'Cadastrar Novo Sensor'}
+        </p>
 
         <StyledClearAllButton
           onClick={onClearAll}
@@ -103,20 +141,35 @@ export default function SensoresForm({
           style={{ margin: '20px 0', width: '100%' }}
         />
       ))}
+      {editMode ? (
+        <>
+          <StyledPrimaryButton
+            onClick={handleSubmit(onSubmitEditAndClose)}
+            loading={isLoading}
+            variant="contained"
+          >
+            Salvar alterações
+          </StyledPrimaryButton>
+        </>
+      ) : (
+        <>
+          <StyledPrimaryButton
+            onClick={handleSubmit(onSubmitAndClose)}
+            loading={isLoading}
+            variant="contained"
+          >
+            Cadastrar e fechar
+          </StyledPrimaryButton>
 
-      <StyledPrimaryButton
-        onClick={handleSubmit(onSubmitAndClose)}
-        variant="contained"
-      >
-        Cadastrar e fechar
-      </StyledPrimaryButton>
-
-      <StyledSecondaryButton
-        onClick={handleSubmit(onSubmitAndReset)}
-        variant="contained"
-      >
-        Cadastrar e limpar
-      </StyledSecondaryButton>
+          <StyledSecondaryButton
+            onClick={handleSubmit(onSubmitAndReset)}
+            loading={isLoading}
+            variant="contained"
+          >
+            Cadastrar e limpar
+          </StyledSecondaryButton>
+        </>
+      )}
     </div>
   );
 }
