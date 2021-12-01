@@ -191,7 +191,7 @@ export default function Historico(props) {
               onInvalidDate={setInvalidDate}
             />
             <CustomDatePicker
-              label="Antes de"
+              label="Até"
               dateValue={beforeDateValue}
               setDateValue={setBeforeDateValue}
               onInvalidDate={setInvalidDate}

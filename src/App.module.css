@@ -1,7 +1,0 @@
-.appBackground {
-  background-color: var(--light-gray);
-}
-
-.container {
-  height: calc(100vh - 64px);
-}

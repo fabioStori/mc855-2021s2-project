@@ -4,13 +4,14 @@ import { AuthContext } from 'contexts';
 import { Login, Sistema } from 'pages';
 import { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styles from './App.module.css';
+import { StyledAlert, useStyles } from './App.styles';
 
 export default function App() {
   const { isUserLoggedIn, accessToken, signOut } = useContext(AuthContext);
   const history = useHistory();
+  const styles = useStyles();
 
   // 401 para usuario fora da lista
   // 403 para usuario que tenta acessar algo que n tem acesso
@@ -49,6 +50,10 @@ export default function App() {
   return (
     <div className={styles.appBackground}>
       <Navbar />
+      <StyledAlert severity="warning">
+        Para melhor experiência, utilize uma janela com dimensões maiores que
+        1360x768
+      </StyledAlert>
       <ToastContainer />
       <Switch>
         <Route path="/login">

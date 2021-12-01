@@ -21,7 +21,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
   const methods = useForm({
     defaultValues: usuariosEmptyValues,
   });
-  const { handleSubmit, reset, register, control } = methods;
+  const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,7 +56,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
       .then(() => {
         updateRows();
         reset(usuariosEmptyValues);
-        toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
+        toast.success(`Usuário "${data.name}" cadastrado com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
@@ -122,6 +122,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
 
       <StyledPrimaryButton
         onClick={handleSubmit(onSubmitAndClose)}
+        loading={isLoading}
         variant="contained"
       >
         Cadastrar e fechar
@@ -129,6 +130,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
 
       <StyledSecondaryButton
         onClick={handleSubmit(onSubmitAndReset)}
+        loading={isLoading}
         variant="contained"
       >
         Cadastrar e limpar

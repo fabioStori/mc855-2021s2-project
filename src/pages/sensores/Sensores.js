@@ -1,4 +1,4 @@
-import { ContentCopy, Delete } from '@mui/icons-material';
+import { ContentCopy, Delete, Edit } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
@@ -12,6 +12,7 @@ export default function Sensores() {
   const styles = useStyles();
   const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
+  const [shouldUseEditMode, setShouldUseEditMode] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
@@ -42,6 +43,7 @@ export default function Sensores() {
       field: 'actions',
       type: 'actions',
       headerName: 'Opções',
+      flex: 0.15,
       getActions: (params) => [
         <GridActionsCellItem
           icon={<Delete />}
@@ -53,6 +55,11 @@ export default function Sensores() {
           label="Clone"
           onClick={() => duplicateSensor(params.row)}
         />,
+        <GridActionsCellItem
+          icon={<Edit />}
+          label="Edit"
+          onClick={() => editSensor(params.row)}
+        />,
       ],
     },
   ];
@@ -62,6 +69,7 @@ export default function Sensores() {
   };
 
   const onClose = () => {
+    setShouldUseEditMode(false);
     setPreSelectedFields([]);
     setIsSidePageOpen(false);
   };
@@ -160,6 +168,22 @@ export default function Sensores() {
       });
   };
 
+  const editSensor = (sensor) => {
+    axios
+      .get(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`)
+      .then((response) => {
+        setShouldUseEditMode(true);
+        setPreSelectedFields(response.data);
+        setIsSidePageOpen(true);
+      })
+      .catch((error) => {
+        toast.error(error.message, {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 4000,
+        });
+      });
+  };
+
   useEffect(() => {
     getRowsRequest(contentHeaderFieldValue);
     return () => {
@@ -191,6 +215,7 @@ export default function Sensores() {
             closeSidePage={onClose}
             updateRows={getRowsRequest}
             preSelectedFields={preSelectedFields}
+            editMode={shouldUseEditMode}
           />
         </SidePage>
       ) : null}

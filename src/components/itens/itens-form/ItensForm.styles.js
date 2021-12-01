@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import { ClearAll } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import { Button, styled } from '@mui/material';
 
 export const useStyles = makeStyles((theme) => ({
@@ -34,14 +35,14 @@ export const StyledClearAllButton = styled(Button)(({ theme }) => ({
   height: 'fit-content',
 }));
 
-export const StyledPrimaryButton = styled(Button)(({ theme }) => ({
+export const StyledPrimaryButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: 'var(--primary-blue)',
   width: 'fit-content',
   margin: '6px',
   height: 'fit-content',
 }));
 
-export const StyledSecondaryButton = styled(Button)(({ theme }) => ({
+export const StyledSecondaryButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: 'var(--secondary-blue)',
   width: 'fit-content',
   margin: '6px',
