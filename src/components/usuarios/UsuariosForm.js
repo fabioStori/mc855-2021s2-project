@@ -33,7 +33,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
       .then(() => {
         updateRows();
         closeSidePage();
-        toast.success(`Usuário "${data.user}" cadastrado com sucesso`, {
+        toast.success(`Usuário "${data.email}" cadastrado com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 4000,
         });
