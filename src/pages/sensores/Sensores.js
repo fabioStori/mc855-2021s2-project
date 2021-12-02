@@ -29,7 +29,7 @@ export default function Sensores() {
       flex: 0.2,
     },
     {
-      field: 'last_activ',
+      field: 'last_activity',
       headerName: 'Última ativação',
       flex: 0.35,
       type: 'dateTime',
@@ -90,6 +90,7 @@ export default function Sensores() {
         signal: abortController.signal,
       })
       .then((response) => {
+        console.log(response.data);
         hideDataGridLoading();
         const rows = response.data.map((row) => {
           return {
@@ -97,7 +98,9 @@ export default function Sensores() {
             _id: row._id,
             name: row.name,
             sensor_id: row.sensor_id,
-            last_activ: row.last_activ ? formatDate(row.last_activ) : '-',
+            last_activity: row.last_activity
+              ? formatDate(row.last_activity[0].event_timestamp * 1000)
+              : '-',
           };
         });
         setRows(rows);
