@@ -13,7 +13,7 @@ export const TextInputsFields = [
     placeholder: 'Nome',
   },
   {
-    name: 'sensor_id',
+    name: 'tag',
     label: 'Número de Patrimônio',
     placeholder: 'Número de Patrimônio',
   },
@@ -23,7 +23,7 @@ export const TextInputsFields = [
     placeholder: 'Descrição',
   },
   {
-    name: 'tag',
+    name: 'sensor_id',
     label: 'Código de identificação do sensor',
     placeholder: 'Código de identificação do sensor',
   },
