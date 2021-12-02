@@ -42,6 +42,5 @@ code {
 }
 
 .alert:hover {
-  background-color: rgb(250, 207, 207) !important;
-  color: rgb(95, 33, 32);
+  background-color: rgb(253, 237, 237) !important;
 }
