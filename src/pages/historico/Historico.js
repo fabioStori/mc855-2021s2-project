@@ -1,12 +1,12 @@
 import { Devices, Sensors } from '@mui/icons-material';
-import { Box, Switch, FormControlLabel  } from '@mui/material';
+import { Box, Switch, FormControlLabel } from '@mui/material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import {
   CustomDatePicker,
   MultipleTextInputs,
   SimpleHeader,
-  Tabela
+  Tabela,
 } from 'components';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -102,9 +102,9 @@ export default function Historico(props) {
     });
   };
 
-  const toggleOnlyAlertSwitch = (event) => {          
-    setOnlyAlerts(event.target.checked);   
-  }
+  const toggleOnlyAlertSwitch = (event) => {
+    setOnlyAlerts(event.target.checked);
+  };
 
   const showDataGridLoading = () => {
     setIsLoadingData(true);
@@ -120,7 +120,7 @@ export default function Historico(props) {
     const end_timestamp =
       new Date(searchParams.beforeDateValue).getTime() / 1000;
     const item_query = searchParams.searchItemValue;
-    const sensor_query = searchParams.searchSensorValue;    
+    const sensor_query = searchParams.searchSensorValue;
     showDataGridLoading();
     axios
       .post('https://api.invent-io.ic.unicamp.br/api/v1/search/event', {
@@ -129,11 +129,11 @@ export default function Historico(props) {
         start_timestamp_range: start_timestamp ? start_timestamp : null,
         end_timestamp_range: end_timestamp ? end_timestamp : null,
         signal: abortController.signal,
-        alert_only: onlyAlerts
+        alert_only: onlyAlerts,
       })
       .then((response) => {
-        hideDataGridLoading(); 
-        const rows = response.data.map((row) => {           
+        hideDataGridLoading();
+        const rows = response.data.map((row) => {
           return {
             id: row._id,
             item: row.item,
@@ -186,7 +186,7 @@ export default function Historico(props) {
     searchSensorValue,
     searchItemValue,
     invalidDate,
-    onlyAlerts
+    onlyAlerts,
   ]);
 
   return (
@@ -221,17 +221,18 @@ export default function Historico(props) {
               anterior à data em "Antes de"
             </p>
           )}
-          <div>            
-            <FormControlLabel control={
-              <Switch 
-                checked={onlyAlerts}
-                color='error' 
-                onChange={(event) => toggleOnlyAlertSwitch(event)}
+          <div>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={onlyAlerts}
+                  color="error"
+                  onChange={(event) => toggleOnlyAlertSwitch(event)}
                 />
-              } 
-              label="Somente alertas" />            
+              }
+              label="Somente alertas"
+            />
           </div>
-          
         </div>
         <Box width={{ xs: '100%', md: '40%' }}>
           <MultipleTextInputs

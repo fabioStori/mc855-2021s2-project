@@ -72,7 +72,6 @@ export const AuthContextProvider = (props) => {
   };
 
   const onSignOutSuccess = () => {
-    alert('Você foi deslogado com sucesso');
     setUser(null);
     setShowLoginButton(true);
     setHasPermissionError(false);

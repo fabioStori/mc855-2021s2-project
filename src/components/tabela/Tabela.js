@@ -7,7 +7,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  ptBR
+  ptBR,
 } from '@mui/x-data-grid';
 import { StyledDataGrid, useStyles } from './Tabela.styles';
 
