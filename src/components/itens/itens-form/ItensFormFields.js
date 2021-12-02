@@ -40,14 +40,14 @@ export const MultipleTextInputsFields = [
   },
   {
     name: 'location_blacklist',
-    label: 'Alertar ao sair da sala:',
-    placeholder: 'Nome da sala',
+    label: 'Alertar ao passar pelo sensor:',
+    placeholder: 'Nome do sensor',
     helperText: 'Pressione ENTER para salvar um valor.',
   },
   {
     name: 'location_whitelist',
-    label: 'Não alertar ao sair da sala:',
-    placeholder: 'Nome da sala',
+    label: 'Não alertar ao passar pelo sensor:',
+    placeholder: 'Nome do sensor',
     helperText: 'Pressione ENTER para salvar um valor.',
   },
 ];

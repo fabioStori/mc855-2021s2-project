@@ -106,13 +106,14 @@ export default function Itens() {
       .then((response) => {
         hideDataGridLoading();
         const rows = response.data.map((row) => {
+          console.log(row.last_activity);
           return {
             id: row.item_id,
             _id: row._id,
             item_id: row.item_id,
             name: row.name,
             last_activity: row.last_activity
-              ? formatDate(row.last_activity)
+              ? formatDate(row.last_activity[0].event_timestamp * 1000)
               : '-',
           };
         });

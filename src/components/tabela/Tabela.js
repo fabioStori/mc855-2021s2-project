@@ -14,6 +14,7 @@ import { StyledDataGrid, useStyles } from './Tabela.styles';
 export default function Tabela(props) {
   const styles = useStyles();
   const updateRows = props.updateRows;
+  const searchParams = props.searchParams;
   const isLoadingData = props.loading;
 
   function CustomToolBar() {
@@ -35,7 +36,7 @@ export default function Tabela(props) {
           variant="text"
           size="small"
           startIcon={<RefreshIcon />}
-          onClick={() => updateRows(['.*'])}
+          onClick={() => updateRows(searchParams ? searchParams : ['.*'])}
         >
           Atualizar
         </Button>
@@ -56,6 +57,9 @@ export default function Tabela(props) {
         loading={isLoadingData}
         disableSelectionOnClick
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        getRowClassName={(params) => {
+          return params.row.alert ? 'alert' : '';
+        }}
       />
     </div>
   );

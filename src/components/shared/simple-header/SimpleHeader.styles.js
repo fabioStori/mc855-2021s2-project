@@ -2,8 +2,9 @@ import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   wrapper: {
-    width: '100%',
+    display: 'flex',
     height: 'fit-content',
+    width: 'auto',
     minHeight: '40px',
     padding: '18px 18px 0 18px',
     backgroundColor: 'var(--white)',

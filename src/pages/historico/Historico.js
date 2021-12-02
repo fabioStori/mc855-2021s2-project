@@ -1,4 +1,6 @@
-import { Box } from '@mui/material';
+import { Devices, Sensors } from '@mui/icons-material';
+import { Box, Switch, FormControlLabel } from '@mui/material';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import {
   CustomDatePicker,
@@ -9,7 +11,11 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { formatDate } from 'utils/format-date';
 import { useStyles } from './Historico.styles';
+import { itemPopUp } from './itemPopUp';
+import { sensorPopUp } from './sensorPopUp';
 
 const searchEmptyValues = {
   itens: [],
@@ -21,90 +27,84 @@ export default function Historico(props) {
   const { control } = methods;
   const styles = useStyles();
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const [onlyAlerts, setOnlyAlerts] = useState(false);
   const [afterDateValue, setAfterDateValue] = useState(null);
   const [beforeDateValue, setBeforeDateValue] = useState(null);
   const [invalidDate, setInvalidDate] = useState(null);
-  const [searchSensorValue, setSearchSensorValue] = useState(null);
-  const [searchItemValue, setSearchItemValue] = useState(null);
+  const [searchSensorValue, setSearchSensorValue] = useState([]);
+  const [searchItemValue, setSearchItemValue] = useState([]);
   const [showRangeError, setShowRangeError] = useState(null);
-  // const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const abortController = new AbortController();
 
   const columns = [
     {
-      field: 'itemName',
+      field: 'id',
+      headerName: 'Database ID',
+      hide: true,
+    },
+    {
+      field: 'item_name',
       headerName: 'Nome do item',
-      flex: 0.4,
-    },
-    {
-      field: 'sensorName',
-      headerName: 'Nome do sensor',
-      flex: 0.4,
-    },
-    {
-      field: 'time',
-      headerName: 'Data/Hora',
       flex: 0.3,
+    },
+    {
+      field: 'sensor_name',
+      headerName: 'Nome do sensor',
+      flex: 0.3,
+    },
+    {
+      field: 'event_timestamp',
+      headerName: 'Ativação',
+      flex: 0.2,
       type: 'dateTime',
+    },
+
+    {
+      field: 'actions',
+      headerName: 'Opções',
+      type: 'actions',
+      flex: 0.2,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<Devices />}
+          label="Ver Item"
+          onClick={() => showItem(params.row)}
+        />,
+        <GridActionsCellItem
+          icon={<Sensors />}
+          label="Ver Sensor"
+          onClick={() => showSensor(params.row)}
+        />,
+      ],
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      itemName: 'Analisador de Redes Vetorial',
-      sensorName: 'Sensor 10',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 2,
-      itemName: 'Ultramicrótomo Ultracut UCT',
-      sensorName: 'Sensor 8',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 3,
-      itemName: 'Implantador de Íons',
-      sensorName: 'Sensor 7',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 4,
-      itemName: 'Network Analyzer',
-      sensorName: 'Sensor 6',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 5,
-      itemName: 'Analisador de espectro óptico',
-      sensorName: 'Sensor 5',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 6,
-      itemName: 'Bioanalyzer',
-      sensorName: 'Sensor 4',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 7,
-      itemName: 'Sequenciador DNA SANGER',
-      sensorName: 'Sensor 3',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 8,
-      itemName: 'Canhão para biobalística',
-      sensorName: 'Sensor 2',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-    {
-      id: 9,
-      itemName: 'Tocador de Fita Cassete',
-      sensorName: 'Sensor 1',
-      time: new Date(1979, 0, 1, 0, 5),
-    },
-  ];
+  const showItem = (data) => {
+    console.log('showItem', data);
+    Swal.fire({
+      customClass: { popup: 'swal-wide' },
+      title: `Informações do Item`,
+      html: itemPopUp(data),
+      confirmButtonText: 'Fechar',
+      confirmButtonColor: '#dc3545',
+    });
+  };
+
+  const showSensor = (data) => {
+    console.log('showSensor', data);
+    Swal.fire({
+      customClass: { popup: 'swal-wide' },
+      title: `Informações do Sensor`,
+      html: sensorPopUp(data),
+      confirmButtonText: 'Fechar',
+      confirmButtonColor: '#dc3545',
+    });
+  };
+
+  const toggleOnlyAlertSwitch = (event) => {
+    setOnlyAlerts(event.target.checked);
+  };
 
   const showDataGridLoading = () => {
     setIsLoadingData(true);
@@ -114,27 +114,39 @@ export default function Historico(props) {
     setIsLoadingData(false);
   };
 
-  const getRowsRequest = (query) => {
+  const getRowsRequest = (searchParams) => {
+    const start_timestamp =
+      new Date(searchParams.afterDateValue).getTime() / 1000;
+    const end_timestamp =
+      new Date(searchParams.beforeDateValue).getTime() / 1000;
+    const item_query = searchParams.searchItemValue;
+    const sensor_query = searchParams.searchSensorValue;
     showDataGridLoading();
     axios
-      .post('https://httpstat.us/200', {
-        query: query.length ? query.join('|') : '.*',
+      .post('https://api.invent-io.ic.unicamp.br/api/v1/search/event', {
+        sensor_query: sensor_query.length ? sensor_query.join('|') : '.*',
+        item_query: item_query.length ? item_query.join('|') : '.*',
+        start_timestamp_range: start_timestamp ? start_timestamp : null,
+        end_timestamp_range: end_timestamp ? end_timestamp : null,
         signal: abortController.signal,
+        alert_only: onlyAlerts,
       })
       .then((response) => {
         hideDataGridLoading();
-        // const rows = response.data.map((row) => {
-        //   return {
-        //     id: row.item_id,
-        //     _id: row._id,
-        //     item_id: row.item_id,
-        //     name: row.name,
-        //     last_activity: row.last_activity
-        //       ? formatDate(row.last_activity)
-        //       : '-',
-        //   };
-        // });
-        // setRows(rows);
+        const rows = response.data.map((row) => {
+          return {
+            id: row._id,
+            item: row.item,
+            item_name: row.item.name,
+            sensor: row.sensor,
+            sensor_name: row.sensor.name,
+            event_timestamp: row.event_timestamp
+              ? formatDate(row.event_timestamp * 1000)
+              : '-',
+            alert: row.alert,
+          };
+        });
+        setRows(rows);
       })
       .catch((error) => {
         hideDataGridLoading();
@@ -156,8 +168,13 @@ export default function Historico(props) {
       ) {
         setShowRangeError(true);
       } else {
-        // TODO: MAKE REQUEST TO UPDATE TABLE
         setShowRangeError(false);
+        getRowsRequest({
+          searchItemValue: searchItemValue,
+          searchSensorValue: searchSensorValue,
+          afterDateValue: afterDateValue,
+          beforeDateValue: beforeDateValue,
+        });
       }
     }
     return () => {
@@ -169,6 +186,7 @@ export default function Historico(props) {
     searchSensorValue,
     searchItemValue,
     invalidDate,
+    onlyAlerts,
   ]);
 
   return (
@@ -203,6 +221,18 @@ export default function Historico(props) {
               anterior à data em "Antes de"
             </p>
           )}
+          <div>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={onlyAlerts}
+                  color="error"
+                  onChange={(event) => toggleOnlyAlertSwitch(event)}
+                />
+              }
+              label="Somente alertas"
+            />
+          </div>
         </div>
         <Box width={{ xs: '100%', md: '40%' }}>
           <MultipleTextInputs
@@ -231,6 +261,12 @@ export default function Historico(props) {
         columns={columns}
         rows={rows}
         updateRows={getRowsRequest}
+        searchParams={{
+          searchItemValue: searchItemValue,
+          searchSensorValue: searchSensorValue,
+          afterDateValue: afterDateValue,
+          beforeDateValue: beforeDateValue,
+        }}
         loading={isLoadingData}
       />
     </div>
