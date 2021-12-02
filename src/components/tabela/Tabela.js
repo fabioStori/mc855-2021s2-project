@@ -57,6 +57,9 @@ export default function Tabela(props) {
         loading={isLoadingData}
         disableSelectionOnClick
         localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+        getRowClassName={(params) => {
+          return params.row.alert ? 'alert' : '';
+        }}
       />
     </div>
   );

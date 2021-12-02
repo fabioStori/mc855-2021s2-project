@@ -14,6 +14,8 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Historico.styles';
+import { itemPopUp } from './itemPopUp';
+import { sensorPopUp } from './sensorPopUp';
 
 const searchEmptyValues = {
   itens: [],
@@ -35,6 +37,11 @@ export default function Historico(props) {
   const abortController = new AbortController();
 
   const columns = [
+    {
+      field: 'id',
+      headerName: 'Database ID',
+      hide: true,
+    },
     {
       field: 'item_name',
       headerName: 'Nome do item',
@@ -72,19 +79,23 @@ export default function Historico(props) {
     },
   ];
 
-  const showItem = (event) => {
+  const showItem = (data) => {
+    console.log('showItem', data);
     Swal.fire({
-      title: `${event.item_name}`,
-      html: `dados adicionais do item`,
+      customClass: { popup: 'swal-wide' },
+      title: `Informações do Item`,
+      html: itemPopUp(data),
       confirmButtonText: 'Fechar',
       confirmButtonColor: '#dc3545',
     });
   };
 
-  const showSensor = (event) => {
+  const showSensor = (data) => {
+    console.log('showSensor', data);
     Swal.fire({
-      title: `${event.sensor_name}`,
-      html: `dados adicionais do sensor`,
+      customClass: { popup: 'swal-wide' },
+      title: `Informações do Sensor`,
+      html: sensorPopUp(data),
       confirmButtonText: 'Fechar',
       confirmButtonColor: '#dc3545',
     });
@@ -99,13 +110,16 @@ export default function Historico(props) {
   };
 
   const getRowsRequest = (searchParams) => {
-    const start_timestamp = new Date(searchParams.afterDateValue).getTime();
-    const end_timestamp = new Date(searchParams.beforeDateValue).getTime();
+    const start_timestamp =
+      new Date(searchParams.afterDateValue).getTime() / 1000;
+    const end_timestamp =
+      new Date(searchParams.beforeDateValue).getTime() / 1000;
     const item_query = searchParams.searchItemValue;
     const sensor_query = searchParams.searchSensorValue;
 
     showDataGridLoading();
     axios
+
       .post('https://api.invent-io.ic.unicamp.br/api/v1/search/event', {
         sensor_query: sensor_query.length ? sensor_query.join('|') : '.*',
         item_query: item_query.length ? item_query.join('|') : '.*',
@@ -115,20 +129,17 @@ export default function Historico(props) {
       })
       .then((response) => {
         hideDataGridLoading();
-        console.log('getRowsRequest', response.data);
         const rows = response.data.map((row) => {
           return {
-            item_id: row.item.id,
+            id: row._id,
+            item: row.item,
             item_name: row.item.name,
-            sensor_id: row.sensor.id,
+            sensor: row.sensor,
             sensor_name: row.sensor.name,
-            event_details: row.event_details,
-            received_timestamp: row.received_timestamp
-              ? formatDate(row.received_timestamp)
-              : '-',
             event_timestamp: row.event_timestamp
-              ? formatDate(row.event_timestamp)
+              ? formatDate(row.event_timestamp * 1000)
               : '-',
+            alert: row.alert,
           };
         });
         setRows(rows);
