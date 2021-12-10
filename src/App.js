@@ -13,10 +13,6 @@ export default function App() {
   const history = useHistory();
   const styles = useStyles();
 
-  // 401 para usuario fora da lista
-  // 403 para usuario que tenta acessar algo que n tem acesso
-  // 498 para usuario com token vencido
-
   useEffect(() => {
     axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`;
   }, [accessToken]);

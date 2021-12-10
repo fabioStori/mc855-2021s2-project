@@ -106,7 +106,6 @@ export default function Itens() {
       .then((response) => {
         hideDataGridLoading();
         const rows = response.data.map((row) => {
-          console.log(row.last_activity);
           return {
             id: row.item_id,
             _id: row._id,
@@ -187,7 +186,6 @@ export default function Itens() {
     axios
       .get(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
       .then((response) => {
-        // const preparedData = prepareData(response.data);
         setShouldUseEditMode(true);
         setPreSelectedFields(response.data);
         setIsSidePageOpen(true);

@@ -90,7 +90,6 @@ export default function Sensores() {
         signal: abortController.signal,
       })
       .then((response) => {
-        console.log(response.data);
         hideDataGridLoading();
         const rows = response.data.map((row) => {
           return {

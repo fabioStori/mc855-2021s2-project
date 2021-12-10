@@ -81,7 +81,6 @@ export default function Historico(props) {
   ];
 
   const showItem = (data) => {
-    console.log('showItem', data);
     Swal.fire({
       customClass: { popup: 'swal-wide' },
       title: `Informações do Item`,
@@ -92,7 +91,6 @@ export default function Historico(props) {
   };
 
   const showSensor = (data) => {
-    console.log('showSensor', data);
     Swal.fire({
       customClass: { popup: 'swal-wide' },
       title: `Informações do Sensor`,
