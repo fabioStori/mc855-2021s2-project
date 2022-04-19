@@ -12,16 +12,12 @@ export default function Sistema() {
       </Grid>
       <Grid item xs={10}>
         <Switch>
-          <PrivateRoute path={`/`} exact={true} component={Inicio} />
-          <PrivateRoute path={`/itens`} exact={true} component={Itens} />
-          <PrivateRoute path={`/sensores`} exact={true} component={Sensores} />
-          <PrivateRoute
-            path={`/historico`}
-            exact={true}
-            component={Historico}
-          />
-          <PrivateRoute path={`/usuarios`} exact={true} component={Usuarios} />
-          <Route path={`*`}>
+          <PrivateRoute path="/" exact component={Inicio} />
+          <PrivateRoute path="/itens" exact component={Itens} />
+          <PrivateRoute path="/sensores" exact component={Sensores} />
+          <PrivateRoute path="/historico" exact component={Historico} />
+          <PrivateRoute path="/usuarios" exact component={Usuarios} />
+          <Route path="*">
             <Redirect to="/" />
           </Route>
         </Switch>

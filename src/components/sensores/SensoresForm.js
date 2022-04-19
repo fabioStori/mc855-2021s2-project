@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { MultipleTextInputs, TextInput } from 'components';
+import { noop } from 'lodash';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'services/constants';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -18,12 +20,12 @@ import {
 
 export default function SensoresForm({
   closeSidePage,
-  updateRows = (query) => {},
+  updateRows = noop,
   preSelectedFields = {},
   editMode = false,
 }) {
   const methods = useForm({
-    defaultValues: preSelectedFields ? preSelectedFields : sensoresEmptyValues,
+    defaultValues: preSelectedFields || sensoresEmptyValues,
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
@@ -32,7 +34,7 @@ export default function SensoresForm({
   async function onSubmitAndClose(data) {
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/sensor', data)
+      .post(`${API_BASE_URL}/sensor`, data)
       .then(() => {
         toast.success('Sensor cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -54,7 +56,7 @@ export default function SensoresForm({
   async function onSubmitAndReset(data) {
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/sensor', data)
+      .post(`${API_BASE_URL}/sensor`, data)
       .then(() => {
         toast.success('Sensor cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -78,10 +80,7 @@ export default function SensoresForm({
     const sensorId = data._id;
     delete data._id;
     axios
-      .put(
-        `https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensorId}`,
-        data
-      )
+      .put(`${API_BASE_URL}/sensor/${sensorId}`, data)
       .then(() => {
         toast.success('Item cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -134,7 +133,7 @@ export default function SensoresForm({
           isRequired={field.name !== 'types'}
           name={field.name}
           control={control}
-          isForm={true}
+          isForm
           label={field.label}
           placeholder={field.placeholder}
           helperText={field.helperText}
@@ -142,15 +141,13 @@ export default function SensoresForm({
         />
       ))}
       {editMode ? (
-        <>
-          <StyledPrimaryButton
-            onClick={handleSubmit(onSubmitEditAndClose)}
-            loading={isLoading}
-            variant="contained"
-          >
-            Salvar alterações
-          </StyledPrimaryButton>
-        </>
+        <StyledPrimaryButton
+          onClick={handleSubmit(onSubmitEditAndClose)}
+          loading={isLoading}
+          variant="contained"
+        >
+          Salvar alterações
+        </StyledPrimaryButton>
       ) : (
         <>
           <StyledPrimaryButton

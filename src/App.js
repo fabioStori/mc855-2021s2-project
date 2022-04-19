@@ -14,7 +14,7 @@ export default function App() {
   const styles = useStyles();
 
   useEffect(() => {
-    axios.defaults.headers.common['Authorization'] = `bearer ${accessToken}`;
+    axios.defaults.headers.common.Authorization = `bearer ${accessToken}`;
   }, [accessToken]);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function App() {
         return Promise.reject(error);
       }
     );
-  }, []);
+  }, [history, signOut]);
 
   return (
     <div className={styles.appBackground}>

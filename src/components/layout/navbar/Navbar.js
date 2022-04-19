@@ -1,10 +1,11 @@
-import { AppBar, Button, Toolbar } from '@material-ui/core';
-import { Logout } from '@mui/icons-material';
-import { Logo } from 'assets';
-import { AuthContext } from 'contexts';
 import { useContext } from 'react';
-import SVG from 'react-inlinesvg';
+import { AppBar, Button, Toolbar } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { Logout } from '@mui/icons-material';
+import SVG from 'react-inlinesvg';
+
+import { Logo } from 'assets';
+import { AuthContext } from '../../../contexts';
 import { useStyles } from './Navbar.styles';
 
 export default function Navbar() {
@@ -16,11 +17,11 @@ export default function Navbar() {
     history.push('/');
   };
 
-  const goToUsuarios = () => {
-    history.push('/usuarios');
-  };
+  // const goToUsuarios = () => {
+  //   history.push('/usuarios');
+  // };
 
-  async function signOutHandle() {
+  const signOutHandle = async () => {
     try {
       if (window.confirm('Você tem certeza que deseja sair da sua conta?')) {
         await authContext.signOut();
@@ -29,7 +30,7 @@ export default function Navbar() {
     } catch {
       alert('Erro ao sair da conta');
     }
-  }
+  };
 
   return (
     <AppBar position="relative" className={styles.background}>
@@ -37,7 +38,7 @@ export default function Navbar() {
         <Button className={styles.logo} onClick={goToHome}>
           <SVG src={Logo} />
         </Button>
-        <div className={styles.space}></div>
+        <div className={styles.space} />
         {authContext.isUserLoggedIn ? (
           <Button onClick={signOutHandle}>
             <p className={styles.text}>Sair</p>

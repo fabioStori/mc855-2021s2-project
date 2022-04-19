@@ -2,21 +2,45 @@ import { ContentCopy, Delete, Edit } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import { ContentHeader, ItensForm, SidePage, Tabela } from 'components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'services/constants';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Itens.styles';
 
+const abortController = new AbortController();
+
 export default function Itens() {
   const styles = useStyles();
-  const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [shouldUseEditMode, setShouldUseEditMode] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
   const [rows, setRows] = useState([]);
+
+  const renderActions = (params) => [
+    <GridActionsCellItem
+      key="delete"
+      icon={<Delete />}
+      label="Delete"
+      onClick={() => deleteItem(params.row)}
+    />,
+    <GridActionsCellItem
+      key="clone"
+      icon={<ContentCopy />}
+      label="Clone"
+      onClick={() => duplicateItem(params.row)}
+    />,
+    <GridActionsCellItem
+      key="edit"
+      icon={<Edit />}
+      label="Edit"
+      onClick={() => editItem(params.row)}
+    />,
+  ];
+
   const columns = [
     {
       field: 'name',
@@ -44,23 +68,7 @@ export default function Itens() {
       headerName: 'Opções',
       type: 'actions',
       flex: 0.15,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Delete"
-          onClick={() => deleteItem(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<ContentCopy />}
-          label="Clone"
-          onClick={() => duplicateItem(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<Edit />}
-          label="Edit"
-          onClick={() => editItem(params.row)}
-        />,
-      ],
+      getActions: renderActions,
     },
   ];
 
@@ -96,10 +104,10 @@ export default function Itens() {
     return data;
   };
 
-  const getRowsRequest = (query) => {
+  const getRowsRequest = useCallback((query) => {
     showDataGridLoading();
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/search/item', {
+      .post(`${API_BASE_URL}/search/item`, {
         query: query.length ? query.join('|') : '.*',
         signal: abortController.signal,
       })
@@ -121,17 +129,17 @@ export default function Itens() {
       .catch((error) => {
         hideDataGridLoading();
         if (error.message !== 'The user aborted a request.') {
-          toast.error('Erro ao consultar itens. ' + error.message, {
+          toast.error(`Erro ao consultar itens. ${error.message}`, {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 4000,
           });
         }
       });
-  };
+  }, []);
 
   const deleteItemRequest = (item) => {
     axios
-      .delete(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
+      .delete(`${API_BASE_URL}/item/${item._id}`)
       .then(() => {
         toast.success(`Item ${item.name} excluído com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -168,7 +176,7 @@ export default function Itens() {
 
   const duplicateItem = (item) => {
     axios
-      .get(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
+      .get(`${API_BASE_URL}/item/${item._id}`)
       .then((response) => {
         const preparedData = prepareData(response.data);
         setPreSelectedFields(preparedData);
@@ -184,7 +192,7 @@ export default function Itens() {
 
   const editItem = (item) => {
     axios
-      .get(`https://api.invent-io.ic.unicamp.br/api/v1/item/${item._id}`)
+      .get(`${API_BASE_URL}/item/${item._id}`)
       .then((response) => {
         setShouldUseEditMode(true);
         setPreSelectedFields(response.data);
@@ -203,7 +211,7 @@ export default function Itens() {
     return () => {
       abortController.abort();
     };
-  }, [contentHeaderFieldValue]);
+  }, [contentHeaderFieldValue, getRowsRequest]);
 
   return (
     <div className={styles.pageContainer}>

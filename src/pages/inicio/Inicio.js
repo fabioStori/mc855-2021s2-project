@@ -1,7 +1,7 @@
 import { SimpleHeader } from 'components';
 import { useStyles } from './Inicio.styles';
 
-export default function Inicio(props) {
+export default function Inicio() {
   const styles = useStyles();
 
   return (

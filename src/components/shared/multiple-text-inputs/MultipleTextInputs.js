@@ -28,7 +28,7 @@ export default function MultipleTextInputs({
           multiple
           freeSolo
           options={[]}
-          value={value ? value : []}
+          value={value || []}
           limitTags={2}
           filterSelectedOptions
           style={style}
@@ -49,7 +49,7 @@ export default function MultipleTextInputs({
                 placeholder={placeholder}
                 error={!!error}
                 helperText={
-                  error ? 'Campo obrigatório. ' + helperText : helperText
+                  error ? `Campo obrigatório. ${helperText}` : helperText
                 }
                 fullWidth
                 InputProps={{

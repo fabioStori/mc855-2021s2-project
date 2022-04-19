@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import { styled, TextField } from '@mui/material';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
   dateError: {
     color: 'var(--red)',
     fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const StyledTextField = styled(TextField)(({ theme }) => ({
+export const StyledTextField = styled(TextField)(() => ({
   backgroundColor: 'var(--white)',
   height: 'fit-content',
   '.MuiOutlinedInput-input': {

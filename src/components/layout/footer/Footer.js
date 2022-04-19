@@ -9,9 +9,9 @@ export default function Footer() {
   return (
     <div className={styles.container}>
       <p className={styles.text}>Inventio - 2021</p>
-      <p className={styles.termosDeUso} onClick={() => setIsModalOpen(true)}>
+      <span className={styles.termosDeUso} onClick={() => setIsModalOpen(true)}>
         Termos de Uso
-      </p>
+      </span>
       <StyledModal
         isModalOpen={isModalOpen}
         setIsModalOpen={() => setIsModalOpen(false)}

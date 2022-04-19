@@ -27,7 +27,7 @@ export default function ContentHeader({
           <MultipleTextInputs
             name="search"
             control={control}
-            hasSearchIcon={true}
+            hasSearchIcon
             setFieldValue={setFieldValue}
             label={searchLabel}
             placeholder={searchPlaceholder}

@@ -1,0 +1,82 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "eslint:recommended",
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:jsx-a11y/recommended",
+    "prettier"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "arrow-body-style": 0,
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/display-name": "off",
+    "semi": [2, "always"],
+    "react/jsx-props-no-spreading": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "consistent-return": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ],
+    "jsx-a11y/label-has-for": [
+      "error",
+      {
+        "required": {
+          "some": ["nesting", "id"]
+        }
+      }
+    ],
+    "react/function-component-definition": "off",
+    "react/no-array-index-key": "off",
+    "no-param-reassign": "off",
+    "no-unused-expressions": "off",
+    "no-use-before-define": "off",
+    "no-shadow": "off",
+    "import/no-unresolved": "off",
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "lines-between-class-members": "off",
+    "max-classes-per-file": "off",
+    "no-useless-constructor": "off",
+    "class-methods-use-this": "off",
+    "camelcase": "off",
+    "default-param-last": "off",
+    "react/button-has-type": "off"
+  }
+}

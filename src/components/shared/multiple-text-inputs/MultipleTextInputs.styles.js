@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { Autocomplete, Button, styled, TextField } from '@mui/material';
+import { Autocomplete, styled, TextField } from '@mui/material';
 
 export const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -32,14 +32,14 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
+export const StyledAutoComplete = styled(Autocomplete)(() => ({
   width: 'auto',
   '& .MuiFormControl-root': {
     margin: 0,
   },
 }));
 
-export const StyledTextField = styled(TextField)(({ theme }) => ({
+export const StyledTextField = styled(TextField)(() => ({
   '& .MuiAutocomplete-tag': {
     height: '22px',
   },

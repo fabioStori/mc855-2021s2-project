@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import { Alert, styled } from '@mui/material';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
   appBackground: {
     backgroundColor: 'var(--light-gray)',
   },

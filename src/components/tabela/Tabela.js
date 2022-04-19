@@ -13,45 +13,43 @@ import { StyledDataGrid, useStyles } from './Tabela.styles';
 
 export default function Tabela(props) {
   const styles = useStyles();
-  const updateRows = props.updateRows;
-  const searchParams = props.searchParams;
-  const isLoadingData = props.loading;
+  const {
+    updateRows,
+    searchParams,
+    loading: isLoadingData,
+    rows,
+    columns,
+  } = props;
 
-  function CustomToolBar() {
+  const renderToolBar = () => {
     return (
       <GridToolbarContainer>
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <GridToolbarExport />
-        <RefreshButton />
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="text"
+            size="small"
+            startIcon={<RefreshIcon />}
+            onClick={() => updateRows(searchParams || ['.*'])}
+          >
+            Atualizar
+          </Button>
+        </Stack>
       </GridToolbarContainer>
     );
-  }
-
-  function RefreshButton() {
-    return (
-      <Stack direction="row" spacing={2}>
-        <Button
-          variant="text"
-          size="small"
-          startIcon={<RefreshIcon />}
-          onClick={() => updateRows(searchParams ? searchParams : ['.*'])}
-        >
-          Atualizar
-        </Button>
-      </Stack>
-    );
-  }
+  };
 
   return (
     <div className={styles.tableWrapper}>
       <StyledDataGrid
         components={{
-          Toolbar: CustomToolBar,
+          Toolbar: renderToolBar,
         }}
-        rows={props.rows}
-        columns={props.columns}
+        rows={rows}
+        columns={columns}
         autoPageSize
         pagination
         loading={isLoadingData}

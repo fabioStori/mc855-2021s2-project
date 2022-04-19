@@ -2,21 +2,44 @@ import { ContentCopy, Delete, Edit } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import { ContentHeader, SensoresForm, SidePage, Tabela } from 'components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'services/constants';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Sensores.styles';
 
+const abortController = new AbortController();
+
 export default function Sensores() {
   const styles = useStyles();
-  const abortController = new AbortController();
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [shouldUseEditMode, setShouldUseEditMode] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [contentHeaderFieldValue, setContentHeaderFieldValue] = useState([]);
   const [preSelectedFields, setPreSelectedFields] = useState({});
   const [rows, setRows] = useState([]);
+  const renderActions = (params) => [
+    <GridActionsCellItem
+      key="delete"
+      icon={<Delete />}
+      label="Delete"
+      onClick={() => deleteSensor(params.row)}
+    />,
+    <GridActionsCellItem
+      key="clone"
+      icon={<ContentCopy />}
+      label="Clone"
+      onClick={() => duplicateSensor(params.row)}
+    />,
+    <GridActionsCellItem
+      key="edit"
+      icon={<Edit />}
+      label="Edit"
+      onClick={() => editSensor(params.row)}
+    />,
+  ];
+
   const columns = [
     {
       field: 'name',
@@ -44,23 +67,7 @@ export default function Sensores() {
       type: 'actions',
       headerName: 'Opções',
       flex: 0.15,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Delete"
-          onClick={() => deleteSensor(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<ContentCopy />}
-          label="Clone"
-          onClick={() => duplicateSensor(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<Edit />}
-          label="Edit"
-          onClick={() => editSensor(params.row)}
-        />,
-      ],
+      getActions: renderActions,
     },
   ];
 
@@ -82,10 +89,10 @@ export default function Sensores() {
     setIsLoadingData(false);
   };
 
-  const getRowsRequest = (query) => {
+  const getRowsRequest = useCallback((query) => {
     showDataGridLoading();
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/search/sensor', {
+      .post(`${API_BASE_URL}/search/sensor`, {
         query: query.length ? query.join('|') : '.*',
         signal: abortController.signal,
       })
@@ -107,13 +114,13 @@ export default function Sensores() {
       .catch((error) => {
         hideDataGridLoading();
         if (error.message !== 'The user aborted a request.') {
-          toast.error('Erro ao consultar sensores. ' + error.message, {
+          toast.error(`Erro ao consultar sensores. ${error.message}`, {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 4000,
           });
         }
       });
-  };
+  }, []);
 
   const deleteSensorRequest = (sensor) => {
     axios
@@ -191,7 +198,7 @@ export default function Sensores() {
     return () => {
       abortController.abort();
     };
-  }, [contentHeaderFieldValue]);
+  }, [contentHeaderFieldValue, getRowsRequest]);
 
   return (
     <div className={styles.pageContainer}>

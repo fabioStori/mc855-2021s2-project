@@ -7,6 +7,7 @@ import {
 } from './SidePage.styles';
 
 export default function SidePage(props) {
+  const { onClose, children } = props;
   const defaultDrawerWidth = '40vw';
   const styles = useStyles();
   const [drawerWidth, setDrawerWidth] = useState(defaultDrawerWidth);
@@ -20,11 +21,6 @@ export default function SidePage(props) {
       setDrawerWidth('40vw');
     }
   };
-
-  const onClose = () => {
-    props.onClose();
-  };
-
   return (
     <StyledDrawer
       className={styles.drawer}
@@ -47,7 +43,7 @@ export default function SidePage(props) {
         <div className={styles.close}>
           <StyledClose onClick={onClose} />
         </div>
-        {props.children}
+        {children}
       </div>
     </StyledDrawer>
   );
