@@ -51,7 +51,7 @@ export const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   },
 }));
 
-export const StyledTextField = styled(TextField)(({ theme }) => ({
+export const StyledTextField = styled(TextField)(() => ({
   '& .MuiInputLabel-root.Mui-focused ': {
     color: 'var(--primary-blue) !important',
   },

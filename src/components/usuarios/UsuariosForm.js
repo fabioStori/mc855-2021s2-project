@@ -1,8 +1,9 @@
 import { TextInput, SelectInput } from 'components';
-import { AuthContext } from 'contexts';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { API_BASE_URL } from 'services/constants';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -15,7 +16,6 @@ import {
   usuariosEmptyValues,
   TextInputsFields,
 } from './UsuariosFields';
-import axios from 'axios';
 
 export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
   const methods = useForm({
@@ -29,7 +29,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
     data.creation_date = Date.now();
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/user', data)
+      .post(`${API_BASE_URL}/user`, data)
       .then(() => {
         updateRows();
         closeSidePage();
@@ -52,7 +52,7 @@ export default function UsuariosForm({ closeSidePage, updateRows = () => {} }) {
     data.creation_date = Date.now();
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/user', data)
+      .post(`${API_BASE_URL}/user`, data)
       .then(() => {
         updateRows();
         reset(usuariosEmptyValues);

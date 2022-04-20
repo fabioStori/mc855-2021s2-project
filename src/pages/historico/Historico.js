@@ -8,21 +8,24 @@ import {
   SimpleHeader,
   Tabela,
 } from 'components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'services/constants';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Historico.styles';
 import { itemPopUp } from './itemPopUp';
 import { sensorPopUp } from './sensorPopUp';
 
+const abortController = new AbortController();
+
 const searchEmptyValues = {
   itens: [],
   sensores: [],
 };
 
-export default function Historico(props) {
+export default function Historico() {
   const methods = useForm({ defaultValues: searchEmptyValues });
   const { control } = methods;
   const styles = useStyles();
@@ -35,7 +38,21 @@ export default function Historico(props) {
   const [searchItemValue, setSearchItemValue] = useState([]);
   const [showRangeError, setShowRangeError] = useState(null);
   const [rows, setRows] = useState([]);
-  const abortController = new AbortController();
+
+  const renderItems = (params) => [
+    <GridActionsCellItem
+      key="device"
+      icon={<Devices />}
+      label="Ver Item"
+      onClick={() => showItem(params.row)}
+    />,
+    <GridActionsCellItem
+      key="sensor"
+      icon={<Sensors />}
+      label="Ver Sensor"
+      onClick={() => showSensor(params.row)}
+    />,
+  ];
 
   const columns = [
     {
@@ -65,18 +82,7 @@ export default function Historico(props) {
       headerName: 'Opções',
       type: 'actions',
       flex: 0.2,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<Devices />}
-          label="Ver Item"
-          onClick={() => showItem(params.row)}
-        />,
-        <GridActionsCellItem
-          icon={<Sensors />}
-          label="Ver Sensor"
-          onClick={() => showSensor(params.row)}
-        />,
-      ],
+      getActions: renderItems,
     },
   ];
 
@@ -112,50 +118,53 @@ export default function Historico(props) {
     setIsLoadingData(false);
   };
 
-  const getRowsRequest = (searchParams) => {
-    const start_timestamp =
-      new Date(searchParams.afterDateValue).getTime() / 1000;
-    const end_timestamp =
-      new Date(searchParams.beforeDateValue).getTime() / 1000;
-    const item_query = searchParams.searchItemValue;
-    const sensor_query = searchParams.searchSensorValue;
-    showDataGridLoading();
-    axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/search/event', {
-        sensor_query: sensor_query.length ? sensor_query.join('|') : '.*',
-        item_query: item_query.length ? item_query.join('|') : '.*',
-        start_timestamp_range: start_timestamp ? start_timestamp : null,
-        end_timestamp_range: end_timestamp ? end_timestamp : null,
-        signal: abortController.signal,
-        alert_only: onlyAlerts,
-      })
-      .then((response) => {
-        hideDataGridLoading();
-        const rows = response.data.map((row) => {
-          return {
-            id: row._id,
-            item: row.item,
-            item_name: row.item.name,
-            sensor: row.sensor,
-            sensor_name: row.sensor.name,
-            event_timestamp: row.event_timestamp
-              ? formatDate(row.event_timestamp * 1000)
-              : '-',
-            alert: row.alert,
-          };
-        });
-        setRows(rows);
-      })
-      .catch((error) => {
-        hideDataGridLoading();
-        if (error.message !== 'The user aborted a request.') {
-          toast.error('Erro ao consultar movimentações. ' + error.message, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            autoClose: 4000,
+  const getRowsRequest = useCallback(
+    (searchParams) => {
+      const start_timestamp =
+        new Date(searchParams.afterDateValue).getTime() / 1000;
+      const end_timestamp =
+        new Date(searchParams.beforeDateValue).getTime() / 1000;
+      const item_query = searchParams.searchItemValue;
+      const sensor_query = searchParams.searchSensorValue;
+      showDataGridLoading();
+      axios
+        .post(`${API_BASE_URL}/search/event`, {
+          sensor_query: sensor_query.length ? sensor_query.join('|') : '.*',
+          item_query: item_query.length ? item_query.join('|') : '.*',
+          start_timestamp_range: start_timestamp || null,
+          end_timestamp_range: end_timestamp || null,
+          signal: abortController.signal,
+          alert_only: onlyAlerts,
+        })
+        .then((response) => {
+          hideDataGridLoading();
+          const rows = response.data.map((row) => {
+            return {
+              id: row._id,
+              item: row.item,
+              item_name: row.item.name,
+              sensor: row.sensor,
+              sensor_name: row.sensor.name,
+              event_timestamp: row.event_timestamp
+                ? formatDate(row.event_timestamp * 1000)
+                : '-',
+              alert: row.alert,
+            };
           });
-        }
-      });
-  };
+          setRows(rows);
+        })
+        .catch((error) => {
+          hideDataGridLoading();
+          if (error.message !== 'The user aborted a request.') {
+            toast.error(`Erro ao consultar movimentações. ${error.message}`, {
+              position: toast.POSITION.BOTTOM_LEFT,
+              autoClose: 4000,
+            });
+          }
+        });
+    },
+    [onlyAlerts]
+  );
 
   useEffect(() => {
     if (invalidDate === null) {
@@ -168,10 +177,10 @@ export default function Historico(props) {
       } else {
         setShowRangeError(false);
         getRowsRequest({
-          searchItemValue: searchItemValue,
-          searchSensorValue: searchSensorValue,
-          afterDateValue: afterDateValue,
-          beforeDateValue: beforeDateValue,
+          searchItemValue,
+          searchSensorValue,
+          afterDateValue,
+          beforeDateValue,
         });
       }
     }
@@ -185,6 +194,7 @@ export default function Historico(props) {
     searchItemValue,
     invalidDate,
     onlyAlerts,
+    getRowsRequest,
   ]);
 
   return (
@@ -193,7 +203,7 @@ export default function Historico(props) {
 
       <Box
         className={styles.wrapper}
-        display={'flex'}
+        display="flex"
         flexDirection={{ xs: 'column', md: 'row' }}
         gap="12px"
         padding="18px"
@@ -215,8 +225,8 @@ export default function Historico(props) {
           </div>
           {showRangeError && (
             <p className={styles.dateError}>
-              Período selecionado inválido - "A partir de" deve conter uma data
-              anterior à data em "Antes de"
+              {`Período selecionado inválido - "A partir de" deve conter uma data
+              anterior à data em "Antes de"`}
             </p>
           )}
           <div>
@@ -236,7 +246,7 @@ export default function Historico(props) {
           <MultipleTextInputs
             name="searchSensor"
             control={control}
-            hasSearchIcon={true}
+            hasSearchIcon
             setFieldValue={setSearchSensorValue}
             label="Pesquisar por Sensor"
             placeholder="Pesquisar por Sensor"
@@ -247,7 +257,7 @@ export default function Historico(props) {
           <MultipleTextInputs
             name="searchItem"
             control={control}
-            hasSearchIcon={true}
+            hasSearchIcon
             setFieldValue={setSearchItemValue}
             label="Pesquisar por Item"
             placeholder="Pesquisar por Item"
@@ -260,10 +270,10 @@ export default function Historico(props) {
         rows={rows}
         updateRows={getRowsRequest}
         searchParams={{
-          searchItemValue: searchItemValue,
-          searchSensorValue: searchSensorValue,
-          afterDateValue: afterDateValue,
-          beforeDateValue: beforeDateValue,
+          searchItemValue,
+          searchSensorValue,
+          afterDateValue,
+          beforeDateValue,
         }}
         loading={isLoadingData}
       />

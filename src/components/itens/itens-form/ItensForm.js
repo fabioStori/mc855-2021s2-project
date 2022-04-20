@@ -3,6 +3,9 @@ import { MultipleTextInputs, TextInput } from 'components';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import noop from 'lodash';
+
+import { API_BASE_URL } from 'services/constants';
 import {
   StyledClearAllButton,
   StyledClearAllIcon,
@@ -16,14 +19,14 @@ import {
   TextInputsFields,
 } from './ItensFormFields';
 
-export default function ItensForm({
+const ItensForm = ({
   closeSidePage,
-  updateRows = (query) => {},
+  updateRows = noop,
   preSelectedFields = {},
   editMode = false,
-}) {
+}) => {
   const methods = useForm({
-    defaultValues: preSelectedFields ? preSelectedFields : itensEmptyValues,
+    defaultValues: preSelectedFields || itensEmptyValues,
   });
   const { handleSubmit, reset, control } = methods;
   const styles = useStyles();
@@ -32,7 +35,7 @@ export default function ItensForm({
   async function onSubmitAndClose(data) {
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/item', data)
+      .post(`${API_BASE_URL}/item`, data)
       .then(() => {
         toast.success('Item cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -54,7 +57,7 @@ export default function ItensForm({
   async function onSubmitAndReset(data) {
     setIsLoading(true);
     axios
-      .post('https://api.invent-io.ic.unicamp.br/api/v1/item', data)
+      .post(`${API_BASE_URL}/item`, data)
       .then(() => {
         toast.success('Item cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -135,7 +138,7 @@ export default function ItensForm({
           }
           name={field.name}
           control={control}
-          isForm={true}
+          isForm
           label={field.label}
           placeholder={field.placeholder}
           helperText={field.helperText}
@@ -143,15 +146,13 @@ export default function ItensForm({
         />
       ))}
       {editMode ? (
-        <>
-          <StyledPrimaryButton
-            onClick={handleSubmit(onSubmitEditAndClose)}
-            loading={isLoading}
-            variant="contained"
-          >
-            Salvar alterações
-          </StyledPrimaryButton>
-        </>
+        <StyledPrimaryButton
+          onClick={handleSubmit(onSubmitEditAndClose)}
+          loading={isLoading}
+          variant="contained"
+        >
+          Salvar alterações
+        </StyledPrimaryButton>
       ) : (
         <>
           <StyledPrimaryButton
@@ -173,4 +174,6 @@ export default function ItensForm({
       )}
     </div>
   );
-}
+};
+
+export default ItensForm;

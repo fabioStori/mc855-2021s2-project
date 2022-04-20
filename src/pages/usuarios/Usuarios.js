@@ -2,18 +2,28 @@ import { Delete } from '@mui/icons-material';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import axios from 'axios';
 import { ContentHeader, SidePage, Tabela, UsuariosForm } from 'components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Usuarios.styles';
 
-export default function Usuarios(props) {
+const abortController = new AbortController();
+
+export default function Usuarios() {
   const styles = useStyles();
   const [isLoading, setIsLoading] = useState(false);
   const [isSidePageOpen, setIsSidePageOpen] = useState(false);
   const [rows, setRows] = useState([]);
-  const abortController = new AbortController();
+
+  const renderActions = (params) => [
+    <GridActionsCellItem
+      key="delete"
+      icon={<Delete />}
+      label="Delete"
+      onClick={() => deleteUser(params.row)}
+    />,
+  ];
 
   const columns = [
     {
@@ -40,13 +50,7 @@ export default function Usuarios(props) {
       field: 'actions',
       type: 'actions',
       headerName: 'Opções',
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Delete"
-          onClick={() => deleteUser(params.row)}
-        />,
-      ],
+      getActions: renderActions,
     },
   ];
 
@@ -61,7 +65,7 @@ export default function Usuarios(props) {
     }
   };
 
-  async function getUsers() {
+  const getUsers = useCallback(async () => {
     setIsLoading(true);
     axios
       .get(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
@@ -82,14 +86,14 @@ export default function Usuarios(props) {
       })
       .catch((error) => {
         if (error.message !== 'The user aborted a request.') {
-          toast.error('Erro ao consultar usuários. ' + error.message, {
+          toast.error(`Erro ao consultar usuários. ${error.message}`, {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 4000,
           });
         }
         setIsLoading(false);
       });
-  }
+  }, []);
 
   const deleteUserRequest = (user) => {
     axios
@@ -141,7 +145,7 @@ export default function Usuarios(props) {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [getUsers]);
 
   return (
     <div className={styles.pageContainer}>

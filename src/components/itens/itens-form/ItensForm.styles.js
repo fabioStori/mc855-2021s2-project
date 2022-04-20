@@ -3,7 +3,7 @@ import { ClearAll } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Button, styled } from '@mui/material';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
   wrapper: {
     padding: '20px 40px',
   },
@@ -21,12 +21,12 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const StyledClearAllIcon = styled(ClearAll)(({ theme }) => ({
+export const StyledClearAllIcon = styled(ClearAll)(() => ({
   color: 'var(--primary-blue)',
   cursor: 'pointer',
 }));
 
-export const StyledClearAllButton = styled(Button)(({ theme }) => ({
+export const StyledClearAllButton = styled(Button)(() => ({
   color: 'var(--primary-blue)',
   borderColor: 'var(--primary-blue)',
   width: 'fit-content',
@@ -35,14 +35,14 @@ export const StyledClearAllButton = styled(Button)(({ theme }) => ({
   height: 'fit-content',
 }));
 
-export const StyledPrimaryButton = styled(LoadingButton)(({ theme }) => ({
+export const StyledPrimaryButton = styled(LoadingButton)(() => ({
   backgroundColor: 'var(--primary-blue)',
   width: 'fit-content',
   margin: '6px',
   height: 'fit-content',
 }));
 
-export const StyledSecondaryButton = styled(LoadingButton)(({ theme }) => ({
+export const StyledSecondaryButton = styled(LoadingButton)(() => ({
   backgroundColor: 'var(--secondary-blue)',
   width: 'fit-content',
   margin: '6px',

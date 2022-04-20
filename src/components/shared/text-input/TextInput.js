@@ -29,7 +29,7 @@ export default function TextInput({
             onChange={onChange}
             placeholder={placeholder}
             error={!!error}
-            helperText={error ? 'Campo obrigatório. ' + helperText : helperText}
+            helperText={error ? `Campo obrigatório. ${helperText}` : helperText}
             InputLabelProps={{
               shrink: true,
             }}

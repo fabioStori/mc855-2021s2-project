@@ -21,7 +21,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
         setRoute(null);
       }
     };
-  }, [isUserLoggedIn]);
+  }, [isUserLoggedIn, route, history, setRoute, location]);
 
   return (
     <Route

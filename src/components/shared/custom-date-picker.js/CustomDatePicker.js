@@ -31,7 +31,7 @@ export default function CustomDatePicker({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={ptBRLocale}>
-      <Box display={'flex'} flexDirection="column">
+      <Box display="flex" flexDirection="column">
         <DatePicker
           label={label}
           value={dateValue}

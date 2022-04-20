@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import { CircularProgress, styled } from '@mui/material';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
@@ -13,6 +13,6 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const StyledCircularProgress = styled(CircularProgress)(({ theme }) => ({
+export const StyledCircularProgress = styled(CircularProgress)(() => ({
   color: 'var(--primary-blue)',
 }));
