@@ -81,7 +81,7 @@ const ItensForm = ({
     const itemId = data._id;
     delete data._id;
     axios
-      .put(`https://api.invent-io.ic.unicamp.br/api/v1/item/${itemId}`, data)
+      .put(`${API_BASE_URL}/item/${itemId}`, data)
       .then(() => {
         toast.success('Item cadastrado com sucesso', {
           position: toast.POSITION.BOTTOM_LEFT,

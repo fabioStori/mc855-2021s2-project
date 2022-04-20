@@ -4,11 +4,10 @@ import axios from 'axios';
 import { ContentHeader, SidePage, Tabela, UsuariosForm } from 'components';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from 'services/constants';
 import Swal from 'sweetalert2';
 import { formatDate } from 'utils/format-date';
 import { useStyles } from './Usuarios.styles';
-
-const abortController = new AbortController();
 
 export default function Usuarios() {
   const styles = useStyles();
@@ -68,9 +67,7 @@ export default function Usuarios() {
   const getUsers = useCallback(async () => {
     setIsLoading(true);
     axios
-      .get(`https://api.invent-io.ic.unicamp.br/api/v1/user`, {
-        signal: abortController.signal,
-      })
+      .get(`${API_BASE_URL}/user`)
       .then((response) => {
         const rows = response.data.map((row) => {
           return {
@@ -97,7 +94,7 @@ export default function Usuarios() {
 
   const deleteUserRequest = (user) => {
     axios
-      .delete(`https://api.invent-io.ic.unicamp.br/api/v1/user/${user.email}`)
+      .delete(`${API_BASE_URL}/user/${user.email}`)
       .then(() => {
         toast.success(`Usuário ${user.email} excluído com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -142,9 +139,6 @@ export default function Usuarios() {
 
   useEffect(() => {
     getUsers();
-    return () => {
-      abortController.abort();
-    };
   }, [getUsers]);
 
   return (

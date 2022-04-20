@@ -17,17 +17,15 @@ export default function Navbar() {
     history.push('/');
   };
 
-  // const goToUsuarios = () => {
-  //   history.push('/usuarios');
-  // };
-
   const signOutHandle = async () => {
     try {
+      // eslint-disable-next-line
       if (window.confirm('Você tem certeza que deseja sair da sua conta?')) {
         await authContext.signOut();
         history.push('/login');
       }
     } catch {
+      // eslint-disable-next-line
       alert('Erro ao sair da conta');
     }
   };
