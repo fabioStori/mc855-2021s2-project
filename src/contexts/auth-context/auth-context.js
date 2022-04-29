@@ -51,6 +51,7 @@ export const AuthContextProvider = (props) => {
         position: toast.POSITION.BOTTOM_LEFT,
         autoClose: 4000,
       });
+      // eslint-disable-next-line
       console.error('Falha no Login', response);
       setShowLoginButton(true);
     },
@@ -65,6 +66,7 @@ export const AuthContextProvider = (props) => {
 
   const onSignOutFailure = useCallback(
     (response) => {
+      // eslint-disable-next-line
       alert(`Você não foi deslogado com sucesso. ${response.details}`);
       setShowLoginButton(false);
     },

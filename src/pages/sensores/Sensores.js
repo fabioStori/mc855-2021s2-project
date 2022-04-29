@@ -124,7 +124,7 @@ export default function Sensores() {
 
   const deleteSensorRequest = (sensor) => {
     axios
-      .delete(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`)
+      .delete(`${API_BASE_URL}/sensor/${sensor._id}`)
       .then(() => {
         toast.success(`Sensor ${sensor.name} excluído com sucesso`, {
           position: toast.POSITION.BOTTOM_LEFT,
@@ -161,7 +161,7 @@ export default function Sensores() {
 
   const duplicateSensor = (sensor) => {
     axios
-      .get(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`)
+      .get(`${API_BASE_URL}/sensor/${sensor._id}`)
       .then((response) => {
         delete response.data._id;
         response.data.sensor_id = null;
@@ -179,7 +179,7 @@ export default function Sensores() {
 
   const editSensor = (sensor) => {
     axios
-      .get(`https://api.invent-io.ic.unicamp.br/api/v1/sensor/${sensor._id}`)
+      .get(`${API_BASE_URL}/sensor/${sensor._id}`)
       .then((response) => {
         setShouldUseEditMode(true);
         setPreSelectedFields(response.data);
